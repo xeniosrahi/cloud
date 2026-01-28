@@ -20,8 +20,9 @@
     </script>
 
     <style>
-
-    /* Legacy System Documentation - Additional Styles */
+    /* ========================================
+       ENHANCED STYLES FOR PRODUCTION
+       ======================================== */
 
     /* General Layout */
     body {
@@ -43,12 +44,16 @@
         overflow-y: auto;
         z-index: 1000;
         box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
     }
 
     .sidebar-header {
         padding: 30px 20px;
         background: rgba(0,0,0,0.2);
         border-bottom: 1px solid rgba(255,255,255,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
     .sidebar-header h3 {
@@ -72,6 +77,8 @@
         align-items: center;
         transition: all 0.3s ease;
         border-left: 3px solid transparent;
+        text-decoration: none;
+        cursor: pointer;
     }
 
     .sidebar .nav-link i {
@@ -96,6 +103,7 @@
     .main-content {
         margin-left: 280px;
         min-height: 100vh;
+        transition: margin-left 0.3s ease;
     }
 
     /* Header */
@@ -119,6 +127,7 @@
     /* Content Sections */
     .content-section {
         padding: 60px 0;
+        page-break-inside: avoid;
     }
 
     .content-section.bg-light {
@@ -131,41 +140,138 @@
         border-bottom: 3px solid #3498db;
         font-weight: 700;
         color: #2c3e50;
+        page-break-after: avoid;
     }
 
-    /* Stats Cards */
-    .stats-card {
-        border: none;
-        border-radius: 10px;
+    /* Diagram Container with Copy & Export */
+    .diagram-container {
+        position: relative;
+        margin: 20px 0;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        margin-bottom: 20px;
+        page-break-inside: avoid;
     }
 
-    .stats-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    .diagram-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 5px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
     }
 
-    /* Feature Lists */
-    .feature-list {
-        list-style: none;
-        padding-left: 0;
+    .diagram-container:hover .diagram-actions {
+        opacity: 1;
     }
 
-    .feature-list li {
-        padding: 10px 0;
-        padding-left: 30px;
+    .diagram-btn {
+        padding: 5px 10px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background 0.3s ease;
+    }
+
+    .diagram-btn:hover {
+        background: #2980b9;
+    }
+
+    .diagram-btn i {
+        margin-right: 3px;
+    }
+
+    /* Code Blocks with Copy Button */
+    pre {
+        position: relative;
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 15px 0;
+        page-break-inside: avoid;
+    }
+
+    .code-container {
         position: relative;
     }
 
-    .feature-list li:before {
-        content: "✓";
+    .copy-btn {
         position: absolute;
-        left: 0;
-        color: #27ae60;
-        font-weight: bold;
-        font-size: 1.2rem;
+        top: 10px;
+        right: 10px;
+        padding: 5px 12px;
+        background: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .code-container:hover .copy-btn {
+        opacity: 1;
+    }
+
+    .copy-btn:hover {
+        background: #229954;
+    }
+
+    .copy-btn.copied {
+        background: #16a085;
+    }
+
+    pre code {
+        font-family: "Courier New", Consolas, monospace;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* Tables */
+    .table {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        page-break-inside: avoid;
+    }
+
+    .table thead th {
+        background: #34495e;
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    /* Cards */
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+
+    .card-header {
+        border-bottom: 2px solid rgba(0,0,0,0.05);
+        font-weight: 600;
+        padding: 15px 20px;
     }
 
     /* Workflow Steps */
@@ -183,6 +289,7 @@
         background: #f8f9fa;
         border-left: 4px solid #3498db;
         border-radius: 5px;
+        page-break-inside: avoid;
     }
 
     .workflow-steps li:before {
@@ -209,121 +316,34 @@
         padding: 20px;
         margin: 15px 0;
         border-radius: 5px;
+        page-break-inside: avoid;
     }
 
     .formula-box p {
         margin: 8px 0;
-        font-family: 'Courier New', monospace;
+        font-family: "Courier New", monospace;
         font-weight: 500;
     }
 
-    /* Code Blocks */
-    pre {
-        background: #2c3e50;
-        color: #ecf0f1;
-        padding: 20px;
-        border-radius: 8px;
-        overflow-x: auto;
-        margin: 15px 0;
-    }
-
-    pre code {
-        font-family: 'Courier New', Consolas, monospace;
-        font-size: 0.9rem;
-        line-height: 1.6;
-    }
-
-    /* Tables */
-    .table {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .table thead th {
-        background: #34495e;
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+        background: #3498db;
         color: white;
-        font-weight: 600;
         border: none;
-        padding: 15px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
     }
 
-    .table-hover tbody tr:hover {
-        background-color: rgba(52, 152, 219, 0.05);
-    }
-
-    /* Cards */
-    .card {
-        border: none;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        margin-bottom: 20px;
-    }
-
-    .card-header {
-        border-bottom: 2px solid rgba(0,0,0,0.05);
-        font-weight: 600;
-        padding: 15px 20px;
-    }
-
-    /* Alerts */
-    .alert {
-        border: none;
-        border-radius: 8px;
-        padding: 20px;
-        margin: 20px 0;
-    }
-
-    .alert h4, .alert h5 {
-        margin-top: 0;
-    }
-
-    /* Badges */
-    .badge {
-        padding: 6px 12px;
-        font-weight: 600;
-        border-radius: 4px;
-    }
-
-    /* Accordion */
-    .accordion .card {
-        margin-bottom: 10px;
-        border: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .accordion .card-header {
-        background: white;
-        padding: 0;
-    }
-
-    .accordion .btn-link {
-        width: 100%;
-        text-align: left;
-        padding: 15px 20px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .accordion .btn-link:hover {
-        text-decoration: none;
-        background: rgba(0,0,0,0.02);
-    }
-
-    /* Footer */
-    .content-footer {
-        background: #2c3e50;
-        color: white;
-        padding: 30px 0;
-        margin-left: 280px;
-        margin-top: 60px;
-    }
-
-    /* Responsive */
+    /* Responsive Design */
     @media (max-width: 768px) {
         .sidebar {
             transform: translateX(-280px);
-            transition: transform 0.3s ease;
         }
 
         .sidebar.show {
@@ -334,8 +354,152 @@
             margin-left: 0;
         }
 
+        .mobile-menu-toggle {
+            display: block;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .content-header .lead {
+            font-size: 1rem;
+        }
+
+        .diagram-container {
+            padding: 10px;
+        }
+
+        .table {
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .sidebar {
+            width: 250px;
+            transform: translateX(-250px);
+        }
+
+        .workflow-steps li {
+            padding-left: 50px;
+        }
+
+        .content-header {
+            padding: 20px 0;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        /* Hide UI elements */
+        .sidebar,
+        .mobile-menu-toggle,
+        .diagram-actions,
+        .copy-btn,
         .content-footer {
-            margin-left: 0;
+            display: none !important;
+        }
+
+        /* Adjust layout */
+        .main-content {
+            margin-left: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Page breaks */
+        .content-section {
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            page-break-after: avoid;
+        }
+
+        h2, h3, h4, h5 {
+            page-break-after: avoid;
+        }
+
+        .card,
+        .diagram-container,
+        pre,
+        .table,
+        .workflow-steps li {
+            page-break-inside: avoid;
+        }
+
+        /* Ensure diagrams print properly */
+        .mermaid svg {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        /* Table fixes */
+        table {
+            page-break-inside: auto;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
+
+        /* Colors for print */
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+
+        /* Code blocks */
+        pre {
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    }
+
+    /* Landscape Print Support */
+    @media print and (orientation: landscape) {
+        @page {
+            size: landscape;
+            margin: 1cm;
+        }
+
+        body {
+            width: 100%;
+        }
+
+        .diagram-container {
+            max-width: 100%;
+        }
+
+        .mermaid svg {
+            max-width: 95% !important;
+        }
+    }
+
+    /* Portrait Print Support */
+    @media print and (orientation: portrait) {
+        @page {
+            size: portrait;
+            margin: 1.5cm;
+        }
+
+        .diagram-container {
+            max-width: 100%;
         }
     }
 
@@ -362,25 +526,21 @@
         scroll-behavior: smooth;
     }
 
-    /* Print Styles */
-    @media print {
-        .sidebar,
-        .content-footer,
-        .btn {
-            display: none !important;
-        }
-
-        .main-content {
-            margin-left: 0 !important;
-        }
-
-        .content-section {
-            page-break-inside: avoid;
-        }
+    /* Footer */
+    .content-footer {
+        background: #2c3e50;
+        color: white;
+        padding: 30px 0;
+        margin-left: 280px;
+        margin-top: 60px;
     }
 
-    
-    </style>
+    @media (max-width: 768px) {
+        .content-footer {
+            margin-left: 0;
+        }
+    }
+</style>
 </head>
 
 <body>
@@ -3226,5 +3386,315 @@ $stmt->bind_param("i", $lrno);</code></pre>
             });
         });
     </script>
+
+    <!-- html2canvas for Export to PNG -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        // ========================================
+        // ENHANCED FUNCTIONALITY
+        // ========================================
+
+        $(document).ready(function() {
+            console.log('🚀 Enhanced Documentation Loaded');
+
+            // ========================================
+            // 1. FIXED NAVIGATION WITH SMOOTH SCROLLING
+            // ========================================
+
+            $('.nav-link').on('click', function(e) {
+                if (this.hash !== '') {
+                    e.preventDefault();
+                    const hash = this.hash;
+                    const target = $(hash);
+
+                    if (target.length) {
+                        // Remove active from all links
+                        $('.nav-link').removeClass('active');
+                        // Add active to clicked link
+                        $(this).addClass('active');
+
+                        // Smooth scroll
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - 70
+                        }, 800, function() {
+                            // Optional: update URL without jumping
+                            if(history.pushState) {
+                                history.pushState(null, null, hash);
+                            }
+                        });
+
+                        // Close mobile menu if open
+                        $('.sidebar').removeClass('show');
+                    }
+                }
+            });
+
+            // ========================================
+            // 2. SCROLL SPY - ACTIVE SECTION TRACKING
+            // ========================================
+
+            let lastId;
+            const menuItems = $('.nav-link');
+            const scrollItems = menuItems.map(function(){
+                const href = $(this).attr('href');
+                if (href && href.startsWith('#')) {
+                    const item = $(href);
+                    if (item.length) { return item; }
+                }
+            });
+
+            $(window).on('scroll', function(){
+                const fromTop = $(this).scrollTop() + 100;
+
+                let current = scrollItems.map(function(){
+                    if ($(this).offset().top < fromTop)
+                        return this;
+                });
+
+                current = current[current.length-1];
+                const id = current && current.length ? current[0].id : "";
+
+                if (lastId !== id) {
+                    lastId = id;
+                    menuItems
+                        .removeClass('active')
+                        .filter('[href="#' + id + '"]')
+                        .addClass('active');
+                }
+            });
+
+            // ========================================
+            // 3. MOBILE MENU TOGGLE
+            // ========================================
+
+            // Add mobile menu button if not exists
+            if ($('.mobile-menu-toggle').length === 0) {
+                $('body').prepend('<button class="mobile-menu-toggle"><i class="fas fa-bars"></i> Menu</button>');
+            }
+
+            $('.mobile-menu-toggle').on('click', function() {
+                $('.sidebar').toggleClass('show');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.sidebar, .mobile-menu-toggle').length) {
+                    $('.sidebar').removeClass('show');
+                }
+            });
+
+            // ========================================
+            // 4. COPY TO CLIPBOARD FOR CODE BLOCKS
+            // ========================================
+
+            // Wrap all pre/code blocks with container and add copy button
+            $('pre').each(function(index) {
+                if (!$(this).parent().hasClass('code-container')) {
+                    $(this).wrap('<div class="code-container"></div>');
+                    const copyBtn = $('<button class="copy-btn"><i class="fas fa-copy"></i> Copy</button>');
+                    $(this).parent().append(copyBtn);
+                }
+            });
+
+            // Copy button functionality
+            $(document).on('click', '.copy-btn', function() {
+                const codeBlock = $(this).siblings('pre').find('code').text();
+                const btn = $(this);
+
+                // Copy to clipboard
+                navigator.clipboard.writeText(codeBlock).then(function() {
+                    // Success feedback
+                    btn.html('<i class="fas fa-check"></i> Copied!');
+                    btn.addClass('copied');
+
+                    setTimeout(function() {
+                        btn.html('<i class="fas fa-copy"></i> Copy');
+                        btn.removeClass('copied');
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Failed to copy: ', err);
+                    btn.html('<i class="fas fa-times"></i> Failed');
+                    setTimeout(function() {
+                        btn.html('<i class="fas fa-copy"></i> Copy');
+                    }, 2000);
+                });
+            });
+
+            // ========================================
+            // 5. MERMAID DIAGRAM EXPORT & COPY
+            // ========================================
+
+            // Add action buttons to each diagram
+            $('.diagram-container').each(function(index) {
+                if (!$(this).find('.diagram-actions').length) {
+                    const actions = $(`
+                        <div class="diagram-actions">
+                            <button class="diagram-btn copy-diagram-btn" title="Copy Diagram Code">
+                                <i class="fas fa-code"></i> Copy Code
+                            </button>
+                            <button class="diagram-btn export-png-btn" title="Export as PNG">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                    `);
+                    $(this).prepend(actions);
+                }
+            });
+
+            // Copy Mermaid diagram code
+            $(document).on('click', '.copy-diagram-btn', function() {
+                const diagramContainer = $(this).closest('.diagram-container');
+                const mermaidCode = diagramContainer.find('.mermaid').text().trim();
+                const btn = $(this);
+
+                navigator.clipboard.writeText(mermaidCode).then(function() {
+                    btn.html('<i class="fas fa-check"></i> Copied!');
+                    setTimeout(function() {
+                        btn.html('<i class="fas fa-code"></i> Copy Code');
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Failed to copy diagram: ', err);
+                });
+            });
+
+            // Export Mermaid diagram to PNG
+            $(document).on('click', '.export-png-btn', function() {
+                const btn = $(this);
+                const diagramContainer = $(this).closest('.diagram-container');
+                const mermaidElement = diagramContainer.find('.mermaid')[0];
+
+                if (!mermaidElement) return;
+
+                // Show loading state
+                btn.html('<i class="fas fa-spinner fa-spin"></i> Exporting...');
+                btn.prop('disabled', true);
+
+                // Get section title for filename
+                const sectionTitle = diagramContainer.prevAll('h3, h2').first().text() || 'diagram';
+                const filename = sectionTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.png';
+
+                // Use html2canvas to capture the diagram
+                html2canvas(mermaidElement, {
+                    backgroundColor: '#ffffff',
+                    scale: 2, // Higher quality
+                    logging: false,
+                    useCORS: true
+                }).then(function(canvas) {
+                    // Convert to blob and download
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+
+                        // Reset button
+                        btn.html('<i class="fas fa-download"></i> PNG');
+                        btn.prop('disabled', false);
+                    });
+                }).catch(function(err) {
+                    console.error('Failed to export diagram: ', err);
+                    btn.html('<i class="fas fa-times"></i> Failed');
+                    btn.prop('disabled', false);
+                    setTimeout(function() {
+                        btn.html('<i class="fas fa-download"></i> PNG');
+                    }, 2000);
+                });
+            });
+
+            // ========================================
+            // 6. TABLE RESPONSIVE WRAPPER
+            // ========================================
+
+            $('.table').each(function() {
+                if (!$(this).parent().hasClass('table-responsive')) {
+                    $(this).wrap('<div class="table-responsive"></div>');
+                }
+            });
+
+            // ========================================
+            // 7. KEYBOARD SHORTCUTS
+            // ========================================
+
+            $(document).on('keydown', function(e) {
+                // Ctrl/Cmd + P = Print
+                if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                    e.preventDefault();
+                    window.print();
+                }
+
+                // Escape = Close mobile menu
+                if (e.key === 'Escape') {
+                    $('.sidebar').removeClass('show');
+                }
+            });
+
+            // ========================================
+            // 8. PRINT PREPARATION
+            // ========================================
+
+            window.addEventListener('beforeprint', function() {
+                console.log('📄 Preparing for print...');
+                // Expand all collapsed elements
+                $('.collapse').addClass('show');
+            });
+
+            window.addEventListener('afterprint', function() {
+                console.log('✅ Print completed');
+            });
+
+            // ========================================
+            // 9. LAZY LOAD IMAGES (if any)
+            // ========================================
+
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                                imageObserver.unobserve(img);
+                            }
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+
+            // ========================================
+            // 10. INITIALIZATION COMPLETE
+            // ========================================
+
+            console.log('✅ All features initialized:');
+            console.log('  ✓ Navigation & Scroll Spy');
+            console.log('  ✓ Mobile Menu Toggle');
+            console.log('  ✓ Copy to Clipboard');
+            console.log('  ✓ Export Diagrams to PNG');
+            console.log('  ✓ Responsive Tables');
+            console.log('  ✓ Keyboard Shortcuts');
+            console.log('  ✓ Print Optimization');
+
+            // Show success notification
+            setTimeout(function() {
+                const notification = $('<div style="position:fixed;bottom:20px;right:20px;background:#27ae60;color:white;padding:15px 20px;border-radius:5px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:9999;font-size:14px;"><i class="fas fa-check-circle"></i> Documentation Enhanced! Hover over diagrams & code to see new features.</div>');
+                $('body').append(notification);
+                setTimeout(function() {
+                    notification.fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
+            }, 1000);
+        });
+    </script>
+
 </body>
 </html>

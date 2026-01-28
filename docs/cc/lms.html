@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coat&amp;Courts - Student LMS Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Roboto:wght@300;400;500;700&amp;family=Roboto+Slab:wght@100;300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FFC564", // Gold
+                        accent: "#61CE70", // Green
+                        "background-dark": "#070311",
+                        "surface-dark": "#0F0819",
+                        "card-dark": "rgba(255, 255, 255, 0.03)",
+                        "social-blue": "#6EC1E4",
+                    },
+                    fontFamily: {
+                        display: ['"Roboto Slab"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                        roboto: ['"Roboto"', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+<style type="text/tailwindcss">
+        body {
+            background-color: #070311;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCgjXCwVDH820gFbj7S6r4k02Lhufe4wMoc0Mt57gq7R5Eaj-xiJKsjOLvPhTbFHeiA_8U-sI66GNr-kAavRwV8QwXaQ1MFhlLb9OhFZblgUj9SH-zz1FgZi8_9XwwyjkdCjNw6GNVigUwYO7z9ZhKqOLDDXOjBQ6Y4a6M7Nbnu5DxNrE55hFqxcJS6hiolREIwqobn0m3MXGoOEZkXrWmycXWSd398BSD4ijQArPRf6sboIaH_wQ6pJEedTd1bSgrRQyGELQxpswJf);
+            opacity: 0.2;
+            mix-blend-mode: overlay;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 1.5rem;
+            height: calc(100vh - 120px);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 1.25rem;
+        }
+        .metric-glow {
+            text-shadow: 0 0 20px rgba(255, 197, 100, 0.4);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .chart-bar {
+            background: linear-gradient(to top, rgba(255, 197, 100, 0.1), #FFC564);
+        }
+        .mini-glow {
+            background: radial-gradient(circle at center, rgba(255, 197, 100, 0.15) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-sans selection:bg-primary selection:text-background-dark p-6">
+<nav class="flex items-center justify-between mb-8 px-2">
+<div class="flex items-center gap-8">
+<a class="text-xl font-display font-bold tracking-tight text-white" href="#">
+            Student<span class="text-primary">LMS</span>
+</a>
+<div class="hidden md:flex space-x-6">
+<a class="text-[10px] font-bold tracking-widest uppercase text-primary" href="#">Dashboard</a>
+<a class="text-[10px] font-bold tracking-widest uppercase text-gray-500 hover:text-white transition-colors" href="#">Library</a>
+<a class="text-[10px] font-bold tracking-widest uppercase text-gray-500 hover:text-white transition-colors" href="#">Gradebook</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">System Live</span>
+</div>
+<button class="bg-primary text-background-dark text-[10px] font-bold px-6 py-2.5 rounded-full uppercase tracking-widest hover:bg-white transition-all">
+            Submit Task
+        </button>
+</div>
+</nav>
+<main class="dashboard-grid">
+<aside class="flex flex-col gap-6 overflow-hidden">
+<div class="glass-panel p-6 flex flex-col h-full overflow-hidden">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-display text-sm font-bold uppercase tracking-tighter text-gray-400">My Courses</h3>
+<span class="material-symbols-outlined text-gray-500 text-sm">sort</span>
+</div>
+<div class="flex flex-col gap-4 overflow-y-auto no-scrollbar">
+<div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-colors cursor-pointer group">
+<img alt="Constitutional Law" class="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-primary transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzGG99nLkhF7wynEn8V5hObVOOXY-MiLziEtcJhIRJpjXdpd_47B009_0GwZ8fJK72JMVV7PCDp5MkjoTPGCqSImfhDv7jkKPYAJ5Qwh_Ki3HwpHo9c-3Fjl5EkwfqO-t1xQiphDD7jiMS1-yKTM4X6du6UR-UGavOLnRZt9zvl8ZHIsuMIvu_xFt0ng0SiY1CwGqmS8oqb9BLFPZQV7dgxZMN_jVWpXCSjD29FO3zmJPnxRKZlfb4wDdWJ1LnBd8p__AXZ5Z5ps5c"/>
+<div>
+<p class="text-xs font-bold text-white leading-none mb-1">Constitutional Law</p>
+<p class="text-[9px] text-gray-500 uppercase tracking-widest">Prof. Jenkins</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-colors cursor-pointer group">
+<img alt="Criminal Procedure" class="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-primary transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRO8UIwV0HOzDWpSGrFdcU_fPLf61-XRwnGmf1UpsdWlaqb_J2NFDSNF3__6YeNP_q1XcCdJdgoAiBYurB1t8Vw13mjeiLJfEaod2Myn_0i4E11hQvy2IpRidMFn0ybzq4IOOG_gj04hWcGrxgBUSqZgvLrctVkzB-RshykyZ2dH0zIlmYhZtLligtbWr5PmS8pLjAKxUgBaoCcx9uTmwSg8XjcuIEN8wbQL7MQOb-XmmuotlrG6mY0ja6UsWTFt7aSgERgR4CKgi5"/>
+<div>
+<p class="text-xs font-bold text-white leading-none mb-1">Criminal Procedure</p>
+<p class="text-[9px] text-gray-500 uppercase tracking-widest">Prof. Chen</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-colors cursor-pointer group">
+<img alt="Civil Torts" class="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-primary transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgXb2EnppD8U6hKs7Qk6k5Fuhy7s0CdeyBREgEGqOuFRD12PJLEFBjpdot9DNnXFleBRgcYcDTbBZkemVBhTjY8B3RT0Qn6XL-x-Xzd7VoNMJPp_qs_m7AJ7cdRYLjJ1hkmjQVa6DP-9pgsVG3kcNlORXs_mDVbnjgpNNGvsKqr0zhn4bXbh9G1AO4u1WjVcZc50odNmEnaeI7zUb2zT8xmKxl4iLQFexNzQH9EJ-FHFw0PQpp2P4AMZUE4eloYRJ2GUvcry2reMAp"/>
+<div>
+<p class="text-xs font-bold text-white leading-none mb-1">Civil Torts</p>
+<p class="text-[9px] text-gray-500 uppercase tracking-widest">Prof. Rodriguez</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-colors cursor-pointer group">
+<img alt="Legal Ethics" class="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-primary transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoK1xoJWNc5Ow-zz51S14rAd4yxE85k2XeRwyKiJKJZsYiZ9Wl_C5lLSj45yGxIUtWt3hiYxIKXYpJqhvwLSJqgm14eINP3IkehP00W5EP8t_0u279MFo2APM09_iwSxbGueKqO-u3EjO7c_c0Ip_igpVFILjH7fHrPd61OenC8iPMg857eOxU1WGD0ougWgWNSKHh-otl6rcL_k3jDcShC2owqW9WWJRT8IaN8dclnjN1bFUtLs8aTexodFPboTZ6K2CobH-Pf_Qq"/>
+<div>
+<p class="text-xs font-bold text-white leading-none mb-1">Legal Ethics</p>
+<p class="text-[9px] text-gray-500 uppercase tracking-widest">Prof. Thorne</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-white/5">
+<div class="bg-primary/5 border border-primary/20 rounded-xl p-4">
+<h4 class="text-[10px] font-bold text-primary uppercase tracking-widest mb-2">Semester Status</h4>
+<p class="text-[11px] text-gray-400 leading-tight">Fall Term 2023. Midterms approaching in 2 weeks.</p>
+</div>
+</div>
+</div>
+</aside>
+<section class="flex flex-col gap-6 overflow-hidden">
+<div class="glass-panel p-8 relative overflow-hidden flex flex-col justify-between mini-glow h-72 shrink-0">
+<div class="relative z-10 flex justify-between items-start">
+<div class="max-w-md">
+<div class="flex items-center gap-2 mb-4">
+<span class="h-px w-6 bg-primary"></span>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest">Student Portal</span>
+</div>
+<h1 class="font-display text-4xl font-light text-white leading-tight mb-2">
+                        Academic <span class="italic text-gray-500 font-normal">Overview</span>
+</h1>
+<p class="text-xs text-gray-500 leading-relaxed max-w-sm">
+                        Track your academic performance, upcoming modules, and GPA in real-time.
+                    </p>
+</div>
+<div class="flex gap-12 text-right">
+<div>
+<p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">GPA</p>
+<p class="font-display text-5xl font-bold text-primary metric-glow">3.8</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Credits</p>
+<p class="font-display text-5xl font-bold text-accent">12</p>
+</div>
+</div>
+</div>
+<div class="relative z-10 flex items-end justify-between mt-4">
+<div class="flex gap-4">
+<button class="bg-primary text-background-dark rounded-full px-6 py-2 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                        Continue Learning <span class="material-symbols-outlined text-sm">arrow_outward</span>
+</button>
+<button class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-6 py-2 text-xs font-bold uppercase tracking-widest text-white transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_month</span> Schedule
+                    </button>
+</div>
+<div class="flex items-end gap-1 h-12">
+<div class="w-1.5 h-[40%] bg-primary/20 rounded-t-sm"></div>
+<div class="w-1.5 h-[60%] bg-primary/40 rounded-t-sm"></div>
+<div class="w-1.5 h-[90%] bg-primary/60 rounded-t-sm"></div>
+<div class="w-1.5 h-[50%] bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-[80%] bg-primary/80 rounded-t-sm"></div>
+<div class="w-1.5 h-[100%] bg-primary rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6 h-full overflow-hidden">
+<div class="glass-panel p-6 flex flex-col gap-6 overflow-hidden">
+<div class="flex items-center justify-between">
+<h4 class="text-xs font-bold text-white uppercase tracking-widest">Learning Progress</h4>
+<span class="material-symbols-outlined text-gray-500 text-sm">more_horiz</span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+<span class="text-gray-400">Constitutional Law</span>
+<span class="text-accent">92%</span>
+</div>
+<div class="h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-accent w-[92%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+<span class="text-gray-400">Criminal Procedure</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+<span class="text-gray-400">Legal Ethics</span>
+<span class="text-accent">45%</span>
+</div>
+<div class="h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-accent w-[45%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<p class="text-[10px] text-gray-500 leading-relaxed italic">You are on track to complete all modules by the end of the term.</p>
+</div>
+</div>
+<div class="glass-panel p-6 flex flex-col gap-6 overflow-hidden">
+<div class="flex items-center justify-between">
+<h4 class="text-xs font-bold text-white uppercase tracking-widest">Upcoming Assignments</h4>
+<span class="material-symbols-outlined text-gray-500 text-sm">event_available</span>
+</div>
+<div class="grid grid-cols-2 gap-3 h-full">
+<div class="bg-white/5 rounded-xl p-3 border border-white/5 hover:border-primary/20 transition-colors relative group">
+<span class="material-symbols-outlined text-primary text-xl mb-2">edit_document</span>
+<p class="text-[10px] font-bold text-white uppercase tracking-tighter">Case Brief #4</p>
+<p class="text-[9px] text-gray-500 mt-1">Due: Oct 12</p>
+<div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+</div>
+<div class="bg-white/5 rounded-xl p-3 border border-white/5 hover:border-primary/20 transition-colors">
+<span class="material-symbols-outlined text-accent text-xl mb-2">groups</span>
+<p class="text-[10px] font-bold text-white uppercase tracking-tighter">Moot Court Prep</p>
+<p class="text-[9px] text-gray-500 mt-1">Due: Oct 15</p>
+</div>
+</div>
+<a class="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center justify-center gap-2 bg-white/5 py-2 rounded-lg hover:bg-white/10 transition-all" href="#">
+                    View Full Calendar <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<aside class="flex flex-col gap-6 overflow-hidden">
+<div class="glass-panel overflow-hidden flex flex-col h-full">
+<div class="p-6 border-b border-white/5">
+<h3 class="text-xs font-bold text-white uppercase tracking-widest mb-1">Announcements</h3>
+<p class="text-[10px] text-primary font-bold uppercase tracking-widest animate-pulse">New Notification</p>
+</div>
+<div class="relative group h-48 overflow-hidden">
+<img alt="Moots Competition" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoK1xoJWNc5Ow-zz51S14rAd4yxE85k2XeRwyKiJKJZsYiZ9Wl_C5lLSj45yGxIUtWt3hiYxIKXYpJqhvwLSJqgm14eINP3IkehP00W5EP8t_0u279MFo2APM09_iwSxbGueKqO-u3EjO7c_c0Ip_igpVFILjH7fHrPd61OenC8iPMg857eOxU1WGD0ougWgWNSKHh-otl6rcL_k3jDcShC2owqW9WWJRT8IaN8dclnjN1bFUtLs8aTexodFPboTZ6K2CobH-Pf_Qq"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<h4 class="font-display text-lg text-white leading-tight">Moots Competition</h4>
+<a class="text-[10px] font-bold text-gray-300 mt-2 flex items-center gap-1 hover:text-white transition-colors" href="#">
+                        REGISTER NOW <span class="material-symbols-outlined text-[10px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<div class="p-6 flex flex-col gap-6 overflow-y-auto no-scrollbar">
+<div>
+<h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Classmates Online</h4>
+<div class="flex -space-x-3 mb-4">
+<img alt="Classmate" class="w-8 h-8 rounded-full border-2 border-background-dark object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzGG99nLkhF7wynEn8V5hObVOOXY-MiLziEtcJhIRJpjXdpd_47B009_0GwZ8fJK72JMVV7PCDp5MkjoTPGCqSImfhDv7jkKPYAJ5Qwh_Ki3HwpHo9c-3Fjl5EkwfqO-t1xQiphDD7jiMS1-yKTM4X6du6UR-UGavOLnRZt9zvl8ZHIsuMIvu_xFt0ng0SiY1CwGqmS8oqb9BLFPZQV7dgxZMN_jVWpXCSjD29FO3zmJPnxRKZlfb4wDdWJ1LnBd8p__AXZ5Z5ps5c"/>
+<img alt="Classmate" class="w-8 h-8 rounded-full border-2 border-background-dark object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRO8UIwV0HOzDWpSGrFdcU_fPLf61-XRwnGmf1UpsdWlaqb_J2NFDSNF3__6YeNP_q1XcCdJdgoAiBYurB1t8Vw13mjeiLJfEaod2Myn_0i4E11hQvy2IpRidMFn0ybzq4IOOG_gj04hWcGrxgBUSqZgvLrctVkzB-RshykyZ2dH0zIlmYhZtLligtbWr5PmS8pLjAKxUgBaoCcx9uTmwSg8XjcuIEN8wbQL7MQOb-XmmuotlrG6mY0ja6UsWTFt7aSgERgR4CKgi5"/>
+<img alt="Classmate" class="w-8 h-8 rounded-full border-2 border-background-dark object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgXb2EnppD8U6hKs7Qk6k5Fuhy7s0CdeyBREgEGqOuFRD12PJLEFBjpdot9DNnXFleBRgcYcDTbBZkemVBhTjY8B3RT0Qn6XL-x-Xzd7VoNMJPp_qs_m7AJ7cdRYLjJ1hkmjQVa6DP-9pgsVG3kcNlORXs_mDVbnjgpNNGvsKqr0zhn4bXbh9G1AO4u1WjVcZc50odNmEnaeI7zUb2zT8xmKxl4iLQFexNzQH9EJ-FHFw0PQpp2P4AMZUE4eloYRJ2GUvcry2reMAp"/>
+<div class="w-8 h-8 rounded-full border-2 border-background-dark bg-surface-dark flex items-center justify-center text-[8px] font-bold text-gray-400">
+                            +12
+                        </div>
+</div>
+<p class="text-[11px] text-gray-400 leading-relaxed mb-4">15 students from your cohort are currently active in the library module.</p>
+<button class="w-full py-2.5 rounded-lg border border-white/10 hover:border-primary transition-all text-[10px] font-bold uppercase tracking-widest">
+                        Join Study Group
+                    </button>
+</div>
+</div>
+<div class="mt-auto p-6 bg-white/5 border-t border-white/5">
+<div class="flex justify-between items-center mb-4">
+<span class="text-[10px] font-bold text-white uppercase tracking-widest">LMS Link</span>
+<div class="flex gap-2">
+<span class="text-social-blue material-symbols-outlined text-lg">share</span>
+</div>
+</div>
+<p class="text-[9px] text-gray-500 uppercase tracking-widest leading-loose">
+                    Support — FAQ — Contact<br/>
+                    © 2023 Student LMS
+                </p>
+</div>
+</div>
+</aside>
+</main>
+<footer class="mt-6 flex justify-between items-center px-2">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">LMS Version 2.4.0</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Ping: 12ms</span>
+<span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Connection: Secure</span>
+</div>
+</footer>
+
+</body></html>

@@ -1,0 +1,25 @@
+# Node / Flutter / Dart
+.build/
+.dart_tool/
+.packages
+pubspec.lock
+
+# Flutter Web build
+build/
+flutter_web/
+
+# VS Code server data
+.vscode-server/
+.code-server/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

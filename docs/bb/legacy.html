@@ -1,0 +1,3230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Transport Management System - Complete Documentation</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Mermaid for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose'
+        });
+    </script>
+
+    <style>
+
+    /* Legacy System Documentation - Additional Styles */
+
+    /* General Layout */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar-header {
+        padding: 30px 20px;
+        background: rgba(0,0,0,0.2);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .sidebar .nav {
+        padding: 10px 0;
+    }
+
+    .sidebar .nav-item {
+        margin: 5px 0;
+    }
+
+    .sidebar .nav-link {
+        color: rgba(255,255,255,0.8);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .sidebar .nav-link i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
+
+    .sidebar .nav-link:hover {
+        background: rgba(255,255,255,0.1);
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar .nav-link.active {
+        background: rgba(52, 152, 219, 0.2);
+        color: white;
+        border-left-color: #3498db;
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: 280px;
+        min-height: 100vh;
+    }
+
+    /* Header */
+    .content-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .content-header h1 {
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .content-header .lead {
+        opacity: 0.9;
+        font-size: 1.2rem;
+    }
+
+    /* Content Sections */
+    .content-section {
+        padding: 60px 0;
+    }
+
+    .content-section.bg-light {
+        background-color: #f8f9fa;
+    }
+
+    .section-title {
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #3498db;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    /* Stats Cards */
+    .stats-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    /* Feature Lists */
+    .feature-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .feature-list li {
+        padding: 10px 0;
+        padding-left: 30px;
+        position: relative;
+    }
+
+    .feature-list li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #27ae60;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    /* Workflow Steps */
+    .workflow-steps {
+        counter-reset: step-counter;
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .workflow-steps li {
+        counter-increment: step-counter;
+        padding: 15px 20px 15px 60px;
+        position: relative;
+        margin-bottom: 15px;
+        background: #f8f9fa;
+        border-left: 4px solid #3498db;
+        border-radius: 5px;
+    }
+
+    .workflow-steps li:before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #3498db;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    /* Formula Box */
+    .formula-box {
+        background: #ecf0f1;
+        border-left: 4px solid #e74c3c;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 5px;
+    }
+
+    .formula-box p {
+        margin: 8px 0;
+        font-family: 'Courier New', monospace;
+        font-weight: 500;
+    }
+
+    /* Code Blocks */
+    pre {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 15px 0;
+    }
+
+    pre code {
+        font-family: 'Courier New', Consolas, monospace;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* Tables */
+    .table {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .table thead th {
+        background: #34495e;
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    /* Cards */
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        border-bottom: 2px solid rgba(0,0,0,0.05);
+        font-weight: 600;
+        padding: 15px 20px;
+    }
+
+    /* Alerts */
+    .alert {
+        border: none;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .alert h4, .alert h5 {
+        margin-top: 0;
+    }
+
+    /* Badges */
+    .badge {
+        padding: 6px 12px;
+        font-weight: 600;
+        border-radius: 4px;
+    }
+
+    /* Accordion */
+    .accordion .card {
+        margin-bottom: 10px;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .accordion .card-header {
+        background: white;
+        padding: 0;
+    }
+
+    .accordion .btn-link {
+        width: 100%;
+        text-align: left;
+        padding: 15px 20px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .accordion .btn-link:hover {
+        text-decoration: none;
+        background: rgba(0,0,0,0.02);
+    }
+
+    /* Footer */
+    .content-footer {
+        background: #2c3e50;
+        color: white;
+        padding: 30px 0;
+        margin-left: 280px;
+        margin-top: 60px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-280px);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .main-content {
+            margin-left: 0;
+        }
+
+        .content-footer {
+            margin-left: 0;
+        }
+    }
+
+    /* Scrollbar Styling */
+    .sidebar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.1);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.3);
+        border-radius: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.5);
+    }
+
+    /* Smooth Scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Print Styles */
+    @media print {
+        .sidebar,
+        .content-footer,
+        .btn {
+            display: none !important;
+        }
+
+        .main-content {
+            margin-left: 0 !important;
+        }
+
+        .content-section {
+            page-break-inside: avoid;
+        }
+    }
+
+    
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h3>🚛 Legacy System</h3>
+            <p class="text-muted small">Complete Documentation</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#overview">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#er-diagram">
+                    <i class="fas fa-project-diagram"></i> ER Diagram
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#system-diagrams">
+                    <i class="fas fa-sitemap"></i> System Diagrams
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#architecture">
+                    <i class="fas fa-layer-group"></i> Architecture
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#calculations">
+                    <i class="fas fa-calculator"></i> Calculations
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#js-functions">
+                    <i class="fab fa-js-square"></i> JS Functions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#php-functions">
+                    <i class="fab fa-php"></i> PHP Functions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#database">
+                    <i class="fas fa-database"></i> Database Design
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#business-logic">
+                    <i class="fas fa-brain"></i> Business Logic
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#workflows">
+                    <i class="fas fa-stream"></i> Workflows
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#file-structure">
+                    <i class="fas fa-folder-tree"></i> File Structure
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#api-mapping">
+                    <i class="fas fa-plug"></i> API Mapping
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#migration">
+                    <i class="fas fa-exchange-alt"></i> Migration Strategy
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#engineering">
+                    <i class="fas fa-tools"></i> Engineering Review
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="content-header">
+            <div class="container-fluid">
+                <h1 class="display-4">🚛 Legacy Transport Management System</h1>
+                <p class="lead">Complete Engineering Documentation - All 14 Sections with Diagrams & Code Analysis</p>
+            </div>
+        </header>
+<section id="overview" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">📋 System Overview</h2>
+
+                <div class="alert alert-info">
+                    <strong>System Type:</strong> Transport Commission Agent Management System built with PHP/MySQL. 
+                    It manages freight deductions and payments to transporters (truck owners) on behalf of freight forwarders/factories.
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h3 class="display-4 text-primary">8</h3>
+                                <p class="text-muted">Core Database Tables</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h3 class="display-4 text-success">3</h3>
+                                <p class="text-muted">System Layers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h3 class="display-4 text-warning">15+</h3>
+                                <p class="text-muted">PHP Pages</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-5">🎯 Key Features</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="feature-list">
+                            <li><strong>Voucher Management:</strong> Create, edit, and track freight vouchers</li>
+                            <li><strong>Settlement Processing:</strong> Generate payment invoices with complex deductions</li>
+                            <li><strong>Ledger System:</strong> Track advances, commissions, and adjustments</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="feature-list">
+                            <li><strong>Payment Tracking:</strong> Cheque-based and cash payment modes</li>
+                            <li><strong>Reporting:</strong> Search, filter, and print payment advice</li>
+                            <li><strong>Session Management:</strong> Financial year-based data organization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="mt-5">⚠️ Critical Key Findings (Legacy Analysis)</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border-danger mb-3">
+                            <div class="card-header bg-danger text-white">
+                                <strong>Single-Tenant Architecture</strong>
+                            </div>
+                            <div class="card-body">
+                                The "Origin" (Consignor/Factory) is hardcoded. The system is deployed per client. 
+                                New system MUST elevate "Origin" to a Master Entity.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-danger mb-3">
+                            <div class="card-header bg-danger text-white">
+                                <strong>Data Integrity Risk</strong>
+                            </div>
+                            <div class="card-body">
+                                Reliance on application-level calculations (JavaScript) rather than database procedures.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-danger mb-3">
+                            <div class="card-header bg-danger text-white">
+                                <strong>Security Risk</strong>
+                            </div>
+                            <div class="card-body">
+                                Plaintext passwords in `users` table, root database credentials in codebase, 
+                                and lack of CSRF protection.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-warning mb-3">
+                            <div class="card-header bg-warning text-dark">
+                                <strong>Settlement Logic</strong>
+                            </div>
+                            <div class="card-body">
+                                Balance calculation covers trip float, while "Net Payable" covers final settlement. 
+                                These are distinct formulas.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-5">⚠️ Critical Business Rules</h3>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <strong>Rule 1:</strong> Shortage can ONLY be added if voucher status is UNPAID
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Rule 2:</strong> All transactions must fall within active Financial Session (Year)
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Rule 3:</strong> LR (Lorry Receipt) numbers must be unique per session
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Rule 4:</strong> Settlement locks vouchers from further edits (Read-Only mode)
+                    </div>
+                </div>
+
+                <h3 class="mt-5">📊 System Statistics</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Database Tables</td>
+                            <td>8 core + 2 junction</td>
+                            <td><span class="badge badge-success">✓ Optimized</span></td>
+                        </tr>
+                        <tr>
+                            <td>Active Financial Sessions</td>
+                            <td>2020-2024</td>
+                            <td><span class="badge badge-success">✓ Maintained</span></td>
+                        </tr>
+                        <tr>
+                            <td>Registered Transporters</td>
+                            <td>100+</td>
+                            <td><span class="badge badge-success">✓ Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Total Vouchers</td>
+                            <td>5000+</td>
+                            <td><span class="badge badge-success">✓ Processed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section><section id="er-diagram" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">📊 Entity Relationship Diagram (Legacy Schema)</h2>
+
+                <div class="diagram-container">
+                    <div class="mermaid">
+erDiagram
+    Sales ||--o{ Transporter : "provided_by"
+    Sales ||--o{ Party : "delivered_to"
+    Sales ||--o{ PetrolPump : "refueled_at"
+    Sales ||--o{ Sessions : "belongs_to"
+    Invoices ||--o{ Transporter : "pays"
+    Invoices ||--|{ Sales : "aggregates"
+    Advance ||--o{ Transporter : "for_transporter"
+    Commission ||--o{ Transporter : "from_transporter"
+
+    Sales {
+        int sno PK
+        date dispatchDate
+        int lrno "Unique per Session"
+        string vehicleNo
+        string partyName "Consignee"
+        string destination
+        double qty "MT/Bags"
+        double freightPMT "Rate per MT"
+        double advance "Cash Advance"
+        double diesel "Diesel Advance"
+        double shortage "Shortage Deduction"
+        double unloading "Add-on Charge"
+        string transporter "Truck Owner"
+        string petrolPump "Fuel Station"
+        string billingNo "Ref to Factory Bill"
+        int session_id FK
+        int transporter_id FK
+        int party_id FK
+        int petrolPump_id FK
+    }
+
+    Invoices {
+        int billNo PK
+        date billDate
+        string Transporter
+        int transporter_id FK
+        string salenos "CSV of Sale IDs"
+        double netPayable "Golden Formula"
+        double tds
+        double commission
+        double advance "Settled Advance"
+        double diesel "Settled Diesel"
+        double shortage "Settled Shortage"
+        double extraM "Extra Additions"
+        string chequeNo
+        date chequeDate
+    }
+
+    Transporter {
+        int sno PK
+        string name
+        string address
+        string phone
+        string gst
+    }
+
+    Party {
+        int sno PK
+        string party "Consignee Name"
+        string address
+        string phone
+    }
+
+    PetrolPump {
+        int sno PK
+        string name
+        string address
+        string phone
+    }
+
+    Sessions {
+        int session_id PK
+        string session_name "e.g., 2023-2024"
+        int low_year
+        int high_year
+    }
+
+    Advance {
+        int id PK
+        string transporter
+        double AdvAmount
+        date Date
+        string mode
+        int transporter_id FK
+        int settleStatus "0=Unsettled, 1=Settled"
+    }
+
+    Commission {
+        int id PK
+        string transporter
+        double CommAmount
+        date Date
+        string mode
+        int transporter_id FK
+        int settleStatus "0=Unsettled, 1=Settled"
+    }
+                    </div>
+                </div>
+
+                <h3 class="mt-4">Key Relationships</h3>
+                <ul class="feature-list">
+                    <li><strong>Sales → Transporter:</strong> Many sales records belong to one transporter</li>
+                    <li><strong>Sales → Party:</strong> Each sale is delivered to one party (consignee)</li>
+                    <li><strong>Sales → Sessions:</strong> All sales must belong to a financial session</li>
+                    <li><strong>Invoices → Sales:</strong> One invoice aggregates multiple sales (many-to-many via CSV)</li>
+                    <li><strong>Advance/Commission → Transporter:</strong> Ledger entries track advances and commissions</li>
+                </ul>
+            </div>
+        </section><section id="system-diagrams" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🏗️ System Architecture Diagrams</h2>
+
+                <h3>1. Three-Layer Architecture</h3>
+                <div class="diagram-container">
+                    <div class="mermaid">
+graph TB
+    subgraph UI["Presentation Layer (Frontend)"]
+        A["HTML/Bootstrap UI"]
+        B["jQuery Forms"]
+        C["Data Tables"]
+        D["Print Templates"]
+    end
+
+    subgraph APP["Application Layer (PHP)"]
+        E["Authentication<br/>Session Management"]
+        F["Business Logic<br/>Calculations"]
+        G["Validation<br/>Rules Engine"]
+        H["PDF/Print<br/>Generation"]
+    end
+
+    subgraph DB["Data Layer (MySQL)"]
+        I["Sales<br/>(Vouchers)"]
+        J["Invoices<br/>(Payments)"]
+        K["Transporter<br/>Master"]
+        L["Ledger<br/>(Advance/Commission)"]
+        M["Session<br/>(Config)"]
+    end
+
+    A -->|"User Input"| E
+    B -->|"Form Data"| F
+    C -->|"Display"| J
+    D -->|"Data"| H
+    E -->|"Auth Check"| I
+    F -->|"Calculate"| L
+    G -->|"Validate"| M
+    H -->|"Query"| J
+    I -->|"Read/Write"| L
+    J -->|"Aggregates"| K
+    K -->|"Reference"| L
+    M -->|"Date Range"| I
+                    </div>
+                </div>
+
+                <h3 class="mt-5">2. Component Flow Diagram</h3>
+                <div class="diagram-container">
+                    <div class="mermaid">
+graph LR
+    USR["👤 User"] -->|Login| AUTH["🔐 Auth Module"]
+    AUTH -->|Session| DASH["📊 Dashboard"]
+    DASH -->|Create| VE["📝 Voucher Entry"]
+    DASH -->|Search| SR["🔍 Search/Filter"]
+    DASH -->|Settle| CB["💳 Cheque Booking"]
+    VE -->|Store| DB1(["📦 Sales DB"])
+    SR -->|Query| DB1
+    CB -->|Generate| INV["📄 Invoice"]
+    INV -->|Store| DB2(["💰 Invoice DB"])
+    DB1 -->|"Fetch Masters"| M["👥 Masters"]
+    M -->|"Transport<br/>Party<br/>Session"| DB2
+    CB -->|Print| PRINT["🖨️ Payment Advice"]
+    PRINT -->|PDF| DOC["📋 Document"]
+                    </div>
+                </div>
+
+                <h3 class="mt-5">3. Data Flow - Voucher Creation to Settlement</h3>
+                <div class="diagram-container">
+                    <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant UI as Web Form
+    participant PHP as PHP Backend
+    participant DB as MySQL Database
+
+    User->>UI: Fill voucher form
+    UI->>PHP: POST /index.php
+    PHP->>DB: Validate LR uniqueness
+    DB-->>PHP: LR is unique
+    PHP->>PHP: Calculate Balance<br/>(Qty×Rate) - Advance - Diesel
+    PHP->>DB: INSERT INTO sales
+    DB-->>PHP: Record created (sno: 1001)
+    PHP-->>UI: Success response
+    UI-->>User: Display voucher<br/>Balance: ₹45,000
+
+    Note over User,DB: ... Time passes, multiple vouchers created ...
+
+    User->>UI: Open "Add Cheque" page
+    UI->>PHP: GET /addCheque.php
+    PHP->>DB: SELECT unpaid sales
+    DB-->>PHP: Return sales list
+    PHP-->>UI: Display checkboxes
+    User->>UI: Select vouchers, click Calculate
+    UI->>UI: JavaScript: calculate()<br/>Golden Formula
+    UI-->>User: Show Net Payable preview
+    User->>UI: Enter cheque details, Save
+    UI->>PHP: POST /addCheque.php
+    PHP->>DB: BEGIN TRANSACTION
+    PHP->>DB: Fetch unsettled advances/commissions
+    DB-->>PHP: Return ledger floats
+    PHP->>PHP: Execute Golden Formula
+    PHP->>DB: INSERT INTO invoices
+    PHP->>DB: UPDATE sales SET paid=PAID
+    PHP->>DB: UPDATE advance/commission SET settled=1
+    PHP->>DB: COMMIT
+    DB-->>PHP: Transaction successful
+    PHP-->>UI: Return invoice details
+    UI-->>User: Print Payment Advice
+                    </div>
+                </div>
+
+                <h3 class="mt-5">4. Calculation Flow Chart</h3>
+                <div class="diagram-container">
+                    <div class="mermaid">
+flowchart TD
+    Start["📝 Start: User Creates Voucher"]
+    Input["Input: Qty, Rate, Advance, Diesel"]
+    CalcFreight["Calculate Total Freight<br/>= Qty × Freight Rate"]
+    CalcBalance["Calculate Trip Balance<br/>= Total Freight - Advance - Diesel"]
+    Store["Store in SALES table"]
+    End1["End: Voucher Created"]
+
+    Start2["🧮 Start: Settlement Process"]
+    Select["User selects multiple sales"]
+    SumAll["Sum all:<br/>• Freight<br/>• Advance<br/>• Diesel<br/>• Shortage<br/>• Unloading"]
+    FetchLedger["Fetch Unsettled Ledgers:<br/>• Floating Advances<br/>• Floating Commissions"]
+    CalcTDS["Calculate TDS<br/>= Total Freight × 2%"]
+    Golden["Apply Golden Formula:<br/>Net Payable = (Σ Freight + Σ Unloading)<br/>- (Σ Advance + Σ Diesel + Σ Shortage + TDS + Float Advances + Float Commissions)<br/>+ Extra Charges"]
+    GenInvoice["Generate Invoice"]
+    UpdateDB["Update Database:<br/>• Mark sales as PAID<br/>• Settle ledgers<br/>• Insert invoice"]
+    PrintPDF["Print Payment Advice"]
+    End2["End: Settlement Complete"]
+
+    Start --> Input
+    Input --> CalcFreight
+    CalcFreight --> CalcBalance
+    CalcBalance --> Store
+    Store --> End1
+
+    End1 -.->|"After multiple vouchers"| Start2
+    Start2 --> Select
+    Select --> SumAll
+    SumAll --> FetchLedger
+    FetchLedger --> CalcTDS
+    CalcTDS --> Golden
+    Golden --> GenInvoice
+    GenInvoice --> UpdateDB
+    UpdateDB --> PrintPDF
+    PrintPDF --> End2
+                    </div>
+                </div>
+            </div>
+        </section><section id="architecture" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🏗️ System Architecture</h2>
+
+                <h3>Three-Layer Architecture</h3>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card border-primary mb-3">
+                                    <div class="card-header bg-primary text-white">
+                                        <strong>Presentation Layer (Frontend)</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled">
+                                            <li>✓ HTML/Bootstrap UI</li>
+                                            <li>✓ jQuery Forms</li>
+                                            <li>✓ Data Tables</li>
+                                            <li>✓ Print Templates</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-success mb-3">
+                                    <div class="card-header bg-success text-white">
+                                        <strong>Application Layer (PHP)</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled">
+                                            <li>✓ Authentication & Session Management</li>
+                                            <li>✓ Business Logic & Calculations</li>
+                                            <li>✓ Validation & Rules Engine</li>
+                                            <li>✓ PDF/Print Generation</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-info mb-3">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>Data Layer (MySQL)</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled">
+                                            <li>✓ Sales (Vouchers)</li>
+                                            <li>✓ Invoices (Payments)</li>
+                                            <li>✓ Transporter Master</li>
+                                            <li>✓ Ledger (Advance/Commission)</li>
+                                            <li>✓ Session (Config)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Technology Stack</h3>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Layer</th>
+                            <th>Technology</th>
+                            <th>Version</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Backend</td>
+                            <td>PHP</td>
+                            <td>5.x - 7.x</td>
+                            <td>Server-side logic, database operations</td>
+                        </tr>
+                        <tr>
+                            <td>Database</td>
+                            <td>MySQL</td>
+                            <td>5.7 - 8.0</td>
+                            <td>Data persistence, transactions</td>
+                        </tr>
+                        <tr>
+                            <td>Frontend</td>
+                            <td>HTML5</td>
+                            <td>Latest</td>
+                            <td>User interface markup</td>
+                        </tr>
+                        <tr>
+                            <td>Styling</td>
+                            <td>Bootstrap</td>
+                            <td>4.0</td>
+                            <td>Responsive CSS framework</td>
+                        </tr>
+                        <tr>
+                            <td>JavaScript</td>
+                            <td>jQuery</td>
+                            <td>3.2.1</td>
+                            <td>DOM manipulation, AJAX</td>
+                        </tr>
+                        <tr>
+                            <td>Tables</td>
+                            <td>DataTables</td>
+                            <td>Latest</td>
+                            <td>Advanced data grid rendering</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>⚠️ Architecture Issues</h3>
+                <div class="alert alert-danger">
+                    <h5>Critical Issues Identified:</h5>
+                    <ul>
+                        <li><strong>Tight Coupling:</strong> Frontend and backend calculations are duplicated. Changes to formulas must be made in multiple places.</li>
+                        <li><strong>Session Management:</strong> Relies on $_SESSION without CSRF tokens. Vulnerable to CSRF attacks.</li>
+                        <li><strong>Single Tenant:</strong> "Origin" (Factory/Consignor) is hardcoded. Cannot support multiple factories without code changes.</li>
+                    </ul>
+                    <hr>
+                    <p class="mb-0"><strong>Recommendation:</strong> Migrate to RESTful API + React/Vue SPA with centralized business logic.</p>
+                </div>
+            </div>
+        </section><section id="calculations" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🧮 All Calculation Points in the System</h2>
+
+                <div class="alert alert-warning">
+                    <strong>⚠️ Critical Note:</strong> The system has calculations in BOTH JavaScript (frontend) and PHP (backend). 
+                    They MUST remain synchronized or discrepancies will occur.
+                </div>
+
+                <h3>Calculation Summary Table</h3>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Calculation Name</th>
+                            <th>Location</th>
+                            <th>When Executed</th>
+                            <th>Formula</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Total Freight</td>
+                            <td>JS: index.php<br/>PHP: index.php</td>
+                            <td>Voucher creation/edit</td>
+                            <td><code>Qty × Freight PMT</code></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Trip Balance</td>
+                            <td>JS: index.php, details.php<br/>PHP: All search pages</td>
+                            <td>After voucher entry</td>
+                            <td><code>(Total Freight + Unloading) - (Advance + Diesel + Shortage)</code></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>TDS Calculation</td>
+                            <td>JS: addCheque.php<br/>PHP: addCheque.php</td>
+                            <td>During settlement</td>
+                            <td><code>Σ Freight × TDS% (from config.json)</code></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Sum Aggregates</td>
+                            <td>JS: addCheque.php<br/>PHP: addCheque.php</td>
+                            <td>When user selects vouchers</td>
+                            <td><code>Σ(Freight, Advance, Diesel, Shortage, Unloading)</code></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Floating Advances</td>
+                            <td>PHP: addCheque.php</td>
+                            <td>Before settlement</td>
+                            <td><code>SELECT SUM(AdvAmount) WHERE settled=0</code></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Floating Commissions</td>
+                            <td>PHP: addCheque.php</td>
+                            <td>Before settlement</td>
+                            <td><code>SELECT SUM(CommAmount) WHERE settled=0</code></td>
+                        </tr>
+                        <tr class="table-success">
+                            <td>7</td>
+                            <td><strong>Net Payable (Golden Formula)</strong></td>
+                            <td>JS: addCheque.php<br/>PHP: addCheque.php</td>
+                            <td>Final settlement</td>
+                            <td><code>(Σ Freight + Σ Unloading) - (Σ Advance + Σ Diesel + Σ Shortage + TDS + Float Advances + Float Commissions) + Extra</code></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Shortage Amount</td>
+                            <td>JS: addShortage modal</td>
+                            <td>When adding shortage</td>
+                            <td><code>Qty × Rate (configurable rate)</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section><section id="js-functions" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">📜 JavaScript Calculation Functions</h2>
+
+                <p class="lead">All frontend calculations are done in vanilla JavaScript with jQuery for DOM manipulation.</p>
+
+                <div class="function-card">
+                    <h5>1. calcTheForm() - Voucher Balance Calculation</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> index.php, details.php<br/>
+                        <strong>Triggered:</strong> onKeyUp event on qty, freightPmt, advance, diesel, unloading fields
+                    </div>
+                    <p><strong>Purpose:</strong> Real-time calculation of trip balance as user types</p>
+                    <pre><code class="language-javascript">function calcTheForm(theForm) {
+    // Parse input values (default to 0 if invalid)
+    var qty = parseFloat(theForm.qty.value);
+    if (isNaN(qty)) qty = 0;
+
+    var freightPmt = parseFloat(theForm.freightPmt.value);
+    if (isNaN(freightPmt)) freightPmt = 0;
+
+    var adv = parseFloat(theForm.adv.value);
+    if (isNaN(adv)) adv = 0;
+
+    var diesel = parseFloat(theForm.diesel.value);
+    if (isNaN(diesel)) diesel = 0;
+
+    var unld = parseFloat(theForm.unld.value);
+    if (isNaN(unld)) unld = 0;
+
+    var short = parseFloat(theForm.short.value);
+    if (isNaN(short)) short = 0;
+
+    // Step 1: Calculate Total Freight
+    var result = qty * freightPmt;
+    theForm.totfreight.value = result.toFixed(2);
+
+    // Step 2: Calculate Balance
+    // Formula: (TotalFreight + Unloading) - (Advance + Diesel + Shortage)
+    theForm.balance.value = (result + unld - adv - diesel - short).toFixed(2);
+}</code></pre>
+                    <p><strong>Explanation:</strong></p>
+                    <ul>
+                        <li>Reads all input fields from the form</li>
+                        <li>Handles NaN values by defaulting to 0</li>
+                        <li>Calculates total freight (quantity × rate)</li>
+                        <li>Calculates balance by adding unloading charges and subtracting expenses</li>
+                        <li>Updates read-only fields in real-time</li>
+                    </ul>
+                </div>
+
+                <div class="function-card">
+                    <h5>2. calculate() - Settlement Net Payable (Golden Formula)</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> addCheque.php<br/>
+                        <strong>Triggered:</strong> Button click "Calculate" OR checkbox selection
+                    </div>
+                    <p><strong>Purpose:</strong> Calculate final net payable amount for selected vouchers</p>
+                    <pre><code class="language-javascript">function calculate() {
+    var sumF = 0;       // Sum of Freight
+    var sumAdv = 0;     // Sum of Advances
+    var sumDiesel = 0;  // Sum of Diesel
+    var sumShort = 0;   // Sum of Shortages
+    var sumTDS = 0;     // Sum of TDS
+    var sumUnloading = 0; // Sum of Unloading charges
+    var lrnosd = new Array();
+    var salesd = new Array();
+
+    // Loop through all checked CheckBoxes in GridView
+    $('#Table1 input[type=checkbox]:checked').each(function() {
+        var row = $(this).closest('tr')[0];
+        lrnosd.push(parseInt(row.cells[3].innerHTML));  // LR No
+        salesd.push(parseInt(row.cells[16].innerHTML)); // Sale ID
+        sumF += parseFloat(row.cells[9].innerHTML);     // Freight
+        sumTDS += parseFloat(row.cells[10].innerHTML);  // TDS
+        sumAdv += parseFloat(row.cells[11].innerHTML);  // Advance
+        sumDiesel += parseFloat(row.cells[12].innerHTML); // Diesel
+        sumShort += parseFloat(row.cells[13].innerHTML);  // Shortage
+        sumUnloading += parseFloat(row.cells[14].innerHTML); // Unloading
+    });
+
+    // Display aggregates
+    document.getElementById('sumF').innerHTML = sumF;
+    document.getElementById('netTDS').innerHTML = sumTDS;
+    document.getElementById('sumAdv').innerHTML = sumAdv;
+    document.getElementById('sumDiesel').innerHTML = sumDiesel;
+    document.getElementById('sumShortage').innerHTML = sumShort;
+    document.getElementById('sumUnloading').innerHTML = sumUnloading;
+
+    // Calculate trip balance (before ledger deductions)
+    let balance = sumF + sumUnloading - (sumTDS + sumAdv + sumDiesel + sumShort);
+    balance = Math.round((balance + Number.EPSILON) * 1000) / 1000;
+    document.getElementById('sumBalance').innerHTML = balance;
+
+    // Get floating ledger amounts (from PHP-generated hidden elements)
+    let netAdvance = parseFloat(document.getElementById('netAdvance').innerHTML);
+    netAdvance = Math.abs(netAdvance);
+
+    let netCommission = parseFloat(document.getElementById('netCommission').innerHTML);
+    netCommission = Math.abs(netCommission);
+
+    // Get extra charges (manual adjustments)
+    let extra = parseFloat(document.getElementById('extraM').value);
+    if (isNaN(extra)) {
+        extra = 0;
+        document.getElementById('extraM').value = 0;
+    }
+
+    // **GOLDEN FORMULA**
+    // Net Payable = Balance - Floating Advances - Floating Commissions + Extra
+    let sumPayable = Math.round((balance - netAdvance - netCommission + extra + Number.EPSILON) * 1000) / 1000;
+
+    document.getElementById('sumPayable').innerHTML = sumPayable;
+    document.getElementById('netPayable').value = sumPayable;
+
+    // Hide/show payment button based on amount
+    if (sumPayable <= 0) {
+        $('#payFinal').hide();
+    } else {
+        $('#payFinal').show();
+    }
+
+    // Store selected IDs in hidden fields
+    document.getElementById('lrnosd').value = lrnosd;
+    document.getElementById('salesd').value = salesd;
+    document.getElementById('payFinal').scrollIntoView();
+
+    return false;
+}</code></pre>
+                    <p><strong>Explanation:</strong></p>
+                    <ul>
+                        <li>Iterates through all checked checkboxes in the voucher table</li>
+                        <li>Sums up freight, advances, diesel, shortages, TDS, and unloading from selected rows</li>
+                        <li>Fetches floating advances and commissions from ledger (calculated by PHP)</li>
+                        <li>Applies the Golden Formula to calculate final net payable</li>
+                        <li>Stores LR numbers and sale IDs for backend processing</li>
+                        <li>Shows/hides payment button based on final amount</li>
+                    </ul>
+                </div>
+
+                <div class="function-card">
+                    <h5>3. toggle() / toggleNo() - Bulk Checkbox Selection</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> addCheque.php<br/>
+                        <strong>Triggered:</strong> "All" button or "No" button click
+                    </div>
+                    <p><strong>Purpose:</strong> Select or deselect all voucher checkboxes at once</p>
+                    <pre><code class="language-javascript">// Select All checkboxes
+function toggle() {
+    var checkboxes = document.querySelectorAll('input[type=checkbox]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = true;
+    }
+}
+
+// Deselect All checkboxes and reset calculations
+function toggleNo() {
+    var checkboxes = document.querySelectorAll('input[type=checkbox]');
+    $('#payFinal').hide();
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+    }
+
+    // Reset all display values
+    document.getElementById('lrnosd').value = "";
+    document.getElementById('sumF').innerHTML = 0;
+    document.getElementById('sumAdv').innerHTML = 0;
+    document.getElementById('sumDiesel').innerHTML = 0;
+    document.getElementById('sumShortage').innerHTML = 0;
+    document.getElementById('sumUnloading').innerHTML = 0;
+    document.getElementById('sumBalance').innerHTML = 0;
+
+    document.getElementById('sumPayable').innerHTML = 
+        0 - parseFloat(document.getElementById('netAdvance').innerHTML) 
+          - parseFloat(document.getElementById('netCommission').innerHTML);
+}</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h5>4. shortCal() - Shortage Calculation</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> addShortage modal (in index.php)<br/>
+                        <strong>Triggered:</strong> onKeyUp in shortage qty field
+                    </div>
+                    <p><strong>Purpose:</strong> Calculate shortage amount based on quantity and rate</p>
+                    <pre><code class="language-javascript">function shortCal(theForm) {
+    var qt = parseFloat(theForm.qt.value);
+    if (isNaN(qt)) qt = 0;
+
+    var rt = parseFloat(theForm.rt.value);
+    if (isNaN(rt)) rt = 350; // Default rate
+
+    var resulti = qt * rt;
+    theForm.shrt.value = resulti.toFixed(2);
+}</code></pre>
+                    <p><strong>Explanation:</strong> Multiplies shortage quantity by rate (default ₹350/MT) to get penalty amount</p>
+                </div>
+            </div>
+        </section><section id="php-functions" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🐘 PHP Calculation Functions</h2>
+
+                <p class="lead">Backend calculations in PHP - these are the authoritative calculations stored in database.</p>
+
+                <div class="function-card">
+                    <h5>1. Voucher Balance Calculation (PHP)</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> index.php (POST handler), searchRecords.php, details.php<br/>
+                        <strong>Triggered:</strong> When displaying voucher records
+                    </div>
+                    <p><strong>Purpose:</strong> Calculate balance for display in tables</p>
+                    <pre><code class="language-php">
+// Inside while loop iterating through sales records
+while ($row = mysqli_fetch_assoc($data)) {
+    // Calculate Total Freight
+    $totFreight = $row['qty'] * $row['freightPMT'];
+
+    // Sum for totals
+    $sumFreight += $totFreight;
+    $sumAdv += $row['advance'];
+    $sumDiesel += $row['diesel'];
+    $sumShortage += $row['shortage'];
+
+    // Calculate Balance per trip
+    // Formula: (TotalFreight + Unloading) - (Advance + Diesel + Shortage)
+    $balance = $totFreight + $row['unloading'] - $row['advance'] - $row['diesel'] - $row['shortage'];
+
+    // Display in table
+    echo "<td>" . $totFreight . "</td>";
+    echo "<td>" . $balance . "</td>";
+}
+
+// Calculate net balance for all rows
+$netbalance = $sumFreight + $sumUnloading - $sumAdv - $sumDiesel - $sumShortage;
+</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h5>2. Golden Formula - Net Payable Calculation (PHP)</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> addCheque.php (POST submit handler)<br/>
+                        <strong>Triggered:</strong> When user submits invoice generation form
+                    </div>
+                    <p><strong>Purpose:</strong> Server-side calculation of final net payable (authoritative version)</p>
+                    <pre><code class="language-php">
+if (isset($_POST['submit'])) {
+    // Get selected sale IDs
+    $sale = trim($_POST['salesd']);
+    $sales = explode(',', $sale);
+
+    // Load TDS percentage from config
+    $json = file_get_contents('config.json');
+    $config = json_decode($json, true);
+    $tds = floatval($config['tds']); // e.g., 0.02 for 2%
+
+    $transporterID = $_POST['transporterID'];
+
+    // **STEP 1: Fetch Unsettled Advances**
+    $queryAdvance = "SELECT SUM(AdvAmount) FROM advance 
+                     WHERE transporterid LIKE '$transporterID' 
+                     AND settleStatus LIKE 0";
+    $dataAdv = mysqli_query($conn, $queryAdvance);
+    $advance = 0;
+    if (mysqli_num_rows($dataAdv) > 0) {
+        while ($row = mysqli_fetch_assoc($dataAdv)) {
+            $advance = $row['SUM(AdvAmount)'];
+        }
+    }
+
+    // **STEP 2: Fetch Unsettled Commissions**
+    $queryCommission = "SELECT SUM(CommAmount) FROM commission 
+                        WHERE transporterid LIKE '$transporterID' 
+                        AND settleStatus LIKE 0";
+    $dataComm = mysqli_query($conn, $queryCommission);
+    $netCommission = 0;
+    if (mysqli_num_rows($dataComm) > 0) {
+        while ($row = mysqli_fetch_assoc($dataComm)) {
+            $netCommission = $row['SUM(CommAmount)'];
+        }
+    }
+
+    // **STEP 3: Aggregate Selected Sales**
+    $result = mysqli_query($conn, 
+        "SELECT SUM(qty) as qty,
+                SUM(freightPMT) as freightPMT, 
+                SUM(advance) as advance,
+                SUM(diesel) as diesel, 
+                SUM(shortage) as shortage,
+                SUM(unloading) as unloading 
+         FROM sales 
+         WHERE sno IN ($sale)");
+    $resulto = mysqli_fetch_assoc($result);
+
+    // Get extra charges
+    $extraM = $_POST['extraM'];
+
+    // **GOLDEN FORMULA**
+    // Net Payable = (Σ Freight + Σ Unloading) 
+    //               - (TDS + Σ Advance + Σ Diesel + Σ Shortage + Float Advances + Float Commissions)
+    //               + Extra
+
+    $grossPayable = ($resulto['qty'] * $resulto['freightPMT']) + $resulto['unloading'];
+    $tdsAmount = ($resulto['qty'] * $resulto['freightPMT']) * $tds;
+    $totalDeductions = $resulto['advance'] + $resulto['diesel'] + $resulto['shortage'] 
+                       + $tdsAmount + $advance + $netCommission;
+
+    $netPayable = $grossPayable - $totalDeductions + $extraM;
+
+    // **STEP 4: Update Database**
+    $chequeNo = strtoupper(mysqli_escape_string($conn, $_POST['chequeno']));
+    $chqDate = date('Y-m-d', strtotime($_POST['chequeDate']));
+
+    // Mark sales as PAID
+    $query = "UPDATE sales 
+              SET paidChequeDate = 'PAID ($chequeNo @ $chequeDate)' 
+              WHERE sno IN ($sale)";
+    mysqli_query($conn, $query);
+
+    // Settle advances
+    $advResolve = "UPDATE advance SET settleStatus = 1 
+                   WHERE transporterid LIKE '$transporterID'";
+    mysqli_query($conn, $advResolve);
+
+    // Settle commissions
+    $commResolve = "UPDATE commission SET settleStatus = 1 
+                    WHERE transporterid LIKE '$transporterID'";
+    mysqli_query($conn, $commResolve);
+
+    // Insert invoice
+    $queryBill = "INSERT INTO invoices 
+                  (Transporter, lrnos, salenos, tds, advance, commission, netPayable, 
+                   chequeNo, chequeDate, extraM, transporterid) 
+                  VALUES ('$transporterName', '$lrn', '$sale', '$tdsAmount', '$advance', 
+                          '$netCommission', '$netPayable', '$chequeNo', '$chqDate', 
+                          '$extraM', '$transporterID')";
+    mysqli_query($conn, $queryBill);
+
+    // Get last inserted bill number
+    $billNo = mysqli_query($conn, "SELECT LAST_INSERT_ID() LIMIT 1");
+}
+</code></pre>
+                    <p><strong>Explanation:</strong></p>
+                    <ol>
+                        <li><strong>Fetch floating advances:</strong> All unsettled advances for this transporter</li>
+                        <li><strong>Fetch floating commissions:</strong> All unsettled commissions for this transporter</li>
+                        <li><strong>Aggregate selected sales:</strong> Sum all quantities, freight, advances, etc.</li>
+                        <li><strong>Calculate TDS:</strong> Multiply total freight by TDS percentage from config</li>
+                        <li><strong>Apply Golden Formula:</strong> Calculate net payable using all components</li>
+                        <li><strong>Update database:</strong> Mark sales as paid, settle ledgers, insert invoice</li>
+                    </ol>
+                </div>
+
+                <div class="function-card">
+                    <h5>3. TDS Calculation with Config</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> addCheque.php, config.json<br/>
+                        <strong>Purpose:</strong> Dynamic TDS percentage from configuration file
+                    </div>
+                    <p><strong>Config File (config.json):</strong></p>
+                    <pre><code class="language-json">{
+  "sessionid": 10,
+  "tds": 0.02
+}</code></pre>
+                    <p><strong>PHP Code:</strong></p>
+                    <pre><code class="language-php">
+// Read the JSON file
+$json = file_get_contents('config.json');
+
+// Decode the JSON file
+$config = json_decode($json, true);
+$tds = floatval($config['tds']); // 0.02 = 2%
+
+// Calculate TDS amount
+$tdsAmount = $totalFreight * $tds;
+</code></pre>
+                    <p><strong>Explanation:</strong> TDS percentage is configurable via config.json, making it easy to update without code changes.</p>
+                </div>
+
+                <div class="function-card">
+                    <h5>4. Display Logic with TDS Deduction</h5>
+                    <div class="function-header">
+                        <strong>File:</strong> addCheque.php (after invoice generation)<br/>
+                        <strong>Purpose:</strong> Display invoice with TDS breakdown
+                    </div>
+                    <pre><code class="language-php">
+// After invoice is created, display details
+foreach ($invoices as $invoice) {
+    $sale = mysqli_query($conn, "SELECT * FROM sales WHERE sno LIKE '$invoice'");
+
+    if (mysqli_num_rows($sale) > 0) {
+        while ($row = mysqli_fetch_assoc($sale)) {
+            $totFreight = $row['qty'] * $row['freightPMT'];
+            $sumFreight += $totFreight;
+            $sumAdv += $row['advance'];
+            $sumDiesel += $row['diesel'];
+            $sumShortage += $row['shortage'];
+
+            // Balance per trip = TotalFreight - (TDS + Advance + Diesel + Shortage)
+            $balance = $totFreight - ($totFreight * $tds) - $row['advance'] 
+                       - $row['diesel'] - $row['shortage'];
+
+            $sumUnloading += $row['unloading'];
+
+            // Display row
+            echo "<tr>";
+            echo "<td>" . $totFreight . "</td>";
+            echo "<td>" . ($totFreight * $tds) . "</td>"; // TDS column
+            echo "<td>" . $row['advance'] . "</td>";
+            echo "<td>" . $row['diesel'] . "</td>";
+            echo "<td>" . $row['shortage'] . "</td>";
+            echo "<td>" . $balance . "</td>";
+            echo "</tr>";
+        }
+    }
+}
+
+// Display totals
+$netbalance = $sumFreight - ($sumFreight * $tds) - $sumAdv - $sumDiesel - $sumShortage;
+
+echo "<tr>";
+echo "<td colspan='5'></td>";
+echo "<td><b>TOTAL BAL</b></td>";
+echo "<td colspan='2'></td>";
+echo "<td><b>" . $sumFreight . "</b></td>";
+echo "<td><b>" . ($sumFreight * $tds) . "</b></td>"; // Total TDS
+echo "<td><b>" . $sumAdv . "</b></td>";
+echo "<td><b>" . $sumDiesel . "</b></td>";
+echo "<td><b>" . $sumShortage . "</b></td>";
+echo "<td><b>" . $netbalance . "</b></td>";
+echo "</tr>";
+
+// Display unloading (if any)
+if ($sumUnloading > 0) {
+    $List = implode(", ", $unloadLRs);
+    echo "<tr>";
+    echo "<td colspan='6'></td>";
+    echo "<td><b>Unloading</b></td>";
+    echo "<td colspan='6'><b>" . $List . "</b></td>";
+    echo "<td><b>" . $sumUnloading . "</b></td>";
+    echo "</tr>";
+}
+
+// Display advance/commission deduction
+if ($privAdv + $privComm > 0) {
+    echo "<tr>";
+    echo "<td colspan='11'></td>";
+    echo "<td colspan='2'><b>Advance</b></td>";
+    echo "<td><b>- " . ($privAdv + $privComm) . "</b></td>";
+    echo "</tr>";
+}
+
+// Display extra charges
+if ($extraM > 0) {
+    echo "<tr>";
+    echo "<td colspan='11'></td>";
+    echo "<td colspan='2'><b>Extra</b></td>";
+    echo "<td><b>" . $extraM . "</b></td>";
+    echo "</tr>";
+}
+
+// Final net payable
+echo "<tr>";
+echo "<td colspan='11'></td>";
+echo "<td colspan='2'><b>Payable</b></td>";
+echo "<td><b>₹ " . ($netbalance + $sumUnloading - $privAdv - $privComm + $extraM) . "/-</b></td>";
+echo "</tr>";
+</code></pre>
+                </div>
+            </div>
+        </section><section id="database" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🗄️ Database Design</h2>
+
+                <h3>Core Tables Overview</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Table Name</th>
+                                <th>Purpose</th>
+                                <th>Key Relationships</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>sales</code></td>
+                                <td>Core transaction table - stores freight vouchers</td>
+                                <td>→ transporter, party, petrolPump, sessions</td>
+                            </tr>
+                            <tr>
+                                <td><code>invoices</code></td>
+                                <td>Payment settlement records</td>
+                                <td>→ transporter, aggregates multiple sales</td>
+                            </tr>
+                            <tr>
+                                <td><code>transporter</code></td>
+                                <td>Master data for truck owners</td>
+                                <td>Referenced by sales, invoices, advance, commission</td>
+                            </tr>
+                            <tr>
+                                <td><code>party</code></td>
+                                <td>Consignee/Customer master data</td>
+                                <td>Referenced by sales</td>
+                            </tr>
+                            <tr>
+                                <td><code>petrolPump</code></td>
+                                <td>Fuel station master data</td>
+                                <td>Referenced by sales</td>
+                            </tr>
+                            <tr>
+                                <td><code>sessions</code></td>
+                                <td>Financial year configuration</td>
+                                <td>Referenced by sales</td>
+                            </tr>
+                            <tr>
+                                <td><code>advance</code></td>
+                                <td>Cash advance ledger</td>
+                                <td>→ transporter</td>
+                            </tr>
+                            <tr>
+                                <td><code>commission</code></td>
+                                <td>Commission ledger</td>
+                                <td>→ transporter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+<h3 class="mt-5">📦 SALES Table (Core Transaction)</h3>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Constraint</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sno</code></td>
+                    <td>INT</td>
+                    <td>PK, AUTO_INCREMENT</td>
+                    <td>Unique record identifier</td>
+                </tr>
+                <tr>
+                    <td><code>lrno</code></td>
+                    <td>INT</td>
+                    <td>UNIQUE (per session)</td>
+                    <td>Lorry Receipt Number - Physical document ref</td>
+                </tr>
+                <tr>
+                    <td><code>dispatchDate</code></td>
+                    <td>DATE</td>
+                    <td>NOT NULL</td>
+                    <td>Date goods were dispatched</td>
+                </tr>
+                <tr>
+                    <td><code>vehicleNo</code></td>
+                    <td>VARCHAR(20)</td>
+                    <td></td>
+                    <td>Truck registration number</td>
+                </tr>
+                <tr>
+                    <td><code>partyName</code></td>
+                    <td>VARCHAR(100)</td>
+                    <td></td>
+                    <td>Consignee name (denormalized)</td>
+                </tr>
+                <tr>
+                    <td><code>destination</code></td>
+                    <td>VARCHAR(100)</td>
+                    <td></td>
+                    <td>Delivery destination city</td>
+                </tr>
+                <tr>
+                    <td><code>qty</code></td>
+                    <td>DOUBLE</td>
+                    <td>NOT NULL</td>
+                    <td>Quantity in MT (Metric Tons)</td>
+                </tr>
+                <tr>
+                    <td><code>freightPMT</code></td>
+                    <td>DOUBLE</td>
+                    <td>NOT NULL</td>
+                    <td>Freight rate per MT</td>
+                </tr>
+                <tr>
+                    <td><code>advance</code></td>
+                    <td>DOUBLE</td>
+                    <td>DEFAULT 0</td>
+                    <td>Cash advance given to driver</td>
+                </tr>
+                <tr>
+                    <td><code>diesel</code></td>
+                    <td>DOUBLE</td>
+                    <td>DEFAULT 0</td>
+                    <td>Fuel credit value</td>
+                </tr>
+                <tr>
+                    <td><code>shortage</code></td>
+                    <td>DOUBLE</td>
+                    <td>DEFAULT 0</td>
+                    <td>Shortage deduction (post-delivery)</td>
+                </tr>
+                <tr>
+                    <td><code>unloading</code></td>
+                    <td>DOUBLE</td>
+                    <td>DEFAULT 0</td>
+                    <td>Additional unloading charges</td>
+                </tr>
+                <tr>
+                    <td><code>transporter</code></td>
+                    <td>VARCHAR(100)</td>
+                    <td></td>
+                    <td>Truck owner name (denormalized)</td>
+                </tr>
+                <tr>
+                    <td><code>petrolPump</code></td>
+                    <td>VARCHAR(100)</td>
+                    <td></td>
+                    <td>Fuel station name (denormalized)</td>
+                </tr>
+                <tr>
+                    <td><code>billingNo</code></td>
+                    <td>VARCHAR(50)</td>
+                    <td></td>
+                    <td>Factory billing reference number</td>
+                </tr>
+                <tr>
+                    <td><code>paidChequeDate</code></td>
+                    <td>VARCHAR(100)</td>
+                    <td></td>
+                    <td>Payment status: "PAID {chequeNo} {chequeDate}" or empty</td>
+                </tr>
+                <tr>
+                    <td><code>session_id</code></td>
+                    <td>INT</td>
+                    <td>FK</td>
+                    <td>Financial year session reference</td>
+                </tr>
+                <tr>
+                    <td><code>transporter_id</code></td>
+                    <td>INT</td>
+                    <td>FK</td>
+                    <td>Truck owner reference (normalized)</td>
+                </tr>
+                <tr>
+                    <td><code>party_id</code></td>
+                    <td>INT</td>
+                    <td>FK</td>
+                    <td>Consignee reference (normalized)</td>
+                </tr>
+                <tr>
+                    <td><code>petrolPump_id</code></td>
+                    <td>INT</td>
+                    <td>FK</td>
+                    <td>Fuel station reference (normalized)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+                
+<h3 class="mt-5">💰 INVOICE Table (Settlement)</h3>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>billNo</code></td>
+                    <td>INT (PK)</td>
+                    <td>Unique invoice/payment number</td>
+                </tr>
+                <tr>
+                    <td><code>billDate</code></td>
+                    <td>DATE</td>
+                    <td>Invoice generation date</td>
+                </tr>
+                <tr>
+                    <td><code>Transporter</code></td>
+                    <td>VARCHAR(100)</td>
+                    <td>Truck owner name (denormalized for reporting)</td>
+                </tr>
+                <tr>
+                    <td><code>lrnos</code></td>
+                    <td>VARCHAR(500)</td>
+                    <td>CSV of LR Numbers for reference</td>
+                </tr>
+                <tr>
+                    <td><code>salenos</code></td>
+                    <td>VARCHAR(500)</td>
+                    <td>CSV of Sale IDs (sno) aggregated in this invoice</td>
+                </tr>
+                <tr>
+                    <td><code>tds</code></td>
+                    <td>DOUBLE</td>
+                    <td>Tax Deducted at Source amount (2% of total freight)</td>
+                </tr>
+                <tr>
+                    <td><code>advance</code></td>
+                    <td>DOUBLE</td>
+                    <td>Total floating advances settled in this invoice</td>
+                </tr>
+                <tr>
+                    <td><code>commission</code></td>
+                    <td>DOUBLE</td>
+                    <td>Total floating commissions settled in this invoice</td>
+                </tr>
+                <tr>
+                    <td><code>netPayable</code></td>
+                    <td>DOUBLE</td>
+                    <td>Final cheque amount (Golden Formula result)</td>
+                </tr>
+                <tr>
+                    <td><code>chequeNo</code></td>
+                    <td>VARCHAR(20)</td>
+                    <td>Cheque number for payment</td>
+                </tr>
+                <tr>
+                    <td><code>chequeDate</code></td>
+                    <td>DATE</td>
+                    <td>Cheque issue date</td>
+                </tr>
+                <tr>
+                    <td><code>extraM</code></td>
+                    <td>DOUBLE</td>
+                    <td>Extra manual adjustments (can be +ve or -ve)</td>
+                </tr>
+                <tr>
+                    <td><code>transporter_id</code></td>
+                    <td>INT (FK)</td>
+                    <td>Foreign key to transporter table</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+                <h3 class="mt-5">🔍 Recommended Indexes</h3>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <pre><code>-- Performance indexes for frequent queries
+CREATE INDEX idx_sales_transporter ON sales(transporter_id);
+CREATE INDEX idx_sales_session ON sales(session_id);
+CREATE INDEX idx_sales_lrno_session ON sales(lrno, session_id);
+CREATE INDEX idx_sales_payment_status ON sales(paidChequeDate);
+CREATE INDEX idx_invoices_transporter ON invoices(transporter_id);
+CREATE INDEX idx_advance_transporter ON advance(transporter_id);
+CREATE INDEX idx_advance_settled ON advance(settleStatus);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section><section id="business-logic" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">⚙️ Business Logic & Golden Formula</h2>
+
+                <div class="alert alert-warning">
+                    <h4>🏆 The Golden Formula - Net Payable</h4>
+                    <p>This is the <strong>most critical formula</strong> in the system.</p>
+                    <div class="formula-box bg-white p-3 mt-3">
+                        <h5>Net Payable = Gross Payable - Total Deductions + Extra Charges</h5>
+                        <hr>
+                        <p><strong>Where:</strong></p>
+                        <ul>
+                            <li><strong>Gross Payable</strong> = Σ (Freight + Unloading)</li>
+                            <li><strong>Total Deductions</strong> = Σ (Advance + Diesel + Shortage) + TDS + Floating Advances + Floating Commissions</li>
+                            <li><strong>Extra Charges</strong> = Manual adjustments (can be positive or negative)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Formula Breakdown Table</h3>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Component</th>
+                            <th>Calculation</th>
+                            <th>Example (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Freight (5 trips)</td>
+                            <td>Σ (Qty × Rate)</td>
+                            <td>250,000</td>
+                        </tr>
+                        <tr>
+                            <td>Total Unloading</td>
+                            <td>Σ Unloading</td>
+                            <td>5,000</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td><strong>Gross Payable</strong></td>
+                            <td>Freight + Unloading</td>
+                            <td><strong>255,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Trip Advances</td>
+                            <td>Σ Advance</td>
+                            <td>19,500</td>
+                        </tr>
+                        <tr>
+                            <td>Trip Diesel</td>
+                            <td>Σ Diesel</td>
+                            <td>9,500</td>
+                        </tr>
+                        <tr>
+                            <td>Trip Shortages</td>
+                            <td>Σ Shortage</td>
+                            <td>1,900</td>
+                        </tr>
+                        <tr>
+                            <td>TDS (2%)</td>
+                            <td>Total Freight × 0.02</td>
+                            <td>5,000</td>
+                        </tr>
+                        <tr>
+                            <td>Floating Advances</td>
+                            <td>From advance table (unsettled)</td>
+                            <td>8,000</td>
+                        </tr>
+                        <tr>
+                            <td>Floating Commissions</td>
+                            <td>From commission table (unsettled)</td>
+                            <td>2,000</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td><strong>Total Deductions</strong></td>
+                            <td>Sum of above</td>
+                            <td><strong>45,900</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Extra Charges</td>
+                            <td>Manual input</td>
+                            <td>0</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td><strong>NET PAYABLE</strong></td>
+                            <td>255,000 - 45,900 + 0</td>
+                            <td><strong>₹ 209,100/-</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section><section id="workflows" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">📊 User Workflows & Data Flow</h2>
+
+                
+<h3>Workflow 1: Voucher Creation & Entry</h3>
+<div class="diagram-container mb-4">
+    <div class="mermaid">
+graph TD
+    Start([User Opens Dashboard]) --> LoadSession[System Loads Active Session<br/>2023-2024]
+    LoadSession --> ShowForm[Display Voucher Entry Form]
+    ShowForm --> FillForm[User Fills Form<br/>• LR No: 1001<br/>• Qty: 100 MT<br/>• Rate: ₹500/MT<br/>• Advance: ₹5,000<br/>• Diesel: ₹2,000]
+
+    FillForm --> ValidateLR{Validate LR Number<br/>Unique in Session?}
+    ValidateLR -->|Duplicate| ShowError[Show Error:<br/>LR Number Already Exists]
+    ShowError --> FillForm
+
+    ValidateLR -->|Unique| ValidateDate{Date Within<br/>Session Range?}
+    ValidateDate -->|No| ShowError2[Show Error:<br/>Date Out of Range]
+    ShowError2 --> FillForm
+
+    ValidateDate -->|Yes| CalcBalance[Calculate Balance<br/>Total Freight = 100 × 500 = ₹50,000<br/>Balance = 50,000 - 5,000 - 2,000 = ₹43,000]
+
+    CalcBalance --> InsertDB[INSERT INTO sales<br/>sno: 1001<br/>lrno: 1001<br/>dispatchDate: 2024-01-15<br/>transporter_id: 1<br/>party_id: 5<br/>status: UNPAID]
+
+    InsertDB --> Success[Display Success Message<br/>'Voucher #1001 Created Successfully']
+    Success --> PrintOption{Print Voucher?}
+
+    PrintOption -->|Yes| PrintVoucher[Generate & Print<br/>Voucher PDF]
+    PrintOption -->|No| End([End: Return to Dashboard])
+    PrintVoucher --> End
+
+    style Start fill:#e3f2fd
+    style End fill:#c8e6c9
+    style ShowError fill:#ffcdd2
+    style ShowError2 fill:#ffcdd2
+    style Success fill:#c8e6c9
+    style CalcBalance fill:#fff9c4
+    style InsertDB fill:#b2ebf2
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5>Step-by-Step Breakdown:</h5>
+        <ol class="workflow-steps">
+            <li><strong>User opens Dashboard</strong> → System loads active session (2023-2024)</li>
+            <li><strong>User fills voucher form</strong> → Qty: 100 MT, Rate: ₹500/MT, Advance: ₹5,000</li>
+            <li><strong>System validates</strong> → Check date within session, LR number unique</li>
+            <li><strong>System calculates</strong> → Balance = (100 × 500) - 5000 = ₹45,000</li>
+            <li><strong>INSERT into sales table</strong> → Record created with sno: 1001</li>
+            <li><strong>Display confirmation</strong> → "Voucher created successfully"</li>
+        </ol>
+    </div>
+</div>
+
+<h3>Workflow 2: Payment Settlement</h3>
+<div class="diagram-container mb-4">
+    <div class="mermaid">
+graph TD
+    Start([User Opens Add Cheque Page]) --> SelectTransporter[Select Transporter<br/>XYZ Transport Co.]
+    SelectTransporter --> FetchVouchers[System Fetches Unpaid Vouchers<br/>LR: 1001-1005 5 vouchers<br/>Total Freight: ₹250,000]
+
+    FetchVouchers --> DisplayTable[Display Voucher Table<br/>with Checkboxes]
+    DisplayTable --> SelectVouchers[User Selects Multiple Vouchers<br/>☑ LR1001<br/>☑ LR1002<br/>☑ LR1003<br/>☑ LR1004<br/>☑ LR1005]
+
+    SelectVouchers --> ClickCalc[User Clicks 'Calculate' Button]
+    ClickCalc --> FetchLedgers[Fetch Floating Ledgers<br/>• Advances: ₹8,000<br/>• Commissions: ₹2,000]
+
+    FetchLedgers --> CalcAggregates[Calculate Aggregates<br/>Σ Freight: ₹250,000<br/>Σ Advance: ₹19,500<br/>Σ Diesel: ₹9,500<br/>Σ Shortage: ₹1,900<br/>Σ Unloading: ₹5,000]
+
+    CalcAggregates --> CalcTDS[Calculate TDS<br/>250,000 × 0.02 = ₹5,000]
+
+    CalcTDS --> GoldenFormula[Apply Golden Formula<br/>Gross: 250,000 + 5,000 = ₹255,000<br/>Deductions: 19,500 + 9,500 + 1,900 + 5,000 + 8,000 + 2,000 = ₹45,900<br/>Net Payable: 255,000 - 45,900 = ₹209,100]
+
+    GoldenFormula --> ShowPreview[Show Live Preview<br/>Net Payable: ₹209,100]
+
+    ShowPreview --> EnterCheque[User Enters Cheque Details<br/>• Cheque No: CHQ123456<br/>• Cheque Date: 2024-01-20]
+
+    EnterCheque --> ClickSave[User Clicks 'Save' Button]
+    ClickSave --> BeginTx[BEGIN TRANSACTION]
+
+    BeginTx --> ExecuteGolden[Execute Golden Formula<br/>Server-Side Validation]
+
+    ExecuteGolden --> InsertInvoice[INSERT INTO invoices<br/>billNo: 501<br/>netPayable: ₹209,100<br/>chequeNo: CHQ123456]
+
+    InsertInvoice --> UpdateSales[UPDATE sales<br/>SET paidChequeDate = 'PAID CHQ123456 20-01-2024'<br/>WHERE sno IN 1001,1002,1003,1004,1005]
+
+    UpdateSales --> SettleAdvances[UPDATE advance<br/>SET settleStatus = 1<br/>WHERE transporter_id = 1]
+
+    SettleAdvances --> SettleCommissions[UPDATE commission<br/>SET settleStatus = 1<br/>WHERE transporter_id = 1]
+
+    SettleCommissions --> CommitTx[COMMIT TRANSACTION]
+
+    CommitTx --> Success[✅ Invoice #501 Generated<br/>All Changes Saved]
+
+    Success --> PrintAdvice{Print Payment Advice?}
+    PrintAdvice -->|Yes| GeneratePDF[Generate PDF<br/>Payment Advice<br/>For Transporter]
+    PrintAdvice -->|No| End([End: Return to Dashboard])
+    GeneratePDF --> End
+
+    style Start fill:#e3f2fd
+    style End fill:#c8e6c9
+    style GoldenFormula fill:#fff9c4
+    style Success fill:#c8e6c9
+    style BeginTx fill:#ffecb3
+    style CommitTx fill:#c8e6c9
+    style ShowPreview fill:#e1bee7
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5>Step-by-Step Breakdown:</h5>
+        <ol class="workflow-steps">
+            <li><strong>User opens "Add Cheque" page</strong> → System fetches unpaid vouchers for selected transporter</li>
+            <li><strong>User selects multiple vouchers</strong> → LR1001, LR1002, LR1003 (checkboxes)</li>
+            <li><strong>User clicks "Calculate"</strong> → Frontend displays live Net Payable preview</li>
+            <li><strong>User enters cheque details</strong> → Cheque number, date</li>
+            <li><strong>System begins transaction</strong> → BEGIN TRANSACTION</li>
+            <li><strong>Execute Golden Formula</strong> → Calculate Net Payable = ₹204,100</li>
+            <li><strong>INSERT INTO invoices</strong> → Create invoice record</li>
+            <li><strong>UPDATE sales</strong> → Mark selected sales as PAID</li>
+            <li><strong>UPDATE advance/commission</strong> → Mark ledgers as settled</li>
+            <li><strong>COMMIT transaction</strong> → All changes saved</li>
+            <li><strong>Print Payment Advice</strong> → Generate PDF for transporter</li>
+        </ol>
+    </div>
+</div>
+
+<h3>Workflow 3: Search & Filter</h3>
+<div class="diagram-container mb-4">
+    <div class="mermaid">
+graph TD
+    Start([User Opens Search Page]) --> ShowFilters[Display Search Filters<br/>• LR Number<br/>• Transporter<br/>• Payment Status<br/>• Date Range]
+
+    ShowFilters --> SelectFilter{Select Filter Type}
+
+    SelectFilter -->|By LR Number| EnterLR[Enter LR Number<br/>Example: 1001]
+    SelectFilter -->|By Transporter| SelectTrans[Select Transporter<br/>From Dropdown]
+    SelectFilter -->|By Status| SelectStatus[Select Payment Status<br/>• PAID<br/>• UNPAID]
+    SelectFilter -->|By Date| SelectDate[Select Date Range<br/>From: 01-01-2024<br/>To: 31-01-2024]
+
+    EnterLR --> BuildQuery[Build SQL Query<br/>SELECT * FROM sales<br/>WHERE ...]
+    SelectTrans --> BuildQuery
+    SelectStatus --> BuildQuery
+    SelectDate --> BuildQuery
+
+    BuildQuery --> ExecuteQuery[Execute Query<br/>Fetch Matching Records]
+
+    ExecuteQuery --> CheckResults{Results Found?}
+
+    CheckResults -->|No| ShowEmpty[Display Message:<br/>'No Records Found']
+    ShowEmpty --> ShowFilters
+
+    CheckResults -->|Yes| DisplayResults[Display Results Table<br/>• Serial No<br/>• Dispatch Date<br/>• LR No<br/>• Vehicle No<br/>• Party Name<br/>• Qty<br/>• Freight<br/>• Balance<br/>• Status]
+
+    DisplayResults --> UserAction{User Action}
+
+    UserAction -->|View| ShowDetails[Display Voucher Details<br/>Full Information]
+    UserAction -->|Edit| OpenEdit[Open Edit Form<br/>details.php]
+    UserAction -->|Print| PrintVoucher[Generate PDF<br/>Print Voucher]
+    UserAction -->|Add Shortage| OpenShortage[Open Shortage Modal<br/>If Status = UNPAID]
+    UserAction -->|Export| ExportExcel[Export to Excel<br/>Download CSV/XLSX]
+    UserAction -->|New Search| ShowFilters
+
+    ShowDetails --> DisplayResults
+    OpenEdit --> EditForm[Modify Voucher Data<br/>Update Fields]
+    EditForm --> SaveChanges[UPDATE sales<br/>WHERE sno = ?]
+    SaveChanges --> Success[✅ Changes Saved]
+    Success --> DisplayResults
+
+    OpenShortage --> CheckStatus{Status = UNPAID?}
+    CheckStatus -->|Yes| AddShortage[Calculate Shortage<br/>Qty × Rate]
+    CheckStatus -->|No| ShowError[❌ Error:<br/>Cannot add shortage<br/>to paid voucher]
+    AddShortage --> UpdateDB[UPDATE sales<br/>SET shortage = ?]
+    UpdateDB --> DisplayResults
+    ShowError --> DisplayResults
+
+    PrintVoucher --> DisplayResults
+    ExportExcel --> End([End])
+
+    style Start fill:#e3f2fd
+    style End fill:#c8e6c9
+    style ShowEmpty fill:#ffcdd2
+    style ShowError fill:#ffcdd2
+    style Success fill:#c8e6c9
+    style DisplayResults fill:#b2ebf2
+    style BuildQuery fill:#fff9c4
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5>Search Options:</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <ul>
+                    <li><strong>By LR Number:</strong> Direct lookup by Lorry Receipt number</li>
+                    <li><strong>By Transporter:</strong> View all vouchers for specific truck owner</li>
+                    <li><strong>By Payment Status:</strong> Filter PAID or UNPAID vouchers</li>
+                    <li><strong>By Date Range:</strong> Search within specific dispatch date range</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6>User Actions:</h6>
+                <ul>
+                    <li>✏️ Edit voucher details</li>
+                    <li>🖨️ Print voucher/invoice</li>
+                    <li>📊 Export to Excel</li>
+                    <li>📉 Add shortage adjustment (if UNPAID)</li>
+                    <li>👁️ View complete details</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</section><section id="file-structure" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">📁 Project File Structure</h2>
+
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <strong>Complete Directory Tree</strong>
+                    </div>
+                    <div class="card-body">
+                        <pre style="background-color: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 5px;"><code>transport/ (Root Project)
+├── config.json                    ⚙️ Active session configuration
+├── connection.php                 ⭐ Database connection
+│
+├── 📂 Pages (PHP Files)
+│   ├── login.php                  🔐 Authentication
+│   ├── logout.php                 🚪 Session destroy
+│   ├── index.php                  ⭐ Dashboard & Voucher Entry
+│   ├── searchRecords.php          🔍 Search & Filter
+│   ├── details.php                ✏️ Voucher Edit
+│   ├── addCheque.php              ⭐ Settlement & Invoice Generation
+│   ├── addAdvance.php             💰 Advance Entry
+│   ├── addCommission.php          💵 Commission Entry
+│   ├── addShortage.php            📉 Shortage Adjustment
+│   ├── print.php                  🖨️ Payment Advice Print
+│   ├── printEstimate.php          📋 Estimate Print
+│   ├── printOldBill.php           📄 Legacy Report
+│   ├── select.php                 📊 Data selection utility
+│   └── summary.php                📈 Monthly summary
+│
+├── 📂 CSS (Styling)
+│   ├── main.css                   🎨 Custom styles
+│   └── util.css                   🛠️ Utility classes
+│
+├── 📂 JavaScript (Client Logic)
+│   ├── main.js                    ⭐ Form calculations, modals
+│   ├── tableSelection.js          ☑️ Checkbox handlers
+│   └── validation.js              ✅ Input validation
+│
+├── 📂 Images & Assets
+│   ├── truck.jpg                  🚚 Header image
+│   ├── img-01.png                 🏢 Logo
+│   └── favicon.ico                🌐 Browser icon
+│
+└── 📂 Config Files
+    ├── .gitignore                 🙈 Git excludes
+    ├── .repomixignore             📦 Repomix config
+    ├── repomix.config.json        ⚙️ Repomix settings
+    └── .whitesource               🔒 Security scanning</code></pre>
+                    </div>
+                </div>
+
+                <h3 class="mt-5">🎯 Critical Files for Maintenance</h3>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>File</th>
+                            <th>Purpose</th>
+                            <th>Criticality</th>
+                            <th>Maintenance Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-danger">
+                            <td><code>connection.php</code></td>
+                            <td>Database connectivity</td>
+                            <td><span class="badge badge-danger">CRITICAL</span></td>
+                            <td>Contains credentials. Keep secure. Never commit to public repos.</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td><code>index.php</code></td>
+                            <td>Main dashboard & data entry</td>
+                            <td><span class="badge badge-danger">CRITICAL</span></td>
+                            <td>Core business logic. Any changes affect all users immediately.</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td><code>addCheque.php</code></td>
+                            <td>Settlement invoice generation</td>
+                            <td><span class="badge badge-danger">CRITICAL</span></td>
+                            <td>Contains Golden Formula. Formula changes require thorough testing.</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td><code>main.js</code></td>
+                            <td>Frontend calculations</td>
+                            <td><span class="badge badge-warning">HIGH</span></td>
+                            <td>Must match backend formulas. Changes here need backend sync.</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td><code>config.json</code></td>
+                            <td>Active session configuration</td>
+                            <td><span class="badge badge-warning">HIGH</span></td>
+                            <td>Determines date validation. Update at fiscal year start.</td>
+                        </tr>
+                        <tr class="table-info">
+                            <td><code>searchRecords.php</code></td>
+                            <td>Data search & filtering</td>
+                            <td><span class="badge badge-info">MEDIUM</span></td>
+                            <td>User-facing feature. Optimize queries for large datasets.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="mt-4">⚠️ Code Quality Issues Identified</h3>
+                <div class="alert alert-danger">
+                    <h5>Critical Issues:</h5>
+                    <ol>
+                        <li><strong>Tight Coupling:</strong> Business logic spread across PHP pages and JavaScript</li>
+                        <li><strong>No API Layer:</strong> Direct page-to-database queries</li>
+                        <li><strong>Mixed Concerns:</strong> HTML, CSS, PHP, and JavaScript mixed in single files</li>
+                        <li><strong>Security:</strong> SQL injection vulnerabilities, no CSRF tokens</li>
+                        <li><strong>No Validation Framework:</strong> Validation logic scattered across files</li>
+                    </ol>
+                </div>
+            </div>
+        </section><section id="api-mapping" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🔌 API Mapping & Data Flow</h2>
+
+                <h3>Legacy to Modern API Mapping</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Business Operation</th>
+                                <th>Legacy File</th>
+                                <th>HTTP Method</th>
+                                <th>Modern API Endpoint</th>
+                                <th>Database Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Login</td>
+                                <td>login.php</td>
+                                <td><span class="badge badge-success">POST</span></td>
+                                <td><code>POST /api/v1/auth/login</code></td>
+                                <td>SELECT * FROM users</td>
+                            </tr>
+                            <tr>
+                                <td>Logout</td>
+                                <td>logout.php</td>
+                                <td><span class="badge badge-primary">GET</span></td>
+                                <td><code>POST /api/v1/auth/logout</code></td>
+                                <td>Session destroy</td>
+                            </tr>
+                            <tr>
+                                <td>Get Dashboard Stats</td>
+                                <td>index.php (GET)</td>
+                                <td><span class="badge badge-primary">GET</span></td>
+                                <td><code>GET /api/v1/dashboard/stats</code></td>
+                                <td>SELECT SUM(*) FROM sales</td>
+                            </tr>
+                            <tr>
+                                <td>Create Voucher</td>
+                                <td>index.php (POST)</td>
+                                <td><span class="badge badge-success">POST</span></td>
+                                <td><code>POST /api/v1/sales</code></td>
+                                <td>INSERT INTO sales</td>
+                            </tr>
+                            <tr>
+                                <td>List Vouchers</td>
+                                <td>searchRecords.php (GET)</td>
+                                <td><span class="badge badge-primary">GET</span></td>
+                                <td><code>GET /api/v1/sales?filter=...&page=...</code></td>
+                                <td>SELECT * FROM sales (with filters)</td>
+                            </tr>
+                            <tr>
+                                <td>Get Voucher Details</td>
+                                <td>details.php (GET)</td>
+                                <td><span class="badge badge-primary">GET</span></td>
+                                <td><code>GET /api/v1/sales/{id}</code></td>
+                                <td>SELECT * FROM sales WHERE sno = ?</td>
+                            </tr>
+                            <tr>
+                                <td>Update Voucher</td>
+                                <td>details.php (POST)</td>
+                                <td><span class="badge badge-warning">PUT</span></td>
+                                <td><code>PUT /api/v1/sales/{id}</code></td>
+                                <td>UPDATE sales</td>
+                            </tr>
+                            <tr>
+                                <td>Add Advance</td>
+                                <td>addAdvance.php (POST)</td>
+                                <td><span class="badge badge-success">POST</span></td>
+                                <td><code>POST /api/v1/transporters/{id}/ledger/advance</code></td>
+                                <td>INSERT INTO advance</td>
+                            </tr>
+                            <tr>
+                                <td>Add Commission</td>
+                                <td>addCommission.php (POST)</td>
+                                <td><span class="badge badge-success">POST</span></td>
+                                <td><code>POST /api/v1/transporters/{id}/ledger/commission</code></td>
+                                <td>INSERT INTO commission</td>
+                            </tr>
+                            <tr>
+                                <td>Add Shortage</td>
+                                <td>addShortage.php (POST)</td>
+                                <td><span class="badge badge-success">POST</span></td>
+                                <td><code>POST /api/v1/sales/{id}/shortage</code></td>
+                                <td>UPDATE sales (shortage)</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>Generate Invoice</td>
+                                <td>addCheque.php (POST)</td>
+                                <td><span class="badge badge-success">POST</span></td>
+                                <td><code>POST /api/v1/invoices/payable</code></td>
+                                <td>INSERT INTO invoices, UPDATE sales</td>
+                            </tr>
+                            <tr>
+                                <td>Print Payment Advice</td>
+                                <td>print.php</td>
+                                <td><span class="badge badge-primary">GET</span></td>
+                                <td><code>GET /api/v1/invoices/{id}/pdf</code></td>
+                                <td>SELECT * FROM invoices (with joins)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+<h3 class="mt-5">Request/Response Examples</h3>
+
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <strong>1. Create Voucher - Request</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">POST /api/v1/sales
+
+{
+  "lrno": 1001,
+  "dispatchDate": "2024-01-15",
+  "vehicleNo": "UP-01-AB-1234",
+  "partyID": 5,
+  "partyName": "ABC Industries Ltd",
+  "destination": "Delhi",
+  "qty": 100,
+  "freightPMT": 500,
+  "advance": 5000,
+  "diesel": 2000,
+  "unloading": 0,
+  "shortage": 0,
+  "transporterID": 1,
+  "transporter": "XYZ Transport Co.",
+  "petrolPumpID": 3,
+  "petrolPump": "HP Petrol Pump, Aligarh",
+  "billingNo": "BILL/2024/001",
+  "sessionID": 10
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <strong>1. Create Voucher - Response (201 Created)</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">{
+  "success": true,
+  "message": "Voucher created successfully",
+  "data": {
+    "sno": 1001,
+    "lrno": 1001,
+    "dispatchDate": "2024-01-15",
+    "vehicleNo": "UP-01-AB-1234",
+    "partyID": 5,
+    "partyName": "ABC Industries Ltd",
+    "destination": "Delhi",
+    "qty": 100,
+    "freightPMT": 500,
+    "totalFreight": 50000,
+    "advance": 5000,
+    "diesel": 2000,
+    "unloading": 0,
+    "shortage": 0,
+    "balance": 43000,
+    "transporterID": 1,
+    "transporter": "XYZ Transport Co.",
+    "petrolPumpID": 3,
+    "petrolPump": "HP Petrol Pump, Aligarh",
+    "billingNo": "BILL/2024/001",
+    "paidChequeDate": "",
+    "status": "UNPAID",
+    "sessionID": 10,
+    "sessionName": "2023-2024",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  "calculations": {
+    "formula": "Balance = (Qty × Rate + Unloading) - (Advance + Diesel + Shortage)",
+    "breakdown": {
+      "totalFreight": "100 × 500 = 50,000",
+      "tripExpenses": "5,000 + 2,000 = 7,000",
+      "balance": "50,000 - 7,000 = 43,000"
+    }
+  }
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <strong>2. Get Voucher Details - Response (200 OK)</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">GET /api/v1/sales/1001
+
+{
+  "success": true,
+  "data": {
+    "sno": 1001,
+    "lrno": 1001,
+    "dispatchDate": "2024-01-15",
+    "vehicleNo": "UP-01-AB-1234",
+    "partyID": 5,
+    "partyName": "ABC Industries Ltd",
+    "destination": "Delhi",
+    "qty": 100,
+    "freightPMT": 500,
+    "totalFreight": 50000,
+    "advance": 5000,
+    "diesel": 2000,
+    "unloading": 0,
+    "shortage": 0,
+    "balance": 43000,
+    "transporterID": 1,
+    "transporter": "XYZ Transport Co.",
+    "transporterAddress": "123 Transport Nagar, Aligarh",
+    "transporterGST": "09XXXXX1234X1Z5",
+    "transporterPhone": "9876543210",
+    "petrolPumpID": 3,
+    "petrolPump": "HP Petrol Pump, Aligarh",
+    "petrolPumpAddress": "GT Road, Aligarh",
+    "billingNo": "BILL/2024/001",
+    "paidChequeDate": "",
+    "status": "UNPAID",
+    "sessionID": 10,
+    "session": {
+      "sessionid": 10,
+      "sessionname": "2023-2024",
+      "lowyear": 2023,
+      "highyear": 2024
+    },
+    "party": {
+      "partyID": 5,
+      "partyName": "ABC Industries Ltd",
+      "address": "Sector 62, Noida",
+      "phone": "0120-1234567"
+    },
+    "isEditable": true,
+    "canAddShortage": true,
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  }
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-info text-white">
+        <strong>3. List Vouchers with Filters - Response (200 OK)</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">GET /api/v1/sales?status=UNPAID&transporterId=1&page=1&limit=20
+
+{
+  "success": true,
+  "data": [
+    {
+      "sno": 1001,
+      "lrno": 1001,
+      "dispatchDate": "2024-01-15",
+      "vehicleNo": "UP-01-AB-1234",
+      "partyName": "ABC Industries Ltd",
+      "destination": "Delhi",
+      "qty": 100,
+      "freightPMT": 500,
+      "totalFreight": 50000,
+      "advance": 5000,
+      "diesel": 2000,
+      "shortage": 0,
+      "unloading": 0,
+      "balance": 43000,
+      "transporter": "XYZ Transport Co.",
+      "status": "UNPAID"
+    },
+    {
+      "sno": 1002,
+      "lrno": 1002,
+      "dispatchDate": "2024-01-16",
+      "vehicleNo": "UP-01-CD-5678",
+      "partyName": "PQR Enterprises",
+      "destination": "Mumbai",
+      "qty": 150,
+      "freightPMT": 520,
+      "totalFreight": 78000,
+      "advance": 8000,
+      "diesel": 3000,
+      "shortage": 0,
+      "unloading": 2000,
+      "balance": 69000,
+      "transporter": "XYZ Transport Co.",
+      "status": "UNPAID"
+    }
+  ],
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 3,
+    "totalRecords": 45,
+    "recordsPerPage": 20,
+    "hasNext": true,
+    "hasPrev": false
+  },
+  "aggregates": {
+    "totalVouchers": 45,
+    "totalFreight": 2250000,
+    "totalAdvance": 180000,
+    "totalDiesel": 95000,
+    "totalBalance": 1975000
+  }
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+        <strong>4. Generate Invoice (Settlement) - Request</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">POST /api/v1/invoices/payable
+
+{
+  "transporterID": 1,
+  "transporter": "XYZ Transport Co.",
+  "saleIDs": [1001, 1002, 1003, 1004, 1005],
+  "lrNumbers": [1001, 1002, 1003, 1004, 1005],
+  "chequeNo": "CHQ123456",
+  "chequeDate": "2024-01-20",
+  "extraCharges": 0,
+  "sessionID": 10,
+  "remarks": "Monthly settlement January 2024"
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+        <strong>4. Generate Invoice (Settlement) - Response (201 Created)</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">{
+  "success": true,
+  "message": "Invoice generated successfully",
+  "data": {
+    "billNo": 501,
+    "billDate": "2024-01-20",
+    "transporterID": 1,
+    "Transporter": "XYZ Transport Co.",
+    "transporterAddress": "123 Transport Nagar, Aligarh",
+    "transporterGST": "09XXXXX1234X1Z5",
+    "lrnos": "1001,1002,1003,1004,1005",
+    "salenos": "1001,1002,1003,1004,1005",
+    "voucherCount": 5,
+    "aggregates": {
+      "totalQty": 500,
+      "totalFreight": 250000,
+      "totalAdvance": 19500,
+      "totalDiesel": 9500,
+      "totalShortage": 1900,
+      "totalUnloading": 5000,
+      "tdsAmount": 5000,
+      "floatingAdvances": 8000,
+      "floatingCommissions": 2000,
+      "extraCharges": 0
+    },
+    "calculations": {
+      "grossPayable": 255000,
+      "totalDeductions": 45900,
+      "netPayable": 209100
+    },
+    "breakdown": {
+      "tds": 5000,
+      "advance": 8000,
+      "commission": 2000,
+      "tripAdvances": 19500,
+      "tripDiesel": 9500,
+      "tripShortages": 1900
+    },
+    "netPayable": 209100,
+    "chequeNo": "CHQ123456",
+    "chequeDate": "2024-01-20",
+    "extraM": 0,
+    "remarks": "Monthly settlement January 2024",
+    "salesUpdated": 5,
+    "advancesSettled": 3,
+    "commissionsSettled": 2,
+    "ledgerSummary": {
+      "settledAdvances": [
+        {"id": 101, "amount": 5000, "date": "2024-01-10"},
+        {"id": 102, "amount": 2000, "date": "2024-01-12"},
+        {"id": 103, "amount": 1000, "date": "2024-01-15"}
+      ],
+      "settledCommissions": [
+        {"id": 201, "amount": 1500, "date": "2024-01-08"},
+        {"id": 202, "amount": 500, "date": "2024-01-14"}
+      ]
+    },
+    "formula": {
+      "grossPayable": "Σ Freight + Σ Unloading = 250,000 + 5,000 = 255,000",
+      "totalDeductions": "Σ Trip Advance (19,500) + Σ Trip Diesel (9,500) + Σ Trip Shortage (1,900) + TDS (5,000) + Float Advances (8,000) + Float Commissions (2,000) = 45,900",
+      "netPayable": "Gross Payable - Total Deductions + Extra = 255,000 - 45,900 + 0 = 209,100"
+    },
+    "pdfUrl": "/api/v1/invoices/501/pdf",
+    "createdAt": "2024-01-20T14:25:00Z",
+    "createdBy": {
+      "userId": 1,
+      "username": "admin",
+      "fullName": "System Administrator"
+    }
+  }
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-danger text-white">
+        <strong>5. Add Shortage to Voucher - Request</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">POST /api/v1/sales/1001/shortage
+
+{
+  "shortageQty": 5.5,
+  "shortageRate": 350,
+  "remarks": "Material damage during transit"
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-danger text-white">
+        <strong>5. Add Shortage - Response (200 OK)</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">{
+  "success": true,
+  "message": "Shortage added successfully",
+  "data": {
+    "sno": 1001,
+    "lrno": 1001,
+    "previousShortage": 0,
+    "newShortage": 1925,
+    "shortageCalculation": {
+      "qty": 5.5,
+      "rate": 350,
+      "amount": "5.5 × 350 = 1,925"
+    },
+    "previousBalance": 43000,
+    "newBalance": 41075,
+    "balanceChange": -1925,
+    "remarks": "Material damage during transit",
+    "updatedAt": "2024-01-17T11:45:00Z"
+  }
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+        <strong>6. Add Advance to Transporter - Request</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">POST /api/v1/transporters/1/ledger/advance
+
+{
+  "amount": 10000,
+  "date": "2024-01-18",
+  "mode": "CASH",
+  "remarks": "Advance for upcoming trips"
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+        <strong>6. Add Advance - Response (201 Created)</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">{
+  "success": true,
+  "message": "Advance recorded successfully",
+  "data": {
+    "advanceID": 105,
+    "transporterID": 1,
+    "transporter": "XYZ Transport Co.",
+    "amount": 10000,
+    "date": "2024-01-18",
+    "mode": "CASH",
+    "settleStatus": 0,
+    "settled": false,
+    "remarks": "Advance for upcoming trips",
+    "totalFloatingAdvances": 18000,
+    "previousFloating": 8000,
+    "createdAt": "2024-01-18T09:30:00Z",
+    "createdBy": {
+      "userId": 1,
+      "username": "admin"
+    }
+  }
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <strong>7. Error Response Example - Validation Failed</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">400 Bad Request
+
+{
+  "success": false,
+  "error": "Validation Failed",
+  "message": "The request contains invalid data",
+  "errors": [
+    {
+      "field": "lrno",
+      "message": "LR Number 1001 already exists in session 2023-2024",
+      "code": "DUPLICATE_LR"
+    },
+    {
+      "field": "dispatchDate",
+      "message": "Dispatch date must be between 2023-04-01 and 2024-03-31",
+      "code": "DATE_OUT_OF_RANGE"
+    }
+  ],
+  "timestamp": "2024-01-15T10:35:00Z",
+  "path": "/api/v1/sales"
+}</code></pre>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <strong>8. Error Response Example - Cannot Add Shortage to Paid Voucher</strong>
+    </div>
+    <div class="card-body">
+        <pre><code class="language-json">403 Forbidden
+
+{
+  "success": false,
+  "error": "Operation Not Allowed",
+  "message": "Cannot add shortage to a paid voucher",
+  "details": {
+    "voucherSno": 1001,
+    "lrno": 1001,
+    "status": "PAID",
+    "paidChequeDate": "PAID CHQ123456 20-01-2024",
+    "reason": "Voucher has already been settled. Create a negative advance entry instead."
+  },
+  "suggestion": "To adjust paid vouchers, create a negative advance entry in the ledger",
+  "timestamp": "2024-01-22T14:20:00Z",
+  "path": "/api/v1/sales/1001/shortage"
+}</code></pre>
+    </div>
+</div>
+</section><section id="migration" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🚀 Migration Strategy</h2>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card border-primary mb-3">
+                            <div class="card-header bg-primary text-white">
+                                <strong>Phase 0: Foundation</strong>
+                            </div>
+                            <div class="card-body">
+                                <ol class="small">
+                                    <li>Define Origins (Tenants)</li>
+                                    <li>Create Mongo/MySQL schemas</li>
+                                    <li>Setup development environment</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-success mb-3">
+                            <div class="card-header bg-success text-white">
+                                <strong>Phase 1: Data Migration</strong>
+                            </div>
+                            <div class="card-body">
+                                <ol class="small">
+                                    <li>Import Masters (Transporters, Parties, Pumps)</li>
+                                    <li>Import Ledgers (Advances, Commissions)</li>
+                                    <li>Import Sales & Invoices</li>
+                                    <li>Import Users</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-warning mb-3">
+                            <div class="card-header bg-warning text-dark">
+                                <strong>Phase 2: Logic Verification</strong>
+                            </div>
+                            <div class="card-body">
+                                <ol class="small">
+                                    <li>Unit test Golden Formula</li>
+                                    <li>Validate against 50 random invoices</li>
+                                    <li>Session rules enforcement</li>
+                                    <li>Data integrity checks</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-info mb-3">
+                            <div class="card-header bg-info text-white">
+                                <strong>Phase 3: Modernization</strong>
+                            </div>
+                            <div class="card-body">
+                                <ol class="small">
+                                    <li>BCRYPT password hashing</li>
+                                    <li>JasperReports for PDFs</li>
+                                    <li>Factory invoicing module</li>
+                                    <li>API development</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-4">Migration Checklist</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check1">
+                            <label class="form-check-label" for="check1">
+                                Backup all legacy databases
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check2">
+                            <label class="form-check-label" for="check2">
+                                Create Origin masters for each deployment
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check3">
+                            <label class="form-check-label" for="check3">
+                                Map legacy transporter IDs to unified IDs
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check4">
+                            <label class="form-check-label" for="check4">
+                                Validate paidChequeDate → PaymentStatus mapping
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check5">
+                            <label class="form-check-label" for="check5">
+                                Test Golden Formula against legacy invoices
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check6">
+                            <label class="form-check-label" for="check6">
+                                Implement user password migration (BCrypt)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check7">
+                            <label class="form-check-label" for="check7">
+                                Deploy parallel system for testing
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check8">
+                            <label class="form-check-label" for="check8">
+                                Train users on new system
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><section id="engineering-review" class="content-section">
+            <div class="container-fluid">
+                <h2 class="section-title">🔍 Engineering Review & Recommendations</h2>
+
+                <h3>🎯 Priority Issues</h3>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Issue</th>
+                            <th>Severity</th>
+                            <th>Impact</th>
+                            <th>Recommendation</th>
+                            <th>Effort</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-danger">
+                            <td>SQL Injection Vulnerabilities</td>
+                            <td><span class="badge badge-danger">CRITICAL</span></td>
+                            <td>Data breach, unauthorized access</td>
+                            <td>Use prepared statements (MySQLi/PDO) everywhere</td>
+                            <td>High</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>No CSRF Protection</td>
+                            <td><span class="badge badge-danger">CRITICAL</span></td>
+                            <td>Unauthorized form submissions</td>
+                            <td>Implement CSRF tokens in all forms</td>
+                            <td>High</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>Plaintext Passwords</td>
+                            <td><span class="badge badge-danger">CRITICAL</span></td>
+                            <td>Complete account compromise</td>
+                            <td>Hash passwords with bcrypt immediately</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td>No Input Validation Framework</td>
+                            <td><span class="badge badge-warning">HIGH</span></td>
+                            <td>Invalid data corruption</td>
+                            <td>Create centralized validation service</td>
+                            <td>High</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td>Tight Coupling (Frontend/Backend)</td>
+                            <td><span class="badge badge-warning">HIGH</span></td>
+                            <td>Maintenance nightmare</td>
+                            <td>Extract business logic to service layer</td>
+                            <td>Very High</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td>No API Layer</td>
+                            <td><span class="badge badge-warning">HIGH</span></td>
+                            <td>Cannot support mobile/modern UIs</td>
+                            <td>Build RESTful API with OpenAPI docs</td>
+                            <td>Very High</td>
+                        </tr>
+                        <tr class="table-info">
+                            <td>No Unit Tests</td>
+                            <td><span class="badge badge-info">MEDIUM</span></td>
+                            <td>Regression bugs</td>
+                            <td>Write tests for formulas using PHPUnit</td>
+                            <td>High</td>
+                        </tr>
+                        <tr class="table-info">
+                            <td>Single Tenant Design</td>
+                            <td><span class="badge badge-info">MEDIUM</span></td>
+                            <td>Cannot scale to multiple factories</td>
+                            <td>Add Origin master, implement multi-tenant middleware</td>
+                            <td>High</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="mt-5">✅ Recommendations (Priority Order)</h3>
+
+                <div class="accordion" id="recommendationsAccordion">
+                    <div class="card">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#phase1">
+                                    Phase 1: Immediate Security Fixes (Week 1-2)
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="phase1" class="collapse show" data-parent="#recommendationsAccordion">
+                            <div class="card-body">
+                                <ol>
+                                    <li><strong>Replace all SQL queries with prepared statements</strong>
+                                        <pre class="mt-2"><code>// Current (BAD)
+mysqli_query("SELECT * WHERE lrno = " . $input)
+
+// Fix (GOOD)
+$stmt = $conn->prepare("SELECT * WHERE lrno = ?");
+$stmt->bind_param("i", $lrno);</code></pre>
+                                    </li>
+                                    <li><strong>Hash all passwords immediately</strong>
+                                        <pre class="mt-2"><code>UPDATE users SET password = PASSWORD(password)
+-- Then migrate to bcrypt on next login</code></pre>
+                                    </li>
+                                    <li><strong>Add CSRF tokens to all forms</strong>
+                                        <pre class="mt-2"><code>$_SESSION['csrf_token'] = bin2hex(random_bytes(32));</code></pre>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header bg-warning">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#phase2">
+                                    Phase 2: Code Refactoring (Week 3-6)
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="phase2" class="collapse" data-parent="#recommendationsAccordion">
+                            <div class="card-body">
+                                <ol>
+                                    <li><strong>Extract business logic to Service Layer</strong><br>
+                                        Create <code>PaymentCalculationService.php</code>, move Golden Formula here, write unit tests
+                                    </li>
+                                    <li><strong>Build RESTful API</strong><br>
+                                        Use Laravel/Symfony microframework. Endpoints: POST /sales, GET /sales, POST /invoices
+                                    </li>
+                                    <li><strong>Separate concerns (Frontend/Backend)</strong><br>
+                                        Move HTML to templates, JavaScript API calls instead of form submits
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#phase3">
+                                    Phase 3: Modern Architecture (Week 7-12)
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="phase3" class="collapse" data-parent="#recommendationsAccordion">
+                            <div class="card-body">
+                                <ol>
+                                    <li><strong>Migrate to SPA (React/Vue)</strong><br>
+                                        REST API + Single Page Application. Better UX, testable, maintainable
+                                    </li>
+                                    <li><strong>Add multi-tenant support</strong><br>
+                                        Origin/Factory as master entity. Tenant isolation in queries
+                                    </li>
+                                    <li><strong>Implement logging & monitoring</strong><br>
+                                        All financial transactions logged. Alert on anomalies
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-5">💡 Technology Modernization Path</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Layer</th>
+                            <th>Current</th>
+                            <th>Recommended</th>
+                            <th>Timeline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Backend Framework</td>
+                            <td>Procedural PHP</td>
+                            <td>Laravel 11 / Symfony 7</td>
+                            <td>Phase 2 (4 weeks)</td>
+                        </tr>
+                        <tr>
+                            <td>Frontend</td>
+                            <td>Bootstrap + jQuery</td>
+                            <td>React 18 / Vue 3</td>
+                            <td>Phase 3 (6 weeks)</td>
+                        </tr>
+                        <tr>
+                            <td>Database</td>
+                            <td>MySQL 5.7</td>
+                            <td>PostgreSQL 15 (or MySQL 8.0)</td>
+                            <td>Phase 2 (Migration)</td>
+                        </tr>
+                        <tr>
+                            <td>API</td>
+                            <td>Page-based (no API)</td>
+                            <td>RESTful + GraphQL Option</td>
+                            <td>Phase 2 (4 weeks)</td>
+                        </tr>
+                        <tr>
+                            <td>Testing</td>
+                            <td>Manual</td>
+                            <td>PHPUnit + Jest + Cypress</td>
+                            <td>Phase 2 (2 weeks)</td>
+                        </tr>
+                        <tr>
+                            <td>Deployment</td>
+                            <td>Manual FTP/SSH</td>
+                            <td>Docker + CI/CD (GitHub Actions)</td>
+                            <td>Phase 3 (1 week)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-info mt-4">
+                    <h5>🎓 Documentation & Knowledge Transfer</h5>
+                    <ul class="mb-0">
+                        <li><strong>API Documentation:</strong> OpenAPI/Swagger specs with interactive UI</li>
+                        <li><strong>Database Docs:</strong> Schema diagrams, ER models, indexes explained</li>
+                        <li><strong>Business Logic:</strong> Formulas documented with examples and edge cases</li>
+                        <li><strong>Deployment Guide:</strong> Step-by-step setup for development/production</li>
+                        <li><strong>Video Tutorials:</strong> Screen recordings for common workflows</li>
+                        <li><strong>Runbook:</strong> Troubleshooting guide, emergency procedures</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer class="content-footer">
+            <div class="container-fluid">
+                <p class="text-center">
+                    🚛 Legacy Transport Management System - Complete Merged Documentation<br>
+                    📅 Generated: January 28, 2026 | 📦 All 14 Sections Included | 🔗 Fixed Navigation
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Smooth scrolling and active nav
+        $(document).ready(function() {
+            // Smooth scrolling for nav links
+            $('a.nav-link').on('click', function(e) {
+                if (this.hash !== '') {
+                    e.preventDefault();
+                    var hash = this.hash;
+
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top - 70
+                    }, 800, function(){
+                        // Update active state
+                        $('.nav-link').removeClass('active');
+                        $('a[href="' + hash + '"]').addClass('active');
+                    });
+                }
+            });
+
+            // Spy scrolling - update active nav on scroll
+            $(window).on('scroll', function() {
+                var scrollPos = $(document).scrollTop() + 100;
+
+                $('.nav-link').each(function() {
+                    var currLink = $(this);
+                    var refElement = $(currLink.attr('href'));
+
+                    if (refElement.length) {
+                        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+                            $('.nav-link').removeClass('active');
+                            currLink.addClass('active');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

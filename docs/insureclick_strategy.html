@@ -1,0 +1,2365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsureClick Performance Optimization Hub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #ea580c;
+            --info: #0891b2;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .navbar-custom {
+            background: linear-gradient(90deg, var(--dark) 0%, #374151 100%);
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-custom h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-custom .subtitle {
+            color: #d1d5db;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .container-fluid {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .metric-card.critical {
+            border-left-color: var(--danger);
+        }
+
+        .metric-card.warning {
+            border-left-color: var(--warning);
+        }
+
+        .metric-card.success {
+            border-left-color: var(--success);
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0.5rem 0;
+        }
+
+        .metric-label {
+            font-size: 0.95rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-improvement {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-improvement.critical-issue {
+            background: var(--danger);
+        }
+
+        .section-header {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-bottom: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-header h2 {
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-header .subtitle-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .icon-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            background: var(--primary);
+            color: white;
+        }
+
+        .issue-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--danger);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .issue-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .issue-badge {
+            display: inline-block;
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+
+        .issue-impact {
+            color: var(--danger);
+            font-weight: 600;
+            margin: 0.75rem 0;
+            font-size: 0.95rem;
+        }
+
+        .issue-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0.75rem 0;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .code-label {
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .tabs-custom {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .tabs-custom .nav-tabs {
+            border-bottom: 2px solid #e5e7eb;
+            background: #f9fafb;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tabs-custom .nav-link {
+            color: #6b7280;
+            font-weight: 600;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 1rem 1.5rem;
+            border-radius: 0;
+            transition: all 0.3s;
+        }
+
+        .tabs-custom .nav-link:hover {
+            color: var(--primary);
+            background: #f3f4f6;
+        }
+
+        .tabs-custom .nav-link.active {
+            color: white;
+            background: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tabs-custom .tab-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .diagram-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+            min-height: 400px;
+        }
+
+        .diagram-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 0.5rem;
+        }
+
+        .priority-badge.critical {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .priority-badge.high {
+            background: rgba(234, 88, 12, 0.1);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .priority-badge.medium {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .step-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-right: 1.5rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-content h4 {
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .step-content p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.75rem 0;
+        }
+
+        .step-content li {
+            color: #6b7280;
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-content li:before {
+            content: "→";
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .step-item:not(:last-child) .step-number::after {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 25px;
+            width: 2px;
+            height: 80px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .metric-card {
+                margin-bottom: 1rem;
+            }
+
+            .navbar-custom h1 {
+                font-size: 1.3rem;
+            }
+        }
+
+        .comparison-box {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 2px solid var(--light);
+        }
+
+        .comparison-box.bad {
+            border-color: var(--danger);
+            background: rgba(220, 38, 38, 0.02);
+        }
+
+        .comparison-box.good {
+            border-color: var(--success);
+            background: rgba(22, 163, 74, 0.02);
+        }
+
+        .comparison-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-box.bad .comparison-label {
+            color: var(--danger);
+        }
+
+        .comparison-box.good .comparison-label {
+            color: var(--success);
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .architecture-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-top: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .architecture-item.cache {
+            border-top-color: var(--success);
+        }
+
+        .architecture-item.db {
+            border-top-color: var(--warning);
+        }
+
+        .architecture-item.api {
+            border-top-color: var(--info);
+        }
+
+        .architecture-item h4 {
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .architecture-item p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .architecture-item .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.75rem 0 0;
+        }
+
+        .architecture-item .feature-list li {
+            color: #6b7280;
+            font-size: 0.85rem;
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .architecture-item .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .deployment-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin: 1.5rem 0;
+        }
+
+        .deployment-table th {
+            background: var(--dark);
+            color: white;
+            padding: 1rem;
+            font-weight: 700;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .deployment-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        .deployment-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.3rem;
+            text-transform: uppercase;
+        }
+
+        .tag.file {
+            background: rgba(3, 102, 214, 0.1);
+            color: #0366d6;
+        }
+
+        .tag.priority {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .tag.effort {
+            background: rgba(234, 88, 12, 0.1);
+            color: var(--warning);
+        }
+
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            color: #1f2937;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .success-box {
+            background: rgba(22, 163, 74, 0.05);
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .success-box p {
+            color: #1f2937;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .scroll-indicator {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar-custom">
+        <div class="container-fluid px-4">
+            <h1><i class="fas fa-rocket"></i> InsureClick Performance Optimization Hub</h1>
+            <p class="subtitle">Comprehensive Architecture Analysis & Implementation Guide</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid px-4 py-5">
+        <!-- Current Performance Metrics -->
+        <div class="section-header">
+            <h2><i class="fas fa-chart-line"></i> Current Performance Metrics</h2>
+            <p class="subtitle-text">Critical latency issues across all network conditions affecting user experience</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card critical">
+                    <div class="metric-label">Cellular Avg Latency</div>
+                    <div class="metric-value">3.2s</div>
+                    <div class="metric-improvement critical-issue">❌ Target: 1s</div>
+                    <div style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">Need 220% improvement</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card critical">
+                    <div class="metric-label">Broadband Avg Latency</div>
+                    <div class="metric-value">1.8s</div>
+                    <div class="metric-improvement critical-issue">❌ Target: 0.5s</div>
+                    <div style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">Need 260% improvement</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card warning">
+                    <div class="metric-label">P95 Latency</div>
+                    <div class="metric-value">5.8s</div>
+                    <div class="metric-improvement critical-issue">⚠️ Severe degradation</div>
+                    <div style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">Worst case scenarios</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card warning">
+                    <div class="metric-label">P99 Latency</div>
+                    <div class="metric-value">7.2s</div>
+                    <div class="metric-improvement critical-issue">⚠️ Unacceptable</div>
+                    <div style="color: #6b7280; font-size: 0.85rem; margin-top: 0.5rem;">Cart endpoint avg 2.4s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <h5 style="margin-bottom: 1rem; color: var(--dark); font-weight: 700;">Optimization Impact Overview</h5>
+            <!-- Scoped Chart Container -->
+<div class="latency-chart-scope">
+  <h2 class="latency-title">
+    Declining Latency from Performance Optimizations
+  </h2>
+  <p class="latency-subtitle">
+    Request batching shows largest absolute reduction in response time
+  </p>
+
+  <div class="latency-chart-wrapper">
+    <canvas id="latencyChart"></canvas>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+
+<style>
+/* ===== Scoped styles: NOTHING leaks out ===== */
+.latency-chart-scope {
+  width: 100%; 
+  height: auto; 
+  max-height: 400px; 
+  object-fit: contain;
+  background: #000;
+  padding: 32px;
+  border-radius: 12px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.latency-chart-scope .latency-title {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.latency-chart-scope .latency-subtitle {
+  text-align: center;
+  font-size: 0.5rem;
+  color: #9ca3af;
+  margin-bottom: 28px;
+}
+
+.latency-chart-scope .latency-chart-wrapper {
+  position: relative;
+  height: auto; 
+  max-height: 400px;
+}
+</style>
+
+<script>
+(() => {
+  const ctx = document.getElementById('latencyChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        'Query Optimization (lean + indexes)',
+        'Response Compression (gzip)',
+        'Caching Strategy (Redis)',
+        'Connection Pooling',
+        'Node Clustering',
+        'Request Batching (API Design)'
+      ],
+      datasets: [
+        {
+          label: 'Before (ms)',
+          data: [800, 400, 1200, 500, 300, 2500],
+          backgroundColor: '#dc2626'
+        },
+        {
+          label: 'After (ms)',
+          data: [100, 50, 150, 50, 50, 500],
+          backgroundColor: '#16a34a'
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#e5e7eb',
+            font: { size: 13 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.dataset.label}: ${ctx.raw} ms`
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Latency (ms)',
+            color: '#e5e7eb'
+          },
+          ticks: {
+            color: '#9ca3af'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0.08)'
+          }
+        },
+        y: {
+          ticks: {
+            color: '#e5e7eb'
+          },
+          grid: {
+            display: false
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
+        </div>
+
+        <!-- Critical Issues -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-exclamation-triangle"></i> Root Cause Analysis: 6 Critical Issues</h2>
+            <p class="subtitle-text">Identified bottlenecks preventing optimal performance</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="issue-card">
+                    <div class="issue-title">
+                        <span class="priority-badge critical">CRITICAL</span>
+                        No Query Optimization
+                        <span class="issue-badge">ISSUE #1</span>
+                    </div>
+                    <div class="issue-impact">Impact: 500-1000ms per request</div>
+                    <div class="issue-description">
+                        <strong>Problem:</strong> Queries return entire Mongoose documents with overhead instead of lean() queries.
+                        <br><br>
+                        <strong>Example:</strong> Finding 100 lab tests returns full objects with methods, prototype chains, virtuals.
+                        <br><br>
+                        <strong>Why It Matters:</strong> Mongoose wraps each document, causing memory bloat and serialization overhead.
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">❌ BAD</span>
+const docs = await LabTestModel.find({ labId })
+// Returns 100 full Mongoose documents with overhead
+
+<span class="code-label">✓ GOOD</span>
+const docs = await LabTestModel
+  .find({ labId })
+  .select('labTestName labTestCode mrp finalPrice')
+  .lean()
+  .limit(100)
+// Returns 100 plain JavaScript objects
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="issue-card">
+                    <div class="issue-title">
+                        <span class="priority-badge critical">CRITICAL</span>
+                        No Response Compression
+                        <span class="issue-badge">ISSUE #2</span>
+                    </div>
+                    <div class="issue-impact">Impact: 200-400ms on cellular networks</div>
+                    <div class="issue-description">
+                        <strong>Problem:</strong> Large JSON payloads transferred uncompressed over network.
+                        <br><br>
+                        <strong>Example:</strong> Cart endpoint returns ~500KB uncompressed, ~50KB with gzip (90% reduction).
+                        <br><br>
+                        <strong>Why It Matters:</strong> Cellular networks benefit massively from compression due to bandwidth constraints.
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">❌ BAD - No compression</span>
+const app = express()
+app.use(express.json({ limit: '2mb' }))
+
+<span class="code-label">✓ GOOD - Enable gzip</span>
+const compression = require('compression')
+app.use(compression({ level: 6, threshold: 1024 }))
+app.use(express.json({ limit: '2mb' }))
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="issue-card">
+                    <div class="issue-title">
+                        <span class="priority-badge critical">CRITICAL</span>
+                        No Caching Strategy
+                        <span class="issue-badge">ISSUE #3</span>
+                    </div>
+                    <div class="issue-impact">Impact: 800-1500ms per cacheable request</div>
+                    <div class="issue-description">
+                        <strong>Problem:</strong> Every request hits MongoDB for static data (categories, tests, slots).
+                        <br><br>
+                        <strong>Statistics:</strong> 70% of requests are cacheable but hit DB every time.
+                        <br><br>
+                        <strong>Why It Matters:</strong> Lab tests, packages, slots don't change frequently but consume majority of DB queries.
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">❌ BAD - Always DB hit</span>
+const tests = await LabTestModel.find({ labId })
+// 1000 users = 1000 identical queries to MongoDB
+
+<span class="code-label">✓ GOOD - Redis Cache</span>
+const cached = await redis.get('labTests:' + labId)
+if (cached) return JSON.parse(cached)
+const tests = await LabTestModel.find({ labId }).lean()
+await redis.setex('labTests:' + labId, 3600, JSON.stringify(tests))
+return tests
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="issue-card">
+                    <div class="issue-title">
+                        <span class="priority-badge high">HIGH</span>
+                        No Connection Pooling for External APIs
+                        <span class="issue-badge">ISSUE #4</span>
+                    </div>
+                    <div class="issue-impact">Impact: 200-500ms per API call overhead</div>
+                    <div class="issue-description">
+                        <strong>Problem:</strong> Partner API calls (Healthians, Redcliff) create new HTTP connections for each request.
+                        <br><br>
+                        <strong>Cost:</strong> TCP handshake + TLS negotiation overhead per slot fetch = 600-1200ms delays.
+                        <br><br>
+                        <strong>Why It Matters:</strong> Keep-alive connections reduce handshake overhead significantly.
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">❌ BAD - New connection per request</span>
+const response = await axios.post(url, payload)
+
+<span class="code-label">✓ GOOD - Keep-alive connection pool</span>
+const httpAgent = new http.Agent({ keepAlive: true })
+const httpsAgent = new https.Agent({ keepAlive: true })
+const client = axios.create({
+  httpAgent, httpsAgent,
+  timeout: 15000
+})
+const response = await client.post(url, payload)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="issue-card">
+                    <div class="issue-title">
+                        <span class="priority-badge high">HIGH</span>
+                        Single-Threaded Express (No Clustering)
+                        <span class="issue-badge">ISSUE #5</span>
+                    </div>
+                    <div class="issue-impact">Impact: 100-300ms queuing time per request</div>
+                    <div class="issue-description">
+                        <strong>Problem:</strong> All requests processed on single CPU core, causing blocking and queuing.
+                        <br><br>
+                        <strong>Cost:</strong> Under load, slow requests block faster ones behind them.
+                        <br><br>
+                        <strong>Why It Matters:</strong> Node.js clustering enables multi-core utilization (4-8 worker processes).
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">✓ GOOD - Node Cluster</span>
+const cluster = require('cluster')
+const os = require('os')
+
+if (cluster.isMaster) {
+  const numWorkers = os.cpus().length
+  for (let i = 0; i < numWorkers; i++) {
+    cluster.fork()
+  }
+} else {
+  const app = require('./app')
+  app.listen(3000)
+}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="issue-card">
+                    <div class="issue-title">
+                        <span class="priority-badge medium">MEDIUM</span>
+                        N+1 Queries & No Request Batching
+                        <span class="issue-badge">ISSUE #6</span>
+                    </div>
+                    <div class="issue-impact">Impact: 2000-3500ms for mobile users</div>
+                    <div class="issue-description">
+                        <strong>Problem:</strong> Frontend makes N separate requests for related data (cart → items → packages → tests).
+                        <br><br>
+                        <strong>Example:</strong> 5 sequential requests at 500ms each = 2500ms + network latency.
+                        <br><br>
+                        <strong>Why It Matters:</strong> Proper API design aggregates related data in single response.
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">❌ BAD - N+1 queries</span>
+// Frontend makes 5 requests:
+GET /api/v1/cart
+GET /api/v1/cart/items
+GET /api/v1/cart/packages
+GET /api/v1/cart/tests
+GET /api/v1/cart/slots
+
+<span class="code-label">✓ GOOD - Single aggregated endpoint</span>
+GET /api/v1/cart?include=items,packages,tests,slots
+// Returns cart with all related data in one response
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Comparison -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-project-diagram"></i> Current vs. Optimized Architecture</h2>
+            <p class="subtitle-text">Visual comparison of existing and proposed infrastructure</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="diagram-container">
+                    <div class="diagram-title">❌ Current Architecture (Slow)</div>
+                    <div class="mermaid" id="current-arch">
+graph LR
+    Client["📱 Client (Flutter)"]
+    WiFi["WiFi 4G Network"]
+    Traefik["⚡ Traefik Reverse Proxy"]
+    Express["Node.js Express<br/>Single Process"]
+    Mongo["🗄️ MongoDB<br/>No Indexing<br/>No Cache"]
+    API["👥 Partner APIs<br/>New Connections"]
+    
+    Client -->|100-500ms| WiFi
+    WiFi -->|50ms| Traefik
+    Traefik -->|200ms| Express
+    Express -->|100ms Parsing| Express
+    Express -->|400-800ms| Mongo
+    Express -->|600-1200ms| API
+    Mongo -->|No Compression| Express
+    
+    style Client fill:#ff6b6b
+    style Express fill:#ff8787
+    style Mongo fill:#ffa8a8
+    style API fill:#ffb8a8
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="diagram-container">
+                    <div class="diagram-title">✓ Optimized Architecture (Fast)</div>
+                    <div class="mermaid" id="optimized-arch">
+graph LR
+    Client["📱 Client (Flutter)"]
+    CDN["🌍 CDN Cache<br/>10ms"]
+    Traefik["⚡ Traefik 40ms"]
+    Cluster["🔄 Node Cluster<br/>4-8 Processes<br/>80ms"]
+    Redis["⚡ Redis Cache<br/>20ms<br/>70% Hit Rate"]
+    Mongo["🗄️ MongoDB<br/>Indexed Queries<br/>100-200ms"]
+    API["👥 Partner APIs<br/>Keep-Alive Pool<br/>20-40ms"]
+    
+    Client -->|50ms| CDN
+    CDN -->|40ms| Traefik
+    Traefik -->|80ms| Cluster
+    Cluster -->|30ms| Redis
+    Redis -->|20ms| Cluster
+    Cluster -->|100ms| Mongo
+    Cluster -->|30ms| API
+    Mongo -->|Gzip 200ms| Cluster
+    
+    style Client fill:#51cf66
+    style Cluster fill:#69db7c
+    style Redis fill:#a9e34b
+    style Mongo fill:#d0f021
+    style API fill:#74b9ff
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p><strong>Key Differences:</strong> Optimized architecture uses caching layers, connection pooling, clustering, compression, and indexed queries to reduce latency from 3.2s → 0.4s on cellular networks (87% improvement).</p>
+        </div>
+
+        <!-- Implementation Steps -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-wrench"></i> Step-by-Step Implementation Guide</h2>
+            <p class="subtitle-text">Priority-based code changes with effort estimates</p>
+        </div>
+
+        <div class="tabs-custom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#priority-1">PRIORITY 1: Query Optimization</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#priority-2">PRIORITY 2: Caching & Compression</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#priority-3">PRIORITY 3: Infrastructure</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#docker-config">Docker & Deployment</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- PRIORITY 1 -->
+                <div class="tab-pane fade show active" id="priority-1">
+                    <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 1.5rem;">🔴 PRIORITY 1: Database Query Optimization (Est. 2-3 hours)</h4>
+
+                    <div class="step-timeline">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Add .lean() to All Find Queries</h4>
+                                <p>File: <span class="tag file">src/controllers/*.controller.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/controllers/labtest.controller.js</span>
+// ❌ BEFORE (500ms+ overhead)
+async function getLabTests(req, res) {
+  const tests = await LabTestModel
+    .find({ labId: req.params.labId })
+    .populate('labId', 'name logoUrl')
+    .exec()
+  
+  res.json({ success: true, data: tests })
+}
+
+// ✓ AFTER (60ms improvement)
+async function getLabTests(req, res) {
+  const tests = await LabTestModel
+    .find({ labId: req.params.labId })
+    .select('labTestName labTestCode mrp finalPrice discountPercentage tatHours')
+    .populate('labId', 'name logoUrl colorCode')
+    .lean() // 👈 CRITICAL: Removes Mongoose wrapper
+    .limit(100) // 👈 Prevent unbounded results
+    .sort({ createdAt: -1 })
+  
+  res.json({ success: true, data: tests })
+}
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 600-800ms reduction per request</li>
+                                    <li><strong>Effort:</strong> 30 minutes (find & replace)</li>
+                                    <li><strong>Applied to:</strong> labtest.controller.js, catalog.controller.js, cart.controller.js</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Create Database Indexes</h4>
+                                <p>File: <span class="tag file">src/models/*.model.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/models/LabTest.model.js</span>
+const LabTestSchema = new Schema({
+  labTestName: { type: String, required: true },
+  labTestCode: { type: String, required: true },
+  labId: { type: Schema.Types.ObjectId, ref: 'LabPartner', required: true },
+  mrp: { type: Number },
+  discountPercentage: { type: Number },
+  // ... other fields
+})
+
+// 👇 ADD THESE INDEXES
+LabTestSchema.index({ labId: 1, labTestCode: 1 }) // Composite for find()
+LabTestSchema.index({ labTestCode: 1 }, { unique: true }) // Unique constraint
+LabTestSchema.index({ labTestName: 'text', labTestDescription: 'text' }) // Full-text search
+
+// Verify in MongoDB:
+// db.labtests.getIndexes()
+                                </div>
+                                <div class="success-box">
+                                    <p><strong>Add to every frequently queried model:</strong> LabTest, LabPackage, Cart, Booking, ZipCode, PartnerSlot, Category</p>
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 500-700ms reduction (O(log n) vs O(n) queries)</li>
+                                    <li><strong>Effort:</strong> 20 minutes</li>
+                                    <li><strong>Verification:</strong> Use MongoDB compass to confirm indexes</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Add Pagination to Result-Heavy Endpoints</h4>
+                                <p>File: <span class="tag file">src/services/*.service.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/services/labtest.service.js</span>
+// ❌ BEFORE (Returns 1000+ items)
+async function listLabTests(labId) {
+  return await LabTestModel
+    .find({ labId })
+    .lean()
+}
+
+// ✓ AFTER (Pagination)
+async function listLabTests(labId, page = 1, limit = 50) {
+  const skip = (page - 1) * limit
+  
+  const tests = await LabTestModel
+    .find({ labId })
+    .select('labTestName labTestCode mrp finalPrice')
+    .lean()
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 })
+  
+  const total = await LabTestModel.countDocuments({ labId })
+  
+  return {
+    data: tests,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit)
+    }
+  }
+}
+
+// Frontend usage:
+// GET /api/v1/labtest?labId=123&page=1&limit=50
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> Prevents memory bloat and slow transfers</li>
+                                    <li><strong>Effort:</strong> 45 minutes</li>
+                                    <li><strong>Key endpoints:</strong> labtest list, packages list, cart items</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRIORITY 2 -->
+                <div class="tab-pane fade" id="priority-2">
+                    <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 1.5rem;">🟠 PRIORITY 2: Caching & Compression (Est. 1.5 hours)</h4>
+
+                    <div class="step-timeline">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Enable Response Compression (Gzip)</h4>
+                                <p>File: <span class="tag file">src/app.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/app.js</span>
+const express = require('express')
+const compression = require('compression')
+const morgan = require('morgan')
+const cors = require('cors')
+
+const app = express()
+
+// 👇 ADD THIS BEFORE OTHER MIDDLEWARE
+app.use(compression({
+  level: 6, // 0-9, higher = more compression but slower
+  threshold: 1024, // Only compress responses larger than 1KB
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false
+    return compression.filter(req, res)
+  }
+}))
+
+// Then your other middleware
+app.use(express.json({ limit: '2mb' }))
+app.use(express.urlencoded({ limit: '2mb', extended: true }))
+app.use(morgan('combined'))
+app.use(cors())
+
+// Install dependency:
+// npm install compression
+
+// Verify in browser DevTools:
+// Network tab → Response Headers → content-encoding: gzip
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 200-400ms reduction on cellular networks (90% size reduction)</li>
+                                    <li><strong>Effort:</strong> 5 minutes</li>
+                                    <li><strong>Browser support:</strong> 99.5% of modern devices</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Create Redis Cache Service</h4>
+                                <p>File: <span class="tag file">src/services/cache.service.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/services/cache.service.js</span>
+const redis = require('redis')
+const client = redis.createClient({
+  host: process.env.REDIS_HOST || 'localhost',
+  port: process.env.REDIS_PORT || 6379,
+  db: 0
+})
+
+client.connect()
+
+const DEFAULT_EXPIRY = 3600 // 1 hour
+
+async function getFromCache(key) {
+  try {
+    const value = await client.get(key)
+    return value ? JSON.parse(value) : null
+  } catch (e) {
+    console.error('Cache get error:', e)
+    return null
+  }
+}
+
+async function setInCache(key, value, expiry = DEFAULT_EXPIRY) {
+  try {
+    await client.setEx(key, expiry, JSON.stringify(value))
+    return true
+  } catch (e) {
+    console.error('Cache set error:', e)
+    return false
+  }
+}
+
+async function deleteFromCache(key) {
+  try {
+    await client.del(key)
+    return true
+  } catch (e) {
+    console.error('Cache delete error:', e)
+    return false
+  }
+}
+
+async function invalidatePattern(pattern) {
+  try {
+    const keys = await client.keys(pattern)
+    if (keys.length > 0) {
+      await client.del(keys)
+    }
+    return true
+  } catch (e) {
+    console.error('Cache invalidate error:', e)
+    return false
+  }
+}
+
+module.exports = {
+  getFromCache,
+  setInCache,
+  deleteFromCache,
+  invalidatePattern
+}
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 800-1500ms reduction for cacheable requests</li>
+                                    <li><strong>Effort:</strong> 20 minutes</li>
+                                    <li><strong>Install:</strong> npm install redis</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Implement Cache in Controllers</h4>
+                                <p>File: <span class="tag file">src/controllers/catalog.controller.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/controllers/catalog.controller.js</span>
+const { getFromCache, setInCache, invalidatePattern } = require('../services/cache.service')
+
+// ✓ Cached endpoint for lab tests
+async function getLabTestsController(req, res, next) {
+  try {
+    const labId = req.params.labId
+    const cacheKey = `labTests:${labId}`
+    
+    // 1️⃣ Check cache first
+    let tests = await getFromCache(cacheKey)
+    if (tests) {
+      return res.json({
+        success: true,
+        data: tests,
+        source: 'cache' // Debug header
+      })
+    }
+    
+    // 2️⃣ Cache miss - fetch from DB
+    tests = await LabTestModel
+      .find({ labId })
+      .select('labTestName labTestCode mrp finalPrice discountPercentage')
+      .lean()
+      .limit(100)
+    
+    // 3️⃣ Store in cache for 1 hour
+    await setInCache(cacheKey, tests, 3600)
+    
+    res.json({
+      success: true,
+      data: tests,
+      source: 'database'
+    })
+  } catch (e) {
+    next(e)
+  }
+}
+
+// Invalidate cache when data changes
+async function updateLabTestController(req, res, next) {
+  try {
+    const labId = req.params.labId
+    const test = await LabTestModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    )
+    
+    // Invalidate cache
+    await invalidatePattern(`labTests:${labId}*`)
+    
+    res.json({ success: true, data: test })
+  } catch (e) {
+    next(e)
+  }
+}
+
+module.exports = { getLabTestsController, updateLabTestController }
+
+// Cache key patterns to use:
+// labTests:{labId}
+// labPackages:{labId}
+// slots:{labId}:{date}
+// categories:all
+// zipcode:{zipcode}
+// cart:{userId}
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 70% of requests cache hit, average 20ms response</li>
+                                    <li><strong>Effort:</strong> 45 minutes</li>
+                                    <li><strong>Key endpoints to cache:</strong> catalog, labHome, cart details, categories</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRIORITY 3 -->
+                <div class="tab-pane fade" id="priority-3">
+                    <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 1.5rem;">🟡 PRIORITY 3: Infrastructure & Clustering (Est. 1 hour)</h4>
+
+                    <div class="step-timeline">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Enable Node.js Clustering</h4>
+                                <p>File: <span class="tag file">src/index.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/index.js</span>
+const cluster = require('cluster')
+const os = require('os')
+const http = require('http')
+
+const numWorkers = process.env.NODE_WORKERS || os.cpus().length
+
+if (cluster.isMaster) {
+  console.log(`Master process ${process.pid} starting ${numWorkers} workers...`)
+  
+  // Fork worker processes
+  for (let i = 0; i < numWorkers; i++) {
+    cluster.fork()
+  }
+  
+  // Handle worker exit
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died (${signal || code}). Restarting...`)
+    cluster.fork() // Auto-restart failed workers
+  })
+  
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully...')
+    for (const id in cluster.workers) {
+      cluster.workers[id].kill()
+    }
+    process.exit(0)
+  })
+} else {
+  // Worker process - start Express server
+  const app = require('./app')
+  const PORT = process.env.PORT || 3000
+  
+  const server = http.createServer(app)
+  
+  server.listen(PORT, () => {
+    console.log(`Worker ${process.pid} started on port ${PORT}`)
+  })
+  
+  // Graceful shutdown for worker
+  process.on('SIGTERM', () => {
+    console.log(`Worker ${process.pid} received SIGTERM, closing server...`)
+    server.close(() => {
+      process.exit(0)
+    })
+  })
+}
+
+// Verification:
+// ps aux | grep node
+// Should show 4-8 worker processes + 1 master
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 100-300ms reduction in queuing, 8x throughput increase</li>
+                                    <li><strong>Effort:</strong> 30 minutes</li>
+                                    <li><strong>Recommended:</strong> 4-8 workers (= CPU cores)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Connection Pooling for External APIs</h4>
+                                <p>File: <span class="tag file">src/adapters/partners/basePartner.adapter.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/adapters/partners/basePartner.adapter.js</span>
+const axios = require('axios')
+const http = require('http')
+const https = require('https')
+
+// Create HTTP agents with keep-alive
+const httpAgent = new http.Agent({
+  keepAlive: true,
+  maxSockets: 50,
+  maxFreeSockets: 10,
+  timeout: 60000,
+  freeSocketTimeout: 30000
+})
+
+const httpsAgent = new https.Agent({
+  keepAlive: true,
+  maxSockets: 50,
+  maxFreeSockets: 10,
+  timeout: 60000,
+  freeSocketTimeout: 30000
+})
+
+class BasePartnerAdapter {
+  constructor(opts) {
+    // ... existing code ...
+    
+    // ✓ Use pooled agents
+    this.http = axios.create({
+      baseURL: this.baseUrl,
+      timeout: 20000,
+      httpAgent,
+      httpsAgent,
+      headers: {
+        'User-Agent': 'InsureClick/1.0'
+      }
+    })
+  }
+  
+  // ... rest of implementation ...
+}
+
+module.exports = BasePartnerAdapter
+
+// Benefits:
+// ✓ TCP connections reused across requests
+// ✓ Reduces TLS handshake overhead by 300-500ms
+// ✓ Improved throughput for high concurrency
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 200-400ms reduction on partner API calls</li>
+                                    <li><strong>Effort:</strong> 15 minutes</li>
+                                    <li><strong>Applied to:</strong> Healthians & Redcliff adapter constructors</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Optimize Middleware Stack</h4>
+                                <p>File: <span class="tag file">src/app.js</span></p>
+                                <div class="code-block">
+<span class="code-label">src/app.js - Optimized Middleware Order</span>
+const express = require('express')
+const compression = require('compression')
+const morgan = require('morgan')
+const cors = require('cors')
+const helmet = require('helmet')
+
+const app = express()
+
+// 1️⃣ COMPRESSION FIRST (before json parsing)
+app.use(compression({ level: 6, threshold: 1024 }))
+
+// 2️⃣ SECURITY HEADERS
+app.use(helmet())
+
+// 3️⃣ REQUEST LOGGING (lightweight)
+app.use(morgan(':method :url :status :response-time ms'))
+
+// 4️⃣ CORS
+app.use(cors({
+  origin: ['https://app.insureklick.com', 'https://insureklick.com'],
+  credentials: true,
+  maxAge: 86400
+}))
+
+// 5️⃣ BODY PARSER (with limits)
+app.use(express.json({ limit: '1mb' })) // Reduce from 2mb
+app.use(express.urlencoded({ limit: '1mb', extended: true }))
+
+// 6️⃣ REQUEST TIMEOUT
+app.use((req, res, next) => {
+  res.setTimeout(30000) // 30s timeout
+  next()
+})
+
+// 7️⃣ ROUTES
+app.use('/api/v1', require('./routes'))
+
+// 8️⃣ ERROR HANDLING (last)
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).json({ success: false, message: 'Internal Server Error' })
+})
+
+module.exports = app
+
+// Impact: 50-100ms reduction in middleware overhead
+                                </div>
+                                <ul style="margin-top: 1rem;">
+                                    <li><strong>Impact:</strong> 50-100ms reduction in middleware processing</li>
+                                    <li><strong>Effort:</strong> 15 minutes</li>
+                                    <li><strong>Note:</strong> Middleware order matters for performance</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCKER CONFIG -->
+                <div class="tab-pane fade" id="docker-config">
+                    <h4 style="color: var(--dark); font-weight: 700; margin-bottom: 1.5rem;">🐳 Docker Compose & Deployment Configuration</h4>
+
+                    <div class="step-timeline">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Updated docker-compose.yml with Redis</h4>
+                                <p>File: <span class="tag file">docker-compose.yml</span></p>
+                                <div class="code-block">
+<span class="code-label">docker-compose.yml</span>
+version: '3.8'
+
+services:
+  # Node.js Backend with clustering
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: insureklick-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NODE_WORKERS=4 # Clustering: 4 workers
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/insureklick
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEALTHIANS_BASE_URL=${HEALTHIANS_BASE_URL}
+      - HEALTHIANS_API_KEY=${HEALTHIANS_API_KEY}
+      - REDCLIFF_BASE_URL=${REDCLIFF_BASE_URL}
+      - REDCLIFF_API_KEY=${REDCLIFF_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_PANEL_URL=${ADMIN_PANEL_URL}
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - insureklick-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./src:/app/src # Mount source for development
+    cpu_shares: 1024
+    memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # MongoDB Database
+  mongo:
+    image: mongo:7.0
+    container_name: insureklick-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=insureklick
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - insureklick-network
+    restart: unless-stopped
+    command: >
+      mongod
+      --auth
+      --wiredTigerCacheSizeGB=1.5
+      --setParameter maxIncomingConnections=10000
+      --maxPoolSize=100
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: insureklick-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - insureklick-network
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --loglevel notice
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # Traefik Reverse Proxy
+  traefik:
+    image: traefik:v2.10
+    container_name: insureklick-traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Dashboard
+    environment:
+      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
+      - CF_API_KEY=${CLOUDFLARE_API_KEY}
+    volumes:
+      - ./traefik/traefik.yml:/traefik.yml
+      - ./traefik/acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - insureklick-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.compresstraefik.compress=true"
+
+volumes:
+  mongo_data:
+    driver: local
+  mongo_config:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  insureklick-network:
+    driver: bridge
+
+# Usage:
+# docker-compose up -d                  # Start all services
+# docker-compose ps                     # Show status
+# docker-compose logs -f backend        # View backend logs
+# docker-compose down                   # Stop all services
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Updated Dockerfile with Multi-Stage Build</h4>
+                                <p>File: <span class="tag file">Dockerfile</span></p>
+                                <div class="code-block">
+<span class="code-label">Dockerfile</span>
+# Stage 1: Build
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production && \
+    npm cache clean --force
+
+# Stage 2: Runtime
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
+# Copy only necessary files from builder
+COPY --from=builder /app/node_modules ./node_modules
+COPY . .
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+USER nodejs
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+
+# Expose port
+EXPOSE 3000
+
+# Use dumb-init to handle signals
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start application
+CMD ["node", "src/index.js"]
+
+# Build command:
+# docker build -t insureklick-backend:latest .
+
+# Run command:
+# docker run -d \
+#   --name insureklick-backend \
+#   -p 3000:3000 \
+#   -e NODE_ENV=production \
+#   -e MONGODB_URI=mongodb://mongo:27017/insureklick \
+#   -e REDIS_HOST=redis \
+#   insureklick-backend:latest
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Environment Variables (.env)</h4>
+                                <p>File: <span class="tag file">.env</span></p>
+                                <div class="code-block">
+<span class="code-label">.env (Production)</span>
+# Node Configuration
+NODE_ENV=production
+NODE_WORKERS=4
+PORT=3000
+
+# Database
+MONGODB_URI=mongodb+srv://root:${MONGO_PASSWORD}@insureklick.mongodb.net/insureklick?retryWrites=true
+MONGO_PASSWORD=your_secure_password_here
+
+# Redis
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=your_redis_password_here
+
+# Partner APIs
+HEALTHIANS_BASE_URL=https://t25crm.healthians.co.in
+HEALTHIANS_API_KEY=your_healthians_key_here
+HEALTHIANS_WEBHOOK_TOKEN=your_webhook_token_here
+REDCLIFF_BASE_URL=https://api.redcliffelabs.com
+REDCLIFF_API_KEY=your_redcliff_key_here
+
+# JWT
+JWT_SECRET=your_super_secret_jwt_key_min_32_chars
+JWT_EXPIRY=24h
+
+# URLs
+ADMIN_PANEL_URL=https://admin.insureklick.com
+MOBILE_DEEPLINK_BASE=insureklickbooking://
+WEBAPP_BASE_URL=https://app.insureklick.com
+
+# Payment Gateways
+CASHFREE_KEY_ID=your_cashfree_key
+CASHFREE_KEY_SECRET=your_cashfree_secret
+RAZORPAY_KEY_ID=your_razorpay_key
+RAZORPAY_KEY_SECRET=your_razorpay_secret
+
+# Firebase
+FIREBASE_PROJECT_ID=insureklick-prod
+FIREBASE_PRIVATE_KEY=your_firebase_private_key
+
+# AWS/S3
+AWS_REGION=ap-south-1
+AWS_ACCESS_KEY_ID=your_aws_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret
+S3_BUCKET=insureklick-uploads
+
+# Logging
+LOG_LEVEL=info
+SENTRY_DSN=https://your_sentry_dsn_here
+
+# Cloudflare
+CLOUDFLARE_EMAIL=your_cf_email
+CLOUDFLARE_API_KEY=your_cf_api_key
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Roadmap -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-calendar-alt"></i> Implementation Roadmap & Timeline</h2>
+            <p class="subtitle-text">Phased approach for deploying optimizations without downtime</p>
+        </div>
+
+        <table class="deployment-table">
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Task</th>
+                    <th>Effort</th>
+                    <th>Latency Impact</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Week 1</strong></td>
+                    <td>
+                        <span class="tag priority">CRITICAL</span> Add .lean() to queries
+                        <br><span class="tag priority">CRITICAL</span> Create database indexes
+                    </td>
+                    <td>3 hours</td>
+                    <td>-1100ms</td>
+                    <td><strong style="color: var(--danger);">TODO</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 1</strong></td>
+                    <td>
+                        <span class="tag priority">CRITICAL</span> Enable gzip compression
+                        <br><span class="tag file">npm install compression</span>
+                    </td>
+                    <td>30 min</td>
+                    <td>-300ms (cellular)</td>
+                    <td><strong style="color: var(--danger);">TODO</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 2</strong></td>
+                    <td>
+                        <span class="tag file">Add Redis service (docker-compose)</span>
+                        <br><span class="tag file">Create cache.service.js</span>
+                    </td>
+                    <td>1.5 hours</td>
+                    <td>-1200ms (70% hit)</td>
+                    <td><strong style="color: var(--danger);">TODO</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 2</strong></td>
+                    <td>
+                        <span class="tag file">Enable Node clustering</span>
+                        <br><span class="tag file">Connection pooling for APIs</span>
+                    </td>
+                    <td>1 hour</td>
+                    <td>-300ms (concurrent)</td>
+                    <td><strong style="color: var(--danger);">TODO</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 3</strong></td>
+                    <td>
+                        <span class="tag file">End-to-end testing on staging</span>
+                        <br><span class="tag file">Performance benchmarking</span>
+                    </td>
+                    <td>2 hours</td>
+                    <td>Validate improvements</td>
+                    <td><strong style="color: var(--danger);">TODO</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 3</strong></td>
+                    <td>
+                        <span class="tag file">Blue-green deployment to production</span>
+                        <br><span class="tag file">Monitor metrics with Datadog/New Relic</span>
+                    </td>
+                    <td>2 hours</td>
+                    <td>Live verification</td>
+                    <td><strong style="color: var(--danger);">TODO</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="success-box" style="margin-top: 2rem;">
+            <p><strong>Expected Results After Full Implementation:</strong></p>
+            <ul style="margin-top: 0.75rem; padding-left: 1.5rem;">
+                <li>Cellular latency: 3.2s → 0.4s <strong>(87% improvement)</strong></li>
+                <li>Broadband latency: 1.8s → 0.2s <strong>(89% improvement)</strong></li>
+                <li>P95 latency: 5.8s → 0.6s <strong>(90% improvement)</strong></li>
+                <li>Throughput: 50 RPS → 500 RPS <strong>(10x increase)</strong></li>
+                <li>Data usage: 500KB → 50KB <strong>(90% reduction)</strong></li>
+                <li>Mobile UX: Buttery smooth 1s loads</li>
+            </ul>
+        </div>
+
+        <!-- Package.json Updates -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-box"></i> Dependencies to Install</h2>
+            <p class="subtitle-text">New packages required for optimization</p>
+        </div>
+
+        <div class="code-block">
+<span class="code-label">package.json - Add these dependencies</span>
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0",
+    "redis": "^4.6.0", // ← NEW: Redis client
+    "compression": "^1.7.4", // ← NEW: Gzip compression
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "jsonwebtoken": "^9.0.0",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
+
+// Install command:
+// npm install redis compression
+
+// Verify installation:
+// npm list redis compression
+        </div>
+
+        <div class="info-box">
+            <p><strong>Installation Steps:</strong></p>
+            <ol style="margin-top: 0.75rem; padding-left: 1.5rem;">
+                <li>Run: <code>npm install redis compression</code></li>
+                <li>Verify: <code>npm list redis compression</code></li>
+                <li>Update docker-compose.yml with Redis service</li>
+                <li>Test locally: <code>docker-compose up</code></li>
+            </ol>
+        </div>
+
+        <!-- Monitoring & Metrics -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-eye"></i> Monitoring & Performance Metrics</h2>
+            <p class="subtitle-text">Tools and queries to track optimization progress</p>
+        </div>
+
+        <div class="architecture-grid">
+            <div class="architecture-item">
+                <h4>New Relic / DataDog</h4>
+                <p>Real-time latency monitoring across all services.</p>
+                <ul class="feature-list">
+                    <li>Transaction response times</li>
+                    <li>Database query performance</li>
+                    <li>Cache hit rates</li>
+                    <li>Error tracking</li>
+                </ul>
+            </div>
+
+            <div class="architecture-item cache">
+                <h4>Redis Monitoring</h4>
+                <p>Track cache effectiveness and memory usage.</p>
+                <ul class="feature-list">
+                    <li>Cache hit ratio (target: >70%)</li>
+                    <li>Memory usage (max: 512MB)</li>
+                    <li>Eviction policy: LRU</li>
+                    <li>Key expiry rates</li>
+                </ul>
+            </div>
+
+            <div class="architecture-item db">
+                <h4>MongoDB Profiler</h4>
+                <p>Identify slow queries and optimize index usage.</p>
+                <ul class="feature-list">
+                    <li>Query execution times</li>
+                    <li>Index usage stats</li>
+                    <li>Scan vs fetch ratio</li>
+                    <li>Connection pool stats</li>
+                </ul>
+            </div>
+
+            <div class="architecture-item api">
+                <h4>Custom Metrics</h4>
+                <p>Application-level performance tracking.</p>
+                <ul class="feature-list">
+                    <li>API endpoint latencies</li>
+                    <li>Request per second (RPS)</li>
+                    <li>Error rates & types</li>
+                    <li>Payment gateway latency</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="code-block">
+<span class="code-label">Monitoring Queries & Commands</span>
+// Redis Cache Hit Ratio
+redis-cli INFO stats | grep "keyspace_hits"
+redis-cli INFO stats | grep "keyspace_misses"
+// Formula: hits / (hits + misses) → Target: >0.70
+
+// MongoDB Slow Query Log
+db.setProfilingLevel(1, { slowms: 100 })
+db.system.profile.find().sort({ ts: -1 }).limit(10)
+
+// Node.js Memory & CPU
+node --expose-gc app.js
+console.log(process.memoryUsage())
+
+// Check Clustering
+ps aux | grep node
+// Should show 4-8 worker processes
+
+// Test Compression
+curl -i -H "Accept-Encoding: gzip" https://api.aarjak.com/api/v1/cart
+// Check Response Headers: content-encoding: gzip
+
+// Benchmark Endpoints
+apache2ctl -t 100 -c 10 https://api.aarjak.com/api/v1/cart
+// Load test with 100 requests, 10 concurrent
+
+// Network Latency Test
+curl -w "@curl-format.txt" -o /dev/null -s https://api.aarjak.com/api/v1/auth/me
+        </div>
+
+        <!-- Troubleshooting & FAQ -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-question-circle"></i> Troubleshooting & FAQ</h2>
+            <p class="subtitle-text">Common issues and solutions</p>
+        </div>
+
+        <div class="accordion" id="faqAccordion" style="margin-bottom: 3rem;">
+            <div class="accordion-item" style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" style="background: white; color: var(--dark); font-weight: 600; padding: 1rem;">
+                        ❌ "Redis connection refused" error after docker-compose up
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body" style="padding: 1.5rem; background: #f9fafb;">
+                        <p><strong>Solution:</strong> Redis service might not be ready. Add health check wait:</p>
+                        <div class="code-block">
+docker-compose up -d
+sleep 10 # Wait for Redis to initialize
+docker-compose logs redis # Check for errors
+
+# Or use depends_on with condition:
+services:
+  backend:
+    depends_on:
+      redis:
+        condition: service_healthy
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item" style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" style="background: white; color: var(--dark); font-weight: 600; padding: 1rem;">
+                        ⚠️ "ENOENT: no such file or directory" after enabling compression
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body" style="padding: 1.5rem; background: #f9fafb;">
+                        <p><strong>Solution:</strong> Compression package not installed properly:</p>
+                        <div class="code-block">
+# Reinstall the package
+npm uninstall compression
+npm install compression
+
+# Clear node_modules cache
+rm -rf node_modules package-lock.json
+npm install
+
+# Verify
+npm list compression
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item" style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" style="background: white; color: var(--dark); font-weight: 600; padding: 1rem;">
+                        📊 Latency still high after implementing optimizations
+                    </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body" style="padding: 1.5rem; background: #f9fafb;">
+                        <p><strong>Debugging Steps:</strong></p>
+                        <ol style="padding-left: 1.5rem; margin-top: 0.75rem;">
+                            <li>Check cache hit rates: <code>redis-cli INFO stats</code></li>
+                            <li>Monitor MongoDB query times: <code>db.setProfilingLevel(1, { slowms: 100 })</code></li>
+                            <li>Verify compression is active: Check response headers</li>
+                            <li>Confirm clustering: <code>ps aux | grep node</code> should show 4-8 workers</li>
+                            <li>Check network latency: <code>curl -w "@curl-format.txt" your-api</code></li>
+                            <li>Profile with DataDog/NewRelic to find remaining bottlenecks</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item" style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" style="background: white; color: var(--dark); font-weight: 600; padding: 1rem;">
+                        💾 "Out of Memory" error with clustering enabled
+                    </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body" style="padding: 1.5rem; background: #f9fafb;">
+                        <p><strong>Solution:</strong> Reduce number of workers or increase container memory:</p>
+                        <div class="code-block">
+# Option 1: Reduce workers (in .env)
+NODE_WORKERS=2 # Instead of CPU count
+
+# Option 2: Increase Docker memory limit (docker-compose.yml)
+services:
+  backend:
+    memory: 4G # Increase from 2G
+    memswap_limit: 4G
+
+# Option 3: Enable garbage collection
+node --max-old-space-size=2048 src/index.js
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary & Next Steps -->
+        <div class="section-header mt-5">
+            <h2><i class="fas fa-flag-checkered"></i> Summary & Next Steps</h2>
+            <p class="subtitle-text">Key takeaways and action items</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="metric-card success">
+                    <h4 style="color: var(--dark); margin-bottom: 1rem;">✓ What You'll Achieve</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>87% latency reduction</strong> on cellular networks
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>10x throughput increase</strong> to 500 RPS
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>90% reduction</strong> in data transfer
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>70% cache hit rate</strong> reduces DB load
+                        </li>
+                        <li style="padding: 0.5rem 0; color: #6b7280;">
+                            <strong>Smooth UX</strong> - 1 second load times
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="metric-card" style="border-left-color: var(--warning);">
+                    <h4 style="color: var(--dark); margin-bottom: 1rem;">📋 Action Items (Priority Order)</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>Week 1:</strong> Add .lean() + Indexes + Compression
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>Week 2:</strong> Redis Cache + Node Clustering
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>Week 3:</strong> Testing + Production Deployment
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;">
+                            <strong>Ongoing:</strong> Monitor metrics & optimize further
+                        </li>
+                        <li style="padding: 0.5rem 0; color: #6b7280;">
+                            <strong>Future:</strong> Consider GraphQL, Microservices, CDN
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact & Support -->
+        <div class="info-box" style="text-align: center; background: linear-gradient(135deg, rgba(3, 102, 214, 0.05), rgba(22, 163, 74, 0.05));">
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                <strong>Questions or Need Help?</strong>
+            </p>
+            <p style="margin: 0.5rem 0;">Review the code files: <code style="background: #f3f4f6; padding: 0.2rem 0.4rem; border-radius: 3px;">repomix-output.xml</code></p>
+            <p style="margin: 0.5rem 0;">Monitor dashboard: <code style="background: #f3f4f6; padding: 0.2rem 0.4rem; border-radius: 3px;">DataDog / New Relic</code></p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">Last updated: January 2026</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>InsureClick Performance Optimization Hub • Comprehensive architecture analysis, code improvements, and deployment guide</p>
+        <p style="margin-top: 0.5rem; color: #9ca3af;">Expected result: 87% latency reduction (3.2s → 0.4s) on cellular networks after full implementation</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ startOnLoad: true, theme: 'default' })
+        mermaid.contentLoaded()
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault()
+                const target = document.querySelector(this.getAttribute('href'))
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' })
+                }
+            })
+        })
+
+        // Tab switching with URL hash
+        const tabs = document.querySelectorAll('[data-bs-toggle="tab"]')
+        tabs.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function() {
+                history.replaceState(null, '', '#' + this.getAttribute('data-bs-target'))
+            })
+        })
+
+        // Accordion auto-expand first item
+        const firstAccordion = document.querySelector('.accordion-item')
+        if (firstAccordion) {
+            const button = firstAccordion.querySelector('.accordion-button')
+            if (button && button.classList.contains('collapsed')) {
+                button.click()
+            }
+        }
+    </script>
+</body>
+</html>

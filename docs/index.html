@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Xeniosrahi Infra/DevOps Stack README</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Xeniosrahi Infra/DevOps Stack README" />
+  <meta property="og:description" content="Complete Pi 5 stack: GNOME (Xorg), RDP, Cloudflare DDNS, Nginx+TLS, MySQL Community, phpMyAdmin, VS Code Server, FTP/SFTP, Flutter web — fully automated & non-interactive." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cloud.xeniosrahi.com/" />
+  <meta property="og:image" content="https://cloud.xeniosrahi.com/preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Xeniosrahi Infra/DevOps Stack README" />
+  <meta name="twitter:description" content="Pi 5 DevOps stack: GNOME, RDP, DDNS, Nginx+TLS, MySQL, phpMyAdmin, VS Code, FTP/SFTP, Flutter — one-click install." />
+  <meta name="twitter:image" content="https://cloud.xeniosrahi.com/preview.png" />
+
+  <!-- Dark GitHub-like styling -->
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1, h2, h3, h4 {
+      color: #58a6ff;
+      margin-top: 1.5em;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 0.3em;
+    }
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; }
+    h3 { font-size: 1.25em; }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul, ol { padding-left: 2em; margin-top: 0.6em; margin-bottom: 0.6em; }
+    li { margin: 0.4em 0; }
+    code {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 0.2em 0.4em;
+      font-size: 0.9em;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    }
+    pre {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+    pre code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      background: none;
+      border: none;
+      padding: 0;
+      color: #c9d1d9;
+      white-space: pre;
+      display: block;
+    }
+    blockquote {
+      border-left: 4px solid #30363d;
+      padding-left: 1em;
+      color: #8b949e;
+      margin: 1em 0;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Xeniosrahi Infra/DevOps Stack</h1>
+
+<p>This project bundles everything into a <strong>one-click Pi 5 stack</strong>. It’s designed for:</p>
+<ul>
+  <li><strong>Infrastructure debugging</strong> via <code>status.xeniosrahi.com</code></li>
+  <li><strong>RDP access</strong> to GNOME on Xorg (<code>rdp.xeniosrahi.com</code>)</li>
+  <li><strong>MySQL Community</strong> (no MariaDB) at <code>db.xeniosrahi.com</code></li>
+  <li><strong>Custom apps</strong> on Docker, e.g. <code>bnb.xeniosrahi.com</code></li>
+  <li><strong>VS Code Server</strong> at <code>code.xeniosrahi.com</code></li>
+  <li><strong>FTP/SFTP</strong> support at <code>ftp.xeniosrahi.com</code></li>
+  <li><strong>Flutter web starter</strong> scaffold for frontend</li>
+</ul>
+
+<h2>Features</h2>
+<ul>
+  <li>✅ Cloudflare DDNS with auto hostname binding</li>
+  <li>✅ Minimal GNOME desktop on Xorg, kiosk-mode RDP ready</li>
+  <li>✅ Nginx + Let’s Encrypt (DNS-01 challenge) for HTTPS</li>
+  <li>✅ MySQL Community edition in Docker with host-mounted volume backups</li>
+  <li>✅ phpMyAdmin Web UI for DB management (Basic Auth)</li>
+  <li>✅ Web-based SSH client embedded on status page (Basic Auth)</li>
+  <li>✅ VS Code Server exposed with TLS + Basic Auth</li>
+  <li>✅ FTP + SFTP server running with TLS certs</li>
+  <li>✅ Fully automated installer — <strong>single run, no human prompts after start</strong></li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>Edit your <code>.env</code> before running:</p>
+
+<pre><code>APEX_DOMAIN=xeniosrahi.com
+CF_API_TOKEN=your_cloudflare_api_token
+CF_ZONE_ID=your_cloudflare_zone_id
+MYSQL_ROOT_PASSWORD=supersecret
+BASIC_AUTH_USER=admin
+BASIC_AUTH_PASS=changeme
+</code></pre>
+
+<p>Then execute:</p>
+
+<pre><code>chmod +x install.sh
+./install.sh
+</code></pre>
+
+<h2>After Installation</h2>
+<ul>
+  <li><a href="https://status.xeniosrahi.com">status.xeniosrahi.com</a> → infra dashboard (with embedded tools)</li>
+  <li><a href="https://db.xeniosrahi.com">db.xeniosrahi.com</a> → phpMyAdmin</li>
+  <li><a href="https://rdp.xeniosrahi.com">rdp.xeniosrahi.com</a> → RDP gateway</li>
+  <li><a href="https://bnb.xeniosrahi.com">bnb.xeniosrahi.com</a> → your custom app container</li>
+  <li><a href="https://code.xeniosrahi.com">code.xeniosrahi.com</a> → VS Code Server</li>
+  <li><a href="https://ftp.xeniosrahi.com">ftp.xeniosrahi.com</a> → FTP/SFTP</li>
+</ul>
+
+<h2>Notes</h2>
+<ul>
+  <li>All services are ARM64 compatible (tested on Raspberry Pi 5).</li>
+  <li>Only <strong>MySQL Community Edition</strong> is installed (MariaDB excluded).</li>
+  <li>Renewal logic for Let’s Encrypt is DNS-01 challenge based, auto-renewed.</li>
+  <li>Every service is baked as a <code>systemd</code> service or Docker container.</li>
+</ul>
+
+</body>
+</html>

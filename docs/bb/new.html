@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEW Unified Transport System | Complete Architecture Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .nav-item.active {
+            background-color: #eff6ff;
+            border-left: 3px solid #2563eb;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        .view-section { display: none; animation: fadeIn 0.3s ease-in; }
+        .view-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+        }
+
+        code { font-family: 'JetBrains Mono', monospace; }
+
+        .code-block-container { position: relative; margin: 1.5rem 0; }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.2s;
+            z-index: 10;
+        }
+
+        .code-block-container:hover .copy-btn { opacity: 1; }
+        .copy-btn:hover { background: #2563eb; }
+        .copy-btn.copied { background: #10b981; }
+
+        .mermaid-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .mermaid-controls {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+
+        .mermaid-container:hover .mermaid-controls { opacity: 1; }
+
+        .mermaid-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mermaid-btn:hover {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        thead { background-color: #f1f5f9; }
+
+        th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 0.875rem;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+
+        tr:hover { background-color: #f8fafc; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge-centralized { background-color: #dbeafe; color: #1e40af; }
+        .badge-transaction { background-color: #fed7aa; color: #9a3412; }
+        .badge-new { background-color: #dcfce7; color: #166534; }
+
+        @media print {
+            body { background: white; }
+            aside, .copy-btn, .mermaid-controls, header button { display: none !important; }
+            main { width: 100% !important; height: auto !important; overflow: visible !important; }
+            .view-section { display: block !important; page-break-inside: avoid; }
+            pre { background: #f5f5f5 !important; color: #000 !important; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col md:flex-row overflow-hidden">
+
+<!-- Sidebar Navigation -->
+<aside class="w-full md:w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col h-auto md:h-screen shadow-sm z-20">
+    <div class="p-6 border-b border-slate-100 bg-slate-50">
+        <h1 class="text-xl font-bold text-slate-800 tracking-tight">NEW Unified System<br><span class="text-blue-600 text-sm font-medium">Complete Documentation</span></h1>
+        <p class="text-xs text-slate-500 mt-2">v2.0 • Centralized Architecture</p>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto py-4 space-y-1">
+        <button onclick="switchView('overview')" class="nav-item active w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">📊</span> System Overview
+        </button>
+        <button onclick="switchView('architecture')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🏗️</span> Architecture
+        </button>
+        <button onclick="switchView('database')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🗄️</span> Database Structure
+        </button>
+        <button onclick="switchView('schemas')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">📋</span> Table Schemas
+        </button>
+        <button onclick="switchView('masters')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🌐</span> Centralized Masters
+        </button>
+        <button onclick="switchView('ledgers')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">💰</span> Centralized Ledgers
+        </button>
+        <button onclick="switchView('transactions')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🔥</span> Transactions
+        </button>
+        <button onclick="switchView('deduplication')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🧬</span> Deduplication
+        </button>
+        <button onclick="switchView('diagrams')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">📐</span> Diagrams
+        </button>
+        <button onclick="switchView('queries')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🔍</span> Query Patterns
+        </button>
+        <button onclick="switchView('migration')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🚀</span> Migration Guide
+        </button>
+        <button onclick="switchView('benefits')" class="nav-item w-full text-left px-6 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-3">
+            <span class="text-lg">🎯</span> Benefits
+        </button>
+    </nav>
+
+    <div class="p-4 border-t border-slate-100 bg-slate-50">
+        <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-emerald-800">Status</span>
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            </div>
+            <p class="text-xs text-emerald-700">Documentation Complete. Ready for Implementation.</p>
+        </div>
+    </div>
+</aside>
+
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto h-screen relative scroll-smooth" id="main-content">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10 px-8 py-4 flex justify-between items-center shadow-sm">
+        <div>
+            <h2 id="page-title" class="text-2xl font-bold text-slate-800">System Overview</h2>
+            <p id="page-desc" class="text-sm text-slate-500">Executive overview of the unified transport management system.</p>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="window.print()" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors">
+                🖨️ Print
+            </button>
+        </div>
+    </header>
+
+    <div class="px-8 py-6">
+
+        <!-- OVERVIEW SECTION -->
+        <div id="view-overview" class="view-section active">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">📊</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">NEW Unified Transport Management System</h3>
+                        <p class="text-slate-600">Multi-Tenant Architecture with Centralized Master Data & Ledgers</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+                        <div class="text-3xl font-bold">12</div>
+                        <div class="text-sm opacity-90 mt-1">Core Tables</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg p-6 text-white">
+                        <div class="text-3xl font-bold">7</div>
+                        <div class="text-sm opacity-90 mt-1">Centralized Tables</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg p-6 text-white">
+                        <div class="text-3xl font-bold">2</div>
+                        <div class="text-sm opacity-90 mt-1">Transaction Tables</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-6 text-white">
+                        <div class="text-3xl font-bold">∞</div>
+                        <div class="text-sm opacity-90 mt-1">Unlimited Factories</div>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4">🎯 Key Features</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                        <h5 class="font-semibold text-blue-900 mb-2">Centralized Master Data</h5>
+                        <p class="text-sm text-blue-800">Transporters, parties, petrol pumps shared across all factories with single source of truth</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4">
+                        <h5 class="font-semibold text-emerald-900 mb-2">Centralized Ledgers</h5>
+                        <p class="text-sm text-emerald-800">Unified advances and commissions accounting per transporter</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-100 rounded-lg p-4">
+                        <h5 class="font-semibold text-amber-900 mb-2">Multi-Tenant Support</h5>
+                        <p class="text-sm text-amber-800">Origin tracking at transaction level for multi-factory operations</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                        <h5 class="font-semibold text-purple-900 mb-2">Intelligent Deduplication</h5>
+                        <p class="text-sm text-purple-800">PAN/GST/Name-based matching prevents duplicate entries</p>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4">✨ System Benefits</h4>
+                <ul class="space-y-2 text-slate-700">
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-500 mt-1">✓</span>
+                        <span><strong>No Duplicate Transporters:</strong> Single transporter can work across multiple factories</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-500 mt-1">✓</span>
+                        <span><strong>Unified Accounting:</strong> One account per transporter for advances and commissions</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-500 mt-1">✓</span>
+                        <span><strong>Cross-Factory Invoicing:</strong> Single invoice can settle trips from multiple factories</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-500 mt-1">✓</span>
+                        <span><strong>Better Analytics:</strong> Compare and analyze performance across all factories</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-500 mt-1">✓</span>
+                        <span><strong>Audit Logging:</strong> Complete transaction history tracking</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+                <h4 class="text-lg font-semibold text-blue-900 mb-3">📌 Architecture Highlights</h4>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full"></span>
+                        <span class="text-slate-700"><strong>Database:</strong> <code class="bg-white px-2 py-1 rounded border border-slate-200">transport_unified</code></span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex-shrink-0 w-2 h-2 bg-emerald-600 rounded-full"></span>
+                        <span class="text-slate-700"><strong>Architecture Type:</strong> Multi-tenant with Centralized Master Data</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex-shrink-0 w-2 h-2 bg-amber-600 rounded-full"></span>
+                        <span class="text-slate-700"><strong>Key Innovation:</strong> Centralized Ledgers (advances + commissions)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex-shrink-0 w-2 h-2 bg-purple-600 rounded-full"></span>
+                        <span class="text-slate-700"><strong>Scalability:</strong> Unlimited factory support with origin tracking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARCHITECTURE SECTION -->
+        <div id="view-architecture" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🏗️</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Architecture Revision</h3>
+                        <p class="text-slate-600">Centralized Master Data + Centralized Ledgers</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-6 mb-6">
+                    <h4 class="text-lg font-semibold text-emerald-900 mb-4">✅ Key Architectural Change</h4>
+                    <p class="text-emerald-800 mb-4">All Master Data Tables are <strong>CENTRALIZED</strong> (no origin_id)</p>
+                    <ul class="space-y-2 text-sm text-emerald-800">
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>transporters</strong> - Shared across all factories</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>parties</strong> - Shared across all factories</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>petrol_pumps</strong> - Shared across all factories</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>sessions</strong> - Shared fiscal years</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>invoices</strong> - Centralized payment documents</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>ledger_advances</strong> - ⚡ NOW CENTRALIZED (with optional metadata)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 mt-1">•</span>
+                            <span><strong>ledger_commissions</strong> - ⚡ NOW CENTRALIZED (with optional metadata)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-6 mb-6">
+                    <h4 class="text-lg font-semibold text-amber-900 mb-4">🔥 Origin Tracking at TRANSACTION Level</h4>
+                    <ul class="space-y-2 text-sm text-amber-800">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <span><strong>sales</strong> table has origin_id + references to centralized masters</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <span><strong>invoice_line_items</strong> has origin_id per line</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4">💡 Business Logic Example</h4>
+                <div class="code-block-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>Transporter: M.K. Motors (works for Wonder + Mangalam)
+
+OLD DESIGN (per-factory ledgers):
+├─ Wonder advances: ₹50,000 (origin_id=1)
+├─ Mangalam advances: ₹30,000 (origin_id=2)
+└─ Invoice must specify which factory's advances to settle
+
+NEW DESIGN (centralized ledgers):
+├─ Total advances: ₹80,000 (no origin_id)
+├─ Total commissions: ₹5,000 (no origin_id)
+└─ One invoice settles from unified account</code></pre>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4">✨ Benefits of Centralized Ledgers</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                        <div class="text-blue-600 font-semibold mb-2">✓ Simpler Accounting</div>
+                        <p class="text-sm text-blue-800">One account per transporter across all factories</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4">
+                        <div class="text-emerald-600 font-semibold mb-2">✓ Easier Settlements</div>
+                        <p class="text-sm text-emerald-800">No need to track which factory's advance</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                        <div class="text-purple-600 font-semibold mb-2">✓ Unified Balance</div>
+                        <p class="text-sm text-purple-800">Single outstanding balance calculation</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-100 rounded-lg p-4">
+                        <div class="text-amber-600 font-semibold mb-2">✓ Matches Invoice Model</div>
+                        <p class="text-sm text-amber-800">Consistent with centralized invoice approach</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATABASE SECTION -->
+        <div id="view-database" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🗄️</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Database Structure</h3>
+                        <p class="text-slate-600">Complete table organization and architecture</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 mb-6">
+                    <div class="text-lg font-semibold text-slate-800 mb-2">Database Name</div>
+                    <code class="text-xl bg-slate-800 text-emerald-400 px-4 py-2 rounded">transport_unified</code>
+                    <p class="text-sm text-slate-600 mt-3">Architecture Type: Multi-tenant with Centralized Master Data</p>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4">📊 Complete Table Structure</h4>
+                <p class="text-slate-600 mb-6"><strong>Total:</strong> 12 Core Tables + 1 Audit Table</p>
+
+                <div class="space-y-6">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">🏢</span>
+                            <h5 class="font-semibold text-blue-900">TENANT MANAGEMENT (2 tables)</h5>
+                        </div>
+                        <ul class="space-y-1 text-sm text-blue-800 ml-8">
+                            <li><strong>origins</strong> - Master tenant table</li>
+                            <li><strong>users</strong> - Multi-origin access control</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">📋</span>
+                            <h5 class="font-semibold text-emerald-900">CENTRALIZED MASTER DATA (5 tables) - NO origin_id</h5>
+                        </div>
+                        <ul class="space-y-1 text-sm text-emerald-800 ml-8">
+                            <li><strong>transporters</strong> - Shared truck owners</li>
+                            <li><strong>parties</strong> - Shared customers</li>
+                            <li><strong>petrol_pumps</strong> - Shared fuel stations</li>
+                            <li><strong>sessions</strong> - Shared fiscal years</li>
+                            <li><strong>invoices</strong> - Centralized payment documents</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">💰</span>
+                            <h5 class="font-semibold text-teal-900">CENTRALIZED LEDGERS (2 tables) - Optional origin metadata</h5>
+                        </div>
+                        <ul class="space-y-1 text-sm text-teal-800 ml-8">
+                            <li><strong>ledger_advances</strong> - Unified advances</li>
+                            <li><strong>ledger_commissions</strong> - Unified commissions</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">🔥</span>
+                            <h5 class="font-semibold text-amber-900">TRANSACTIONS (2 tables) - WITH origin_id</h5>
+                        </div>
+                        <ul class="space-y-1 text-sm text-amber-800 ml-8">
+                            <li><strong>sales</strong> - Trip belongs to which factory</li>
+                            <li><strong>invoice_line_items</strong> - Line item from which factory</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">📝</span>
+                            <h5 class="font-semibold text-purple-900">AUDIT (1 table)</h5>
+                        </div>
+                        <ul class="space-y-1 text-sm text-purple-800 ml-8">
+                            <li><strong>audit_logs</strong> - Complete transaction history</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCHEMAS SECTION -->
+        <div id="view-schemas" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">📋</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Detailed Table Schemas</h3>
+                        <p class="text-slate-600">SQL CREATE statements for all core tables</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- ORIGINS TABLE -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <span class="text-blue-600">1.</span> ORIGINS (Tenant Master)
+                        </h4>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">CREATE TABLE origins (
+    -- Primary Key
+    origin_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Identification
+    origin_code VARCHAR(50) UNIQUE NOT NULL,
+    origin_name VARCHAR(255) NOT NULL,
+    legal_name VARCHAR(500),
+
+    -- Tax & Legal
+    gst_number VARCHAR(20),
+    pan_number VARCHAR(20),
+
+    -- Contact Information
+    address TEXT,
+    city VARCHAR(100),
+    state VARCHAR(100),
+    pincode VARCHAR(10),
+    phone VARCHAR(15),
+    email VARCHAR(255),
+
+    -- Status & Timestamps
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    INDEX idx_origin_code (origin_code),
+    INDEX idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- TRANSPORTERS TABLE -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <span class="text-emerald-600">2.</span> TRANSPORTERS <span class="badge badge-centralized">NO origin_id</span>
+                        </h4>
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4 mb-3">
+                            <p class="text-sm text-emerald-800"><strong>✨ Benefits:</strong> No duplicate transporter entries. Single source of truth. Can work across multiple factories.</p>
+                        </div>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">CREATE TABLE transporters (
+    -- Primary Key
+    transporter_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Basic Information
+    name VARCHAR(255) UNIQUE NOT NULL,           -- ✨ UNIQUE across all factories
+    gst VARCHAR(20),
+    pan VARCHAR(20),
+    address TEXT,
+    phone VARCHAR(15),
+
+    -- Banking Details
+    bank_name VARCHAR(255),
+    bank_account VARCHAR(50),
+    ifsc_code VARCHAR(20),
+
+    -- Status & Timestamps
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Indexes
+    INDEX idx_name (name),
+    INDEX idx_is_active (is_active),
+    INDEX idx_gst (gst)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ✨ Same transporter can work for multiple factories!
+-- Relationship tracked in sales table via (origin_id + transporter_id)</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- LEDGER_ADVANCES TABLE -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <span class="text-teal-600">3.</span> LEDGER_ADVANCES <span class="badge badge-new">CENTRALIZED</span>
+                        </h4>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-4 mb-3">
+                            <p class="text-sm text-amber-800"><strong>⚡ Key Changes:</strong> Removed origin_id. Added given_by_origin_id (optional metadata). Added settled_amount for partial settlements. One unified account per transporter.</p>
+                        </div>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">CREATE TABLE ledger_advances (
+    -- Primary Key
+    advance_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- ⚡ NO origin_id - Centralized!
+
+    -- Foreign Keys
+    transporter_id INT NOT NULL,
+    given_by_user_id INT,
+
+    -- Advance Details
+    advance_amount DECIMAL(10,2) NOT NULL,
+    entry_date DATE NOT NULL,
+    payment_mode ENUM('CASH', 'CHEQUE', 'RTGS', 'NEFT', 'UPI') DEFAULT 'CASH',
+    payment_reference VARCHAR(100),
+
+    -- Optional: Track which factory gave it (for reporting only)
+    given_by_origin_id INT,
+
+    -- Settlement Tracking
+    is_settled BOOLEAN DEFAULT FALSE,
+    settled_in_invoice_id INT,
+    settled_date DATE,
+    settled_amount DECIMAL(10,2),
+
+    -- Description
+    description TEXT,
+    notes TEXT,
+
+    -- Timestamps
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Indexes
+    INDEX idx_transporter (transporter_id),
+    INDEX idx_is_settled (is_settled),
+    INDEX idx_entry_date (entry_date),
+    INDEX idx_given_by_origin (given_by_origin_id),
+
+    FOREIGN KEY (transporter_id) REFERENCES transporters(transporter_id),
+    FOREIGN KEY (given_by_user_id) REFERENCES users(user_id),
+    FOREIGN KEY (given_by_origin_id) REFERENCES origins(origin_id),
+    FOREIGN KEY (settled_in_invoice_id) REFERENCES invoices(invoice_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- SALES TABLE -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                            <span class="text-amber-600">4.</span> SALES <span class="badge badge-transaction">WITH origin_id</span>
+                        </h4>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-4 mb-3">
+                            <p class="text-sm text-amber-800"><strong>Key Points:</strong> origin_id identifies which factory. All master references (transporter, party, pump) are centralized. LR number unique per (origin + session).</p>
+                        </div>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">CREATE TABLE sales (
+    -- Primary Key
+    sale_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- 🔥 Multi-Tenancy (origin tracking)
+    origin_id INT NOT NULL,
+
+    -- Foreign Keys (all point to CENTRALIZED masters)
+    session_id INT NOT NULL,
+    transporter_id INT NOT NULL,
+    party_id INT NOT NULL,
+    pump_id INT,
+
+    -- Trip Identification
+    lr_number INT NOT NULL,
+    dispatch_date DATE NOT NULL,
+    vehicle_number VARCHAR(50),
+    factory_bill_no VARCHAR(100),
+    destination VARCHAR(255),
+
+    -- Cargo Details
+    qty_mt DECIMAL(10,2) NOT NULL,
+    freight_rate_per_mt DECIMAL(10,2) NOT NULL,
+
+    -- Computed Freight
+    total_freight DECIMAL(10,2) GENERATED ALWAYS AS 
+        (qty_mt * freight_rate_per_mt) STORED,
+
+    -- Trip Expenses
+    advance_amount DECIMAL(10,2) DEFAULT 0,
+    diesel_amount DECIMAL(10,2) DEFAULT 0,
+    shortage_amount DECIMAL(10,2) DEFAULT 0,
+    unloading_charges DECIMAL(10,2) DEFAULT 0,
+
+    -- Computed Balance
+    trip_balance DECIMAL(10,2) GENERATED ALWAYS AS (
+        (qty_mt * freight_rate_per_mt + unloading_charges) - 
+        (advance_amount + diesel_amount + shortage_amount)
+    ) STORED,
+
+    -- Payment Tracking
+    payment_status ENUM('UNPAID', 'INVOICED', 'PAID') DEFAULT 'UNPAID',
+    payment_date DATE,
+
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Indexes & Constraints
+    INDEX idx_origin (origin_id),
+    INDEX idx_session (session_id),
+    INDEX idx_transporter (transporter_id),
+    INDEX idx_party (party_id),
+    INDEX idx_dispatch_date (dispatch_date),
+    INDEX idx_payment_status (payment_status),
+
+    -- Business Rule: LR number unique per origin+session
+    UNIQUE KEY unique_lr_per_origin_session (origin_id, session_id, lr_number),
+
+    FOREIGN KEY (origin_id) REFERENCES origins(origin_id),
+    FOREIGN KEY (session_id) REFERENCES sessions(session_id),
+    FOREIGN KEY (transporter_id) REFERENCES transporters(transporter_id),
+    FOREIGN KEY (party_id) REFERENCES parties(party_id),
+    FOREIGN KEY (pump_id) REFERENCES petrol_pumps(pump_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <p class="text-sm text-blue-800">💡 <strong>Note:</strong> Additional tables (parties, petrol_pumps, sessions, invoices, invoice_line_items, ledger_commissions, users, audit_logs) follow similar patterns. See complete documentation for all schemas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MASTERS SECTION -->
+        <div id="view-masters" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🌐</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Centralized Master Tables</h3>
+                        <p class="text-slate-600">Shared data across all factories - no duplication</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-blue-900 mb-3">transporters</h4>
+                        <ul class="space-y-2 text-sm text-blue-800">
+                            <li class="flex items-start gap-2"><span>✓</span> Single source of truth</li>
+                            <li class="flex items-start gap-2"><span>✓</span> UNIQUE name across factories</li>
+                            <li class="flex items-start gap-2"><span>✓</span> Can work for multiple factories</li>
+                            <li class="flex items-start gap-2"><span>✓</span> Banking details managed globally</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-emerald-900 mb-3">parties</h4>
+                        <ul class="space-y-2 text-sm text-emerald-800">
+                            <li class="flex items-start gap-2"><span>✓</span> No duplicate customers</li>
+                            <li class="flex items-start gap-2"><span>✓</span> UNIQUE party_name globally</li>
+                            <li class="flex items-start gap-2"><span>✓</span> GST validation</li>
+                            <li class="flex items-start gap-2"><span>✓</span> Centralized contact info</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-purple-900 mb-3">petrol_pumps</h4>
+                        <ul class="space-y-2 text-sm text-purple-800">
+                            <li class="flex items-start gap-2"><span>✓</span> Shared fuel stations</li>
+                            <li class="flex items-start gap-2"><span>✓</span> UNIQUE pump_name</li>
+                            <li class="flex items-start gap-2"><span>✓</span> City-based organization</li>
+                            <li class="flex items-start gap-2"><span>✓</span> Consistent across factories</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-amber-900 mb-3">sessions</h4>
+                        <ul class="space-y-2 text-sm text-amber-800">
+                            <li class="flex items-start gap-2"><span>✓</span> Shared fiscal years</li>
+                            <li class="flex items-start gap-2"><span>✓</span> UNIQUE session_name (2023-2024)</li>
+                            <li class="flex items-start gap-2"><span>✓</span> Only one active globally</li>
+                            <li class="flex items-start gap-2"><span>✓</span> Consistent reporting periods</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-blue-900 mb-3">💡 Example: Cross-Factory Transporter</h4>
+                    <div class="code-block-container">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>Transporter: M.K. Motors Transport (transporter_id = 1)
+   ├─→ Works for Wonder Cement (origin_id = 1)
+   │     └─→ 50 trips, ₹5,00,000 freight
+   └─→ Works for Mangalam Cement (origin_id = 2)
+         └─→ 30 trips, ₹3,50,000 freight
+
+One invoice can settle trips from BOTH factories!</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEDGERS SECTION -->
+        <div id="view-ledgers" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">💰</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Centralized Ledger Tables</h3>
+                        <p class="text-slate-600">Unified accounting - one account per transporter</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-6 mb-6">
+                    <h4 class="text-lg font-semibold text-amber-900 mb-4">⚡ Key Changes from Legacy</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-red-600 font-semibold mb-2">❌ Removed</div>
+                            <ul class="space-y-1 text-sm text-amber-800">
+                                <li>• <code>origin_id</code> (no filtering by factory)</li>
+                                <li>• Per-factory ledger accounts</li>
+                                <li>• Complex settlement logic</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="text-emerald-600 font-semibold mb-2">✅ Added</div>
+                            <ul class="space-y-1 text-sm text-amber-800">
+                                <li>• <code>given_by_origin_id</code> (optional metadata)</li>
+                                <li>• <code>settled_amount</code> (partial settlements)</li>
+                                <li>• One unified account per transporter</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-blue-900 mb-3">ledger_advances</h4>
+                        <p class="text-sm text-blue-800 mb-3">Money given TO transporter</p>
+                        <ul class="space-y-2 text-sm text-blue-800">
+                            <li class="flex items-start gap-2"><span>•</span> No origin_id for filtering</li>
+                            <li class="flex items-start gap-2"><span>•</span> Optional: given_by_origin_id</li>
+                            <li class="flex items-start gap-2"><span>•</span> Tracks payment mode</li>
+                            <li class="flex items-start gap-2"><span>•</span> Settlement status</li>
+                            <li class="flex items-start gap-2"><span>•</span> Partial settlement support</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-emerald-900 mb-3">ledger_commissions</h4>
+                        <p class="text-sm text-emerald-800 mb-3">Money received FROM transporter</p>
+                        <ul class="space-y-2 text-sm text-emerald-800">
+                            <li class="flex items-start gap-2"><span>•</span> No origin_id for filtering</li>
+                            <li class="flex items-start gap-2"><span>•</span> Optional: received_by_origin_id</li>
+                            <li class="flex items-start gap-2"><span>•</span> Tracks payment mode</li>
+                            <li class="flex items-start gap-2"><span>•</span> Settlement status</li>
+                            <li class="flex items-start gap-2"><span>•</span> Partial settlement support</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-purple-900 mb-4">💡 Unified Account Calculation</h4>
+                    <div class="code-block-container">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>-- Simple: One account per transporter
+SELECT 
+    t.name,
+
+    -- Trip balances across ALL factories
+    SUM(s.trip_balance) AS total_trips_outstanding,
+
+    -- Unsettled advances (from ALL factories)
+    (SELECT COALESCE(SUM(advance_amount), 0) 
+     FROM ledger_advances 
+     WHERE transporter_id = t.transporter_id 
+       AND is_settled = FALSE) AS unsettled_advances,
+
+    -- Unsettled commissions (from ALL factories)
+    (SELECT COALESCE(SUM(commission_amount), 0) 
+     FROM ledger_commissions 
+     WHERE transporter_id = t.transporter_id 
+       AND is_settled = FALSE) AS unsettled_commissions,
+
+    -- Net payable
+    SUM(s.trip_balance) - 
+    (SELECT COALESCE(SUM(advance_amount), 0) ...) +
+    (SELECT COALESCE(SUM(commission_amount), 0) ...) AS net_payable
+
+FROM transporters t
+LEFT JOIN sales s ON s.transporter_id = t.transporter_id 
+    AND s.payment_status = 'UNPAID'
+WHERE t.transporter_id = 1
+GROUP BY t.transporter_id;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSACTIONS SECTION -->
+        <div id="view-transactions" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🔥</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Transaction Tables</h3>
+                        <p class="text-slate-600">Origin tracking at trip level</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
+                    <h4 class="text-lg font-semibold text-amber-900 mb-3">🔥 Key Design Decision</h4>
+                    <p class="text-amber-800"><code class="bg-amber-100 px-2 py-1 rounded">origin_id</code> exists ONLY in transaction tables to identify which factory the business transaction belongs to. All master data references point to centralized tables.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-orange-900 mb-3">sales</h4>
+                        <span class="badge badge-transaction">origin_id</span>
+                        <ul class="space-y-2 text-sm text-orange-800 mt-3">
+                            <li class="flex items-start gap-2"><span>•</span> <strong>origin_id:</strong> Which factory</li>
+                            <li class="flex items-start gap-2"><span>•</span> Links to centralized transporter</li>
+                            <li class="flex items-start gap-2"><span>•</span> Links to centralized party</li>
+                            <li class="flex items-start gap-2"><span>•</span> LR unique per (origin+session)</li>
+                            <li class="flex items-start gap-2"><span>•</span> Computed fields (freight, balance)</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-purple-900 mb-3">invoice_line_items</h4>
+                        <span class="badge badge-transaction">origin_id</span>
+                        <ul class="space-y-2 text-sm text-purple-800 mt-3">
+                            <li class="flex items-start gap-2"><span>•</span> <strong>origin_id:</strong> Line item factory</li>
+                            <li class="flex items-start gap-2"><span>•</span> Links to invoice (centralized)</li>
+                            <li class="flex items-start gap-2"><span>•</span> Links to sale (transaction)</li>
+                            <li class="flex items-start gap-2"><span>•</span> Snapshot of trip data</li>
+                            <li class="flex items-start gap-2"><span>•</span> Supports cross-factory invoices</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-blue-900 mb-3">📊 Multi-Factory Invoice Example</h4>
+                    <div class="code-block-container">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>Invoice #INV-2024-001 for M.K. Motors
+
+Line Items:
+├─ LR-1001 (Wonder) - origin_id=1 - ₹50,000
+├─ LR-1002 (Wonder) - origin_id=1 - ₹60,000
+├─ LR-2001 (Mangalam) - origin_id=2 - ₹45,000
+└─ LR-2002 (Mangalam) - origin_id=2 - ₹55,000
+
+Total Freight: ₹2,10,000
+Less: Advances: ₹30,000 (from BOTH factories combined)
+Add: Commissions: ₹5,000 (from BOTH factories combined)
+Net Payable: ₹1,85,000</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEDUPLICATION SECTION -->
+        <div id="view-deduplication" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🧬</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Deduplication Strategy</h3>
+                        <p class="text-slate-600">PAN/GST/Name-based intelligent matching</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">1️⃣</div>
+                        <div class="font-semibold">PAN Number</div>
+                        <div class="text-sm opacity-90 mt-1">Highest Priority</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">2️⃣</div>
+                        <div class="font-semibold">GST Number</div>
+                        <div class="text-sm opacity-90 mt-1">Second Priority</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">3️⃣</div>
+                        <div class="font-semibold">Name Match</div>
+                        <div class="text-sm opacity-90 mt-1">Fallback</div>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4">📊 Deduplication Logic</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Priority</th>
+                            <th>Match Type</th>
+                            <th>Confidence</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-centralized">1</span></td>
+                            <td><strong>PAN match</strong></td>
+                            <td><span class="text-emerald-600">✓ Highest</span></td>
+                            <td><code>ABCDE1234F</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-centralized">2</span></td>
+                            <td><strong>GST match</strong></td>
+                            <td><span class="text-blue-600">✓ High</span></td>
+                            <td><code>27ABCDE1234F1Z5</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-centralized">3</span></td>
+                            <td><strong>Name match</strong></td>
+                            <td><span class="text-amber-600">✓ Medium</span></td>
+                            <td><code>UPPER(TRIM(name))</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-blue-900 mb-3">💡 Example Matching</h4>
+                    <div class="code-block-container">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>Transporter: M.K. Motors Transport
+├─ Wonder DB: sno=1, name="M.K. Motors", PAN="ABCPM1234F"
+└─ Mangalam DB: sno=5, name="MK Motors Transport", PAN="ABCPM1234F"
+→ MATCHED BY PAN → Single entry created (transporter_id=1)
+
+Mappings created:
+- origin=1, legacy_id=1 → new_id=1 (match_type: PAN)
+- origin=2, legacy_id=5 → new_id=1 (match_type: PAN)</code></pre>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold text-slate-800 mb-4 mt-6">✨ Benefits</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4">
+                        <div class="text-emerald-600 font-semibold mb-2">✓ Catches Name Variations</div>
+                        <p class="text-sm text-emerald-800">"M.K. Motors" vs "MK Motors Transport" matched via PAN</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                        <div class="text-blue-600 font-semibold mb-2">✓ Government ID Validation</div>
+                        <p class="text-sm text-blue-800">Uses unique tax identifiers as primary match</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                        <div class="text-purple-600 font-semibold mb-2">✓ Prevents False Duplicates</div>
+                        <p class="text-sm text-purple-800">Similar names with different IDs stay separate</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-100 rounded-lg p-4">
+                        <div class="text-amber-600 font-semibold mb-2">✓ Audit Trail</div>
+                        <p class="text-sm text-amber-800">Match type tracked for verification</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAGRAMS SECTION -->
+        <div id="view-diagrams" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">📐</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">System Diagrams</h3>
+                        <p class="text-slate-600">Visual representation of architecture and workflows</p>
+                    </div>
+                </div>
+
+                <!-- ER Diagram -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-4">Entity-Relationship (ER) Diagram</h4>
+                    <div class="mermaid-container">
+                        <div class="mermaid-controls">
+                            <button class="mermaid-btn" onclick="copyMermaidCode(this)">Copy Code</button>
+                            <button class="mermaid-btn" onclick="exportMermaidToPNG(this)">Export PNG</button>
+                        </div>
+                        <div class="mermaid">
+erDiagram
+    %% ========================================
+    %% TENANT MANAGEMENT
+    %% ========================================
+    ORIGINS {
+        int origin_id PK
+        varchar origin_code UK
+        varchar origin_name
+        varchar gst_number
+        varchar address
+        boolean is_active
+        timestamp created_at
+    }
+
+    USERS {
+        int user_id PK
+        varchar username UK
+        varchar password_hash
+        json allowed_origins
+        int default_origin_id FK
+        enum role
+        boolean is_active
+        timestamp last_login
+    }
+
+    %% ========================================
+    %% CENTRALIZED MASTER DATA
+    %% ========================================
+    TRANSPORTERS {
+        int transporter_id PK
+        varchar name UK
+        varchar gst
+        varchar pan
+        varchar address
+        varchar phone
+        varchar bank_name
+        varchar bank_account
+        varchar ifsc_code
+        boolean is_active
+    }
+
+    PARTIES {
+        int party_id PK
+        varchar party_name UK
+        varchar gst
+        varchar address
+        varchar phone
+        varchar contact_person
+    }
+
+    PETROL_PUMPS {
+        int pump_id PK
+        varchar pump_name UK
+        varchar address
+        varchar phone
+        varchar city
+    }
+
+    SESSIONS {
+        int session_id PK
+        varchar session_name UK
+        int low_year
+        int high_year
+        date start_date
+        date end_date
+        boolean is_active
+    }
+
+    %% ========================================
+    %% CENTRALIZED LEDGERS
+    %% ========================================
+    LEDGER_ADVANCES {
+        int advance_id PK
+        int transporter_id FK
+        decimal advance_amount
+        date entry_date
+        enum payment_mode
+        int given_by_origin_id FK
+        boolean is_settled
+        int settled_in_invoice_id FK
+        date settled_date
+        decimal settled_amount
+    }
+
+    LEDGER_COMMISSIONS {
+        int commission_id PK
+        int transporter_id FK
+        decimal commission_amount
+        date entry_date
+        enum payment_mode
+        int received_by_origin_id FK
+        boolean is_settled
+        int settled_in_invoice_id FK
+        date settled_date
+        decimal settled_amount
+    }
+
+    %% ========================================
+    %% TRANSACTIONS (WITH ORIGIN_ID)
+    %% ========================================
+    SALES {
+        int sale_id PK
+        int origin_id FK
+        int session_id FK
+        int transporter_id FK
+        int party_id FK
+        int pump_id FK
+        int lr_number
+        date dispatch_date
+        varchar vehicle_number
+        decimal qty_mt
+        decimal freight_rate_per_mt
+        decimal total_freight
+        decimal advance_amount
+        decimal diesel_amount
+        decimal shortage_amount
+        decimal unloading_charges
+        decimal trip_balance
+        enum payment_status
+    }
+
+    INVOICES {
+        int invoice_id PK
+        varchar invoice_number UK
+        int transporter_id FK
+        timestamp invoice_date
+        decimal gross_freight
+        decimal total_advances
+        decimal total_diesel
+        decimal settled_ledger_advances
+        decimal settled_ledger_commissions
+        decimal tds_amount
+        decimal net_payable
+        enum payment_mode
+        date payment_date
+        enum status
+    }
+
+    INVOICE_LINE_ITEMS {
+        int line_item_id PK
+        int invoice_id FK
+        int sale_id FK
+        int origin_id FK
+        int lr_number
+        date dispatch_date
+        decimal freight_amount
+        decimal advance_amount
+        decimal net_contribution
+    }
+
+    AUDIT_LOGS {
+        bigint log_id PK
+        int origin_id FK
+        int user_id FK
+        varchar entity_type
+        int entity_id
+        varchar action
+        json old_values
+        json new_values
+        timestamp timestamp
+    }
+
+    %% ========================================
+    %% RELATIONSHIPS
+    %% ========================================
+
+    %% User Relationships
+    USERS ||--o{ ORIGINS : "default_origin"
+
+    %% Sales Relationships
+    ORIGINS ||--o{ SALES : "has_trips"
+    SESSIONS ||--o{ SALES : "fiscal_year"
+    TRANSPORTERS ||--o{ SALES : "transports"
+    PARTIES ||--o{ SALES : "delivers_to"
+    PETROL_PUMPS ||--o{ SALES : "fuels_at"
+
+    %% Invoice Relationships
+    TRANSPORTERS ||--o{ INVOICES : "receives_payment"
+    INVOICES ||--o{ INVOICE_LINE_ITEMS : "contains"
+    SALES ||--o| INVOICE_LINE_ITEMS : "included_in"
+    ORIGINS ||--o{ INVOICE_LINE_ITEMS : "from_factory"
+
+    %% Ledger Relationships
+    TRANSPORTERS ||--o{ LEDGER_ADVANCES : "receives_advance"
+    ORIGINS ||--o{ LEDGER_ADVANCES : "gives_advance"
+    INVOICES ||--o{ LEDGER_ADVANCES : "settles"
+
+    TRANSPORTERS ||--o{ LEDGER_COMMISSIONS : "pays_commission"
+    ORIGINS ||--o{ LEDGER_COMMISSIONS : "receives_commission"
+    INVOICES ||--o{ LEDGER_COMMISSIONS : "settles"
+
+    %% Audit Relationships
+    ORIGINS ||--o{ AUDIT_LOGS : "tracks"
+    USERS ||--o{ AUDIT_LOGS : "performs"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schema Flow -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-4">Database Schema Flow</h4>
+                    <div class="mermaid-container">
+                        <div class="mermaid-controls">
+                            <button class="mermaid-btn" onclick="copyMermaidCode(this)">Copy Code</button>
+                            <button class="mermaid-btn" onclick="exportMermaidToPNG(this)">Export PNG</button>
+                        </div>
+                        <div class="mermaid">
+graph TB
+    subgraph DATABASE["🗄️ TRANSPORT_UNIFIED DATABASE"]
+
+        subgraph TENANT["🏢 TENANT MANAGEMENT"]
+            ORIGINS["<b>ORIGINS</b><br/>────────<br/>• origin_id PK<br/>• origin_code UK<br/>• origin_name<br/>• gst_number<br/>• is_active"]
+            USERS["<b>USERS</b><br/>────────<br/>• user_id PK<br/>• username UK<br/>• password_hash<br/>• allowed_origins JSON<br/>• default_origin_id FK<br/>• role ENUM"]
+        end
+
+        subgraph MASTERS["📋 CENTRALIZED MASTERS<br/>(No origin_id)"]
+            TRANSPORTERS["<b>TRANSPORTERS</b><br/>────────<br/>• transporter_id PK<br/>• name UK<br/>• gst, pan<br/>• bank_account<br/>• ifsc_code"]
+            PARTIES["<b>PARTIES</b><br/>────────<br/>• party_id PK<br/>• party_name UK<br/>• gst<br/>• address"]
+            PUMPS["<b>PETROL_PUMPS</b><br/>────────<br/>• pump_id PK<br/>• pump_name UK<br/>• city"]
+            SESSIONS["<b>SESSIONS</b><br/>────────<br/>• session_id PK<br/>• session_name UK<br/>• low_year<br/>• high_year<br/>• is_active"]
+        end
+
+        subgraph LEDGERS["💰 CENTRALIZED LEDGERS<br/>(Optional origin metadata)"]
+            ADVANCES["<b>LEDGER_ADVANCES</b><br/>────────<br/>• advance_id PK<br/>• transporter_id FK<br/>• advance_amount<br/>• given_by_origin_id<br/>• is_settled<br/>• settled_in_invoice_id"]
+            COMMISSIONS["<b>LEDGER_COMMISSIONS</b><br/>────────<br/>• commission_id PK<br/>• transporter_id FK<br/>• commission_amount<br/>• received_by_origin_id<br/>• is_settled<br/>• settled_in_invoice_id"]
+        end
+
+        subgraph TRANSACTIONS["🔥 TRANSACTIONS<br/>(WITH origin_id)"]
+            SALES["<b>SALES</b><br/>────────<br/>• sale_id PK<br/>• origin_id FK ⚡<br/>• session_id FK<br/>• transporter_id FK<br/>• party_id FK<br/>• pump_id FK<br/>• lr_number<br/>• total_freight<br/>• trip_balance<br/>• payment_status"]
+            INVOICES["<b>INVOICES</b><br/>────────<br/>• invoice_id PK<br/>• invoice_number UK<br/>• transporter_id FK<br/>• gross_freight<br/>• settled_ledger_advances<br/>• settled_ledger_commissions<br/>• net_payable"]
+            LINE_ITEMS["<b>INVOICE_LINE_ITEMS</b><br/>────────<br/>• line_item_id PK<br/>• invoice_id FK<br/>• sale_id FK<br/>• origin_id FK ⚡<br/>• freight_amount"]
+        end
+
+        subgraph AUDIT["📝 AUDIT & LOGGING"]
+            AUDIT_LOGS["<b>AUDIT_LOGS</b><br/>────────<br/>• log_id PK<br/>• origin_id FK<br/>• user_id FK<br/>• entity_type<br/>• action<br/>• old_values JSON<br/>• new_values JSON"]
+        end
+    end
+
+    %% Relationships
+    USERS -->|default_origin_id| ORIGINS
+    ORIGINS -->|has trips| SALES
+    SESSIONS -->|fiscal year| SALES
+    TRANSPORTERS -->|transports| SALES
+    PARTIES -->|delivers to| SALES
+    PUMPS -->|fuels at| SALES
+    TRANSPORTERS -->|receives payment| INVOICES
+    TRANSPORTERS -->|receives| ADVANCES
+    TRANSPORTERS -->|pays| COMMISSIONS
+    ORIGINS -->|gives advance| ADVANCES
+    ORIGINS -->|receives commission| COMMISSIONS
+    INVOICES -->|settles| ADVANCES
+    INVOICES -->|settles| COMMISSIONS
+    INVOICES -->|contains| LINE_ITEMS
+    SALES -->|included in| LINE_ITEMS
+    ORIGINS -->|line from factory| LINE_ITEMS
+    ORIGINS -->|tracks| AUDIT_LOGS
+    USERS -->|performs| AUDIT_LOGS
+
+    classDef centralizedClass fill:#e1f5e1,stroke:#4caf50,stroke-width:3px,color:#000000
+    classDef transactionClass fill:#fff3e0,stroke:#ff9800,stroke-width:3px,color:#000000
+    classDef tenantClass fill:#e3f2fd,stroke:#2196f3,stroke-width:3px,color:#000000
+
+    class TRANSPORTERS,PARTIES,PUMPS,SESSIONS,ADVANCES,COMMISSIONS,INVOICES centralizedClass
+    class SALES,LINE_ITEMS transactionClass
+    class ORIGINS,USERS tenantClass
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p class="text-sm text-blue-800">💡 <strong>Note:</strong> Hover over diagrams to reveal Copy Code and Export PNG buttons. Total of 13 diagrams available in complete documentation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERIES SECTION -->
+        <div id="view-queries" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🔍</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Common Query Patterns</h3>
+                        <p class="text-slate-600">Production-ready SQL queries for frequent operations</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- Query 1 -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3">1. Transporter Working Across Multiple Factories</h4>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">SELECT 
+    t.name AS transporter,
+    o.origin_name AS factory,
+    COUNT(s.sale_id) AS total_trips,
+    SUM(s.qty_mt) AS total_quantity_mt,
+    SUM(s.total_freight) AS total_freight,
+    SUM(s.trip_balance) AS outstanding_balance
+FROM transporters t
+CROSS JOIN origins o
+LEFT JOIN sales s ON s.transporter_id = t.transporter_id 
+    AND s.origin_id = o.origin_id
+    AND s.payment_status != 'PAID'
+WHERE t.transporter_id = 1
+GROUP BY t.transporter_id, o.origin_id
+ORDER BY o.origin_name;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Query 2 -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3">2. Unified Account Statement</h4>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">-- Complete account statement for a transporter
+SELECT 
+    'Trips Outstanding' AS category,
+    o.origin_name AS origin,
+    COUNT(s.sale_id) AS count,
+    SUM(s.trip_balance) AS amount
+FROM sales s
+JOIN origins o ON o.origin_id = s.origin_id
+WHERE s.transporter_id = 1 
+  AND s.payment_status = 'UNPAID'
+GROUP BY o.origin_id
+
+UNION ALL
+
+SELECT 
+    'Unsettled Advances' AS category,
+    o.origin_name AS origin,
+    COUNT(la.advance_id) AS count,
+    SUM(la.advance_amount) AS amount
+FROM ledger_advances la
+LEFT JOIN origins o ON o.origin_id = la.given_by_origin_id
+WHERE la.transporter_id = 1 
+  AND la.is_settled = FALSE
+GROUP BY la.given_by_origin_id
+
+UNION ALL
+
+SELECT 
+    'Unsettled Commissions' AS category,
+    o.origin_name AS origin,
+    COUNT(lc.commission_id) AS count,
+    SUM(lc.commission_amount) AS amount
+FROM ledger_commissions lc
+LEFT JOIN origins o ON o.origin_id = lc.received_by_origin_id
+WHERE lc.transporter_id = 1 
+  AND lc.is_settled = FALSE
+GROUP BY lc.received_by_origin_id
+
+ORDER BY category, origin;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Query 3 -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-3">3. Net Payable Calculation</h4>
+                        <div class="code-block-container">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><code class="language-sql">SELECT 
+    t.name,
+
+    -- Trip balances across ALL factories
+    SUM(s.trip_balance) AS total_trips_outstanding,
+
+    -- Unsettled advances
+    (SELECT COALESCE(SUM(advance_amount), 0) 
+     FROM ledger_advances 
+     WHERE transporter_id = t.transporter_id 
+       AND is_settled = FALSE) AS unsettled_advances,
+
+    -- Unsettled commissions
+    (SELECT COALESCE(SUM(commission_amount), 0) 
+     FROM ledger_commissions 
+     WHERE transporter_id = t.transporter_id 
+       AND is_settled = FALSE) AS unsettled_commissions,
+
+    -- Net payable
+    SUM(s.trip_balance) - 
+    (SELECT COALESCE(SUM(advance_amount), 0) 
+     FROM ledger_advances 
+     WHERE transporter_id = t.transporter_id 
+       AND is_settled = FALSE) +
+    (SELECT COALESCE(SUM(commission_amount), 0) 
+     FROM ledger_commissions 
+     WHERE transporter_id = t.transporter_id 
+       AND is_settled = FALSE) AS net_payable
+
+FROM transporters t
+LEFT JOIN sales s ON s.transporter_id = t.transporter_id 
+    AND s.payment_status = 'UNPAID'
+WHERE t.transporter_id = 1
+GROUP BY t.transporter_id;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIGRATION SECTION -->
+        <div id="view-migration" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🚀</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Migration Guide</h3>
+                        <p class="text-slate-600">Step-by-step implementation checklist</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-blue-900 mb-3">Phase 1: Database Setup</h4>
+                        <ul class="space-y-2 text-sm text-blue-800">
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Create unified database <code>transport_unified</code></li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Create all 12 core tables</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Add indexes and foreign key constraints</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Insert origins (Wonder, Mangalam, etc.)</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Create migration users with permissions</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-emerald-900 mb-3">Phase 2: Master Data Deduplication</h4>
+                        <ul class="space-y-2 text-sm text-emerald-800">
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Run transporters deduplication script</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Verify transporter_mappings table</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Run parties deduplication script</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Run petrol_pumps deduplication script</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Generate deduplication report</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-purple-900 mb-3">Phase 3: Ledgers Migration</h4>
+                        <ul class="space-y-2 text-sm text-purple-800">
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Migrate ledger_advances with origin metadata</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Migrate ledger_commissions with origin metadata</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Verify settlement status</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Validate amount totals</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-amber-900 mb-3">Phase 4: Sales Migration</h4>
+                        <ul class="space-y-2 text-sm text-amber-800">
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Migrate Wonder sales (origin_id=1)</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Migrate Mangalam sales (origin_id=2)</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Map all foreign keys using mapping tables</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Verify LR number uniqueness per origin+session</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Validate calculated fields</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-rose-50 border border-rose-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-rose-900 mb-3">Phase 5: Validation & Deployment</h4>
+                        <ul class="space-y-2 text-sm text-rose-800">
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Row count verification</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Sum verification for amounts</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Foreign key integrity check</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> User acceptance testing (UAT)</li>
+                            <li class="flex items-start gap-2"><input type="checkbox" class="mt-1"> Production deployment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BENEFITS SECTION -->
+        <div id="view-benefits" class="view-section">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🎯</span>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">System Benefits Summary</h3>
+                        <p class="text-slate-600">Business, technical, and operational advantages</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-4">Business Benefits</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Benefit</th>
+                                    <th>Description</th>
+                                    <th>Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Multi-Tenant Support</strong></td>
+                                    <td>Unlimited cement factories in one system</td>
+                                    <td><span class="text-emerald-600">High</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Centralized Masters</strong></td>
+                                    <td>No duplicate transporters/parties</td>
+                                    <td><span class="text-emerald-600">High</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Unified Accounting</strong></td>
+                                    <td>Single ledger account per transporter</td>
+                                    <td><span class="text-blue-600">Medium</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cross-Factory Analytics</strong></td>
+                                    <td>Compare performance across locations</td>
+                                    <td><span class="text-blue-600">Medium</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-4">Technical Benefits</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <div class="text-blue-600 font-semibold mb-2">✓ Normalized Schema</div>
+                                <p class="text-sm text-blue-800">Proper foreign key relationships ensure data integrity</p>
+                            </div>
+                            <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4">
+                                <div class="text-emerald-600 font-semibold mb-2">✓ Computed Columns</div>
+                                <p class="text-sm text-emerald-800">Auto-calculated freight and balance for consistency</p>
+                            </div>
+                            <div class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                                <div class="text-purple-600 font-semibold mb-2">✓ Audit Logging</div>
+                                <p class="text-sm text-purple-800">Complete transaction history for compliance</p>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-100 rounded-lg p-4">
+                                <div class="text-amber-600 font-semibold mb-2">✓ Role-Based Access</div>
+                                <p class="text-sm text-amber-800">Multi-level user permissions for security</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-800 mb-4">Operational Benefits</h4>
+                        <ul class="space-y-3 text-slate-700">
+                            <li class="flex items-start gap-3">
+                                <span class="text-emerald-500 text-xl flex-shrink-0">✓</span>
+                                <div>
+                                    <strong>Reduced Data Entry:</strong> Enter transporter details once, use everywhere
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-emerald-500 text-xl flex-shrink-0">✓</span>
+                                <div>
+                                    <strong>Faster Invoice Generation:</strong> Unified ledgers simplify calculations
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-emerald-500 text-xl flex-shrink-0">✓</span>
+                                <div>
+                                    <strong>Better Reporting:</strong> Cross-factory consolidated reports available
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-emerald-500 text-xl flex-shrink-0">✓</span>
+                                <div>
+                                    <strong>Improved Accuracy:</strong> Government ID validation prevents errors
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-emerald-500 text-xl flex-shrink-0">✓</span>
+                                <div>
+                                    <strong>Easier Maintenance:</strong> Single codebase for all factories
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- End px-8 py-6 -->
+</main>
+<!-- JavaScript for Interactive Features -->
+<script>
+    // Initialize Mermaid
+    mermaid.initialize({ 
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose'
+    });
+
+    // View Switching
+    function switchView(viewId) {
+        // Hide all sections
+        document.querySelectorAll('.view-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // Show selected section
+        document.getElementById('view-' + viewId).classList.add('active');
+        
+        // Update navigation active state
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Update header
+        const titles = {
+            'overview': ['System Overview', 'Executive overview of the unified transport management system.'],
+            'architecture': ['Architecture', 'Centralized master data and ledgers explanation.'],
+            'database': ['Database Structure', 'Complete table organization and architecture.'],
+            'schemas': ['Table Schemas', 'SQL CREATE statements for all core tables.'],
+            'masters': ['Centralized Masters', 'Shared data across all factories - no duplication.'],
+            'ledgers': ['Centralized Ledgers', 'Unified accounting - one account per transporter.'],
+            'transactions': ['Transactions', 'Origin tracking at trip level.'],
+            'deduplication': ['Deduplication', 'PAN/GST/Name-based intelligent matching.'],
+            'diagrams': ['Diagrams', 'Visual representation of architecture and workflows.'],
+            'queries': ['Query Patterns', 'Production-ready SQL queries for frequent operations.'],
+            'migration': ['Migration Guide', 'Step-by-step implementation checklist.'],
+            'benefits': ['Benefits Summary', 'Business, technical, and operational advantages.']
+        };
+        
+        if (titles[viewId]) {
+            document.getElementById('page-title').textContent = titles[viewId][0];
+            document.getElementById('page-desc').textContent = titles[viewId][1];
+        }
+        
+        // Scroll to top
+        document.getElementById('main-content').scrollTo(0, 0);
+    }
+
+    // Copy Code Function
+    function copyCode(button) {
+        const codeContainer = button.closest('.code-block-container');
+        const codeBlock = codeContainer.querySelector('pre code');
+        const code = codeBlock.textContent;
+        
+        navigator.clipboard.writeText(code).then(() => {
+            button.textContent = 'Copied!';
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.textContent = 'Copy';
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
+    }
+
+    // Copy Mermaid Code
+    function copyMermaidCode(button) {
+        const mermaidContainer = button.closest('.mermaid-container');
+        const mermaidDiv = mermaidContainer.querySelector('.mermaid');
+        const mermaidCode = mermaidDiv.textContent.trim();
+        
+        navigator.clipboard.writeText(mermaidCode).then(() => {
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        });
+    }
+
+    // Export Mermaid to PNG
+    function exportMermaidToPNG(button) {
+        const mermaidContainer = button.closest('.mermaid-container');
+        const svgElement = mermaidContainer.querySelector('svg');
+        
+        if (!svgElement) {
+            alert('Diagram not rendered yet. Please wait.');
+            return;
+        }
+        
+        const svgData = new XMLSerializer().serializeToString(svgElement);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = function() {
+            canvas.width = svgElement.width.baseVal.value * 2;
+            canvas.height = svgElement.height.baseVal.value * 2;
+            ctx.scale(2, 2);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = 'diagram.png';
+                link.href = url;
+                link.click();
+            });
+        };
+        
+        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+    }
+
+    console.log('✅ NEW Unified System Documentation Loaded');
+</script>
+</body>
+</html>
+

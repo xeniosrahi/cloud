@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coat&amp;Courts - Dynamic Legal Hub</title>
+<meta content="A student-led legal initiative guided by experts, making legal awareness accessible." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;family=Roboto+Slab:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#FFC564", // Highlight Gold
+              "primary-hover": "#E6B050",
+              secondary: "#61CE70", // Accent Green
+              "background-light": "#F3F4F6", 
+              "background-dark": "#070311", // Deep dark navy/black requested
+              "surface-light": "#FFFFFF",
+              "surface-dark": "#0F1623", 
+              "surface-dark-highlight": "#1a2436",
+              "nav-bg": "#0B0616", // Slightly lighter for nav
+              blue: {
+                  500: '#6EC1E4', // Primary blue for subheaders
+              }
+            },
+            fontFamily: {
+              display: ["Roboto Slab", "serif"],
+              body: ["Roboto", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "1.5rem", 
+              "xl": "1rem",
+              "2xl": "1.5rem",
+              "3xl": "2rem"
+            },
+            boxShadow: {
+                'glow': '0 0 20px rgba(255, 197, 100, 0.15)',
+                'glow-text': '0 0 15px rgba(255, 197, 100, 0.5)',
+            }
+          },
+        },
+      };
+    </script>
+<style type="text/tailwindcss">.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+::-webkit-scrollbar {
+    width: 8px
+    }
+::-webkit-scrollbar-track {
+    background: transparent
+    }
+::-webkit-scrollbar-thumb {
+    background-color: #374151;
+    border-radius: 20px
+    }
+.bento-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease
+    }
+.bento-card:hover {
+    transform: translatey(-4px)
+    }
+.bg-grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuD9awxfdrwtJeQQD0h235TbiLmZc6qMLtOAfEx58mgBP7RG3xPD0tMOxCiFIemt1FKQhnGq-mjsLf1uyzzbdSeSq1xXJDZ1kXxJCKgXJxBflBCIu71uBevsPqL6lrZLcTDl7FHXNQ6K5zBz-hRLU9xG9FzM4KUi8jMFBN6_6tTvcxLTbXXG8er8pCilLToIyjnAA4IcQxDY0gq6ezmswiPvNcuAdAgdkJm9ywwXfihgvxCuFBxyovxB5tLA494pG6Z1ujbWhEDRajWm)
+    }
+.legal-pattern {
+    background-image: radial-gradient(circle at 2px 2px, rgba(255, 197, 100, 0.05) 1px, transparent 0);
+    background-size: 24px 24px
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-body transition-colors duration-300 antialiased selection:bg-primary selection:text-black">
+<div class="bg-grain"></div>
+<nav class="fixed w-full z-50 top-0 left-0 bg-background-light/95 dark:bg-nav-bg/95 backdrop-blur-md border-b border-gray-200 dark:border-white/5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20">
+<div class="flex-shrink-0 flex items-center gap-3 cursor-pointer group">
+<div class="bg-gradient-to-br from-primary/20 to-transparent p-2 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-3xl text-primary">balance</span>
+</div>
+<h1 class="text-2xl font-black tracking-tight text-gray-900 dark:text-white font-display">Coat<span class="text-primary">&amp;</span>Courts</h1>
+</div>
+<div class="hidden md:block">
+<div class="ml-10 flex items-baseline space-x-8">
+<a class="text-gray-900 dark:text-white hover:text-primary dark:hover:text-primary font-bold px-3 py-2 rounded-md text-sm transition-colors tracking-wide" href="#">HOME</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary font-medium px-3 py-2 rounded-md text-sm transition-colors tracking-wide" href="#">ABOUT US</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary font-medium px-3 py-2 rounded-md text-sm transition-colors tracking-wide" href="#">PRACTICE AREAS</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary font-medium px-3 py-2 rounded-md text-sm transition-colors tracking-wide" href="#">BLOG</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary font-medium px-3 py-2 rounded-md text-sm transition-colors tracking-wide" href="#">ATTORNEYS</a>
+</div>
+</div>
+<div class="hidden md:block">
+<a class="bg-primary hover:bg-primary-hover text-[#070311] font-bold px-6 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-primary/50 flex items-center gap-2 uppercase tracking-wide text-sm" href="#">
+<span>Book Now</span>
+<span class="material-icons-round text-sm">calendar_today</span>
+</a>
+</div>
+<div class="-mr-2 flex md:hidden">
+<button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" type="button">
+<span class="sr-only">Open main menu</span>
+<span class="material-icons-round">menu</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-28 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">
+<div class="col-span-1 md:col-span-7 lg:col-span-8 flex flex-col justify-center py-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="h-px w-12 bg-primary"></span>
+<span class="text-primary font-bold uppercase tracking-[0.2em] text-sm">Dynamic Legal Hub</span>
+</div>
+<h2 class="text-5xl md:text-6xl lg:text-7xl font-display font-black text-white leading-[1.1] mb-8">
+                From The <br/>
+<span class="relative inline-block mt-2">
+<span class="relative z-10 italic font-light text-gray-400 pr-4">Team's</span>
+<span class="block text-primary drop-shadow-[0_0_15px_rgba(255,197,100,0.4)]">Desk</span>
+<svg class="absolute -bottom-2 left-0 w-full h-3 text-secondary/40" preserveAspectRatio="none" viewBox="0 0 100 10">
+<path d="M0 5 Q 50 10 100 5" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</span>
+</h2>
+<p class="text-gray-400 text-lg leading-relaxed mb-10 max-w-xl font-light">
+                Coat &amp; Courts merges academic theory with courtroom reality. A high-fidelity platform for the next generation of legal experts, guided by seasoned professionals.
+            </p>
+<div class="flex flex-wrap items-center gap-6">
+<button class="bg-primary text-[#070311] px-8 py-4 rounded-lg font-bold text-lg inline-flex items-center gap-3 hover:bg-primary-hover transition-all shadow-[0_0_20px_rgba(255,197,100,0.3)] hover:shadow-[0_0_30px_rgba(255,197,100,0.5)] group">
+                    Start Exploration
+                    <span class="material-icons-round group-hover:translate-x-1 transition-transform">east</span>
+</button>
+<button class="text-white hover:text-primary flex items-center gap-2 font-bold transition-colors group">
+<span class="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
+<span class="material-icons-round text-2xl">play_arrow</span>
+</span>
+                    Showreel
+                </button>
+</div>
+</div>
+<div class="hidden md:flex col-span-5 lg:col-span-4 relative items-center justify-center">
+<div class="absolute inset-0 select-none pointer-events-none opacity-[0.03] overflow-hidden flex items-center justify-center">
+<span class="text-[20rem] font-black text-white leading-none font-display">LEX</span>
+</div>
+<div class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-surface-dark group">
+<img alt="Legal Symbol - Gavel" class="absolute inset-0 w-full h-full object-cover grayscale brightness-75 transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJGLZc-YlS49FbNVZuuvShxeSQjjIeS9_BCV910aIvSBsWlZghIrciMSQg50KSMVI9mlMs8eh-hVAqaWDQwVUpBaK-2L9MWR5swv7FTmmipdwe_krlV9AVC8Rc1PRqc84zl_GjcZCoyQptKGCH4N_rt8Iu9Bplvgb_bABdOQ7B83T6HzEAv_PPovyoTi2vHCejWAqeQKz7skyT7yMrrfYi9rZ379xAf2mClT1GGUfPnMQGQY5xkwUL_N-URP6Wy9StvJMrloOLBlvM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#070311] via-transparent to-transparent opacity-90"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="bg-[#1a2436]/90 backdrop-blur-md p-4 rounded-xl border border-white/10 shadow-glow">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">verified_user</span>
+<div>
+<p class="text-white font-bold text-sm tracking-wide">Professional Integrity</p>
+<p class="text-gray-400 text-xs">Excellence in Legal Practice</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[minmax(180px,auto)]">
+<div class="col-span-1 md:col-span-3 lg:col-span-2 bg-[#0F1623] rounded-2xl p-8 flex flex-col justify-center border border-white/5 relative overflow-hidden bento-card">
+<div class="absolute inset-0 legal-pattern opacity-40"></div>
+<div class="flex justify-between items-center mb-6 relative z-10">
+<h3 class="text-2xl font-display font-bold text-white">Core Values</h3>
+<span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Foundation</span>
+</div>
+<div class="flex flex-wrap gap-4 relative z-10">
+<div class="px-5 py-2.5 bg-primary/10 border border-primary/30 text-primary rounded-full text-sm font-bold flex items-center gap-2">
+<span class="material-icons-round text-sm">verified</span> Integrity
+                </div>
+<div class="px-5 py-2.5 bg-white/5 border border-white/10 text-gray-300 rounded-full text-sm font-bold flex items-center gap-2 hover:bg-white/10 transition-colors cursor-default">
+                    #Clarity
+                </div>
+<div class="px-5 py-2.5 bg-secondary/10 border border-secondary/30 text-secondary rounded-full text-sm font-bold flex items-center gap-2">
+<span class="material-icons-round text-sm">lightbulb</span> Innovation
+                </div>
+<div class="px-5 py-2.5 bg-white/5 border border-white/10 text-gray-300 rounded-full text-sm font-bold hover:bg-white/10 transition-colors cursor-default">
+                    #Discipline
+                </div>
+<div class="px-5 py-2.5 bg-[#FFC564]/10 border border-[#FFC564]/30 text-[#FFC564] rounded-full text-sm font-bold flex items-center gap-2">
+<span class="material-icons-round text-sm">balance</span> Justice
+                </div>
+<div class="px-5 py-2.5 bg-white/5 border border-white/10 text-gray-300 rounded-full text-sm font-bold hover:bg-white/10 transition-colors cursor-default">
+                    #Excellence
+                </div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-3 lg:col-span-2 bg-[#0F1623] rounded-2xl p-8 border border-white/5 flex flex-col md:flex-row gap-6 bento-card">
+<div class="w-full md:w-1/3 flex flex-col gap-2">
+<h3 class="text-2xl font-display font-bold text-white mb-4">Practice Areas</h3>
+<button class="w-full text-left px-4 py-3 bg-primary text-[#070311] font-bold rounded-lg shadow-lg">Corporate</button>
+<button class="w-full text-left px-4 py-3 bg-transparent hover:bg-white/5 text-gray-400 hover:text-white transition-colors rounded-lg font-medium border border-transparent hover:border-white/5">Civil Law</button>
+<button class="w-full text-left px-4 py-3 bg-transparent hover:bg-white/5 text-gray-400 hover:text-white transition-colors rounded-lg font-medium border border-transparent hover:border-white/5">IP Rights</button>
+<button class="w-full text-left px-4 py-3 bg-transparent hover:bg-white/5 text-gray-400 hover:text-white transition-colors rounded-lg font-medium border border-transparent hover:border-white/5">Litigation</button>
+</div>
+<div class="w-full md:w-2/3 bg-[#1a2436] rounded-xl p-6 border border-white/5 flex flex-col justify-between">
+<div>
+<div class="h-12 w-12 bg-primary/20 rounded-lg flex items-center justify-center mb-4 text-primary">
+<span class="material-icons-round">work</span>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Corporate Law</h4>
+<p class="text-gray-400 text-sm leading-relaxed mb-4">
+                         Navigating complex mergers, acquisitions, and restructuring with strategic legal precision tailored for modern businesses.
+                     </p>
+<div class="flex gap-2 mb-6">
+<span class="text-[10px] uppercase font-bold bg-[#070311] text-primary px-2 py-1 rounded border border-primary/20">M&amp;A</span>
+<span class="text-[10px] uppercase font-bold bg-[#070311] text-primary px-2 py-1 rounded border border-primary/20">Compliance</span>
+</div>
+</div>
+<button class="w-full py-2 border border-white/20 hover:bg-white/5 text-white text-sm font-bold uppercase tracking-wider rounded-lg transition-colors">
+                     View Details
+                 </button>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 lg:col-span-2 row-span-2 relative rounded-2xl overflow-hidden bento-card border border-white/5 group bg-[#0F1623]">
+<div class="absolute inset-0 opacity-20">
+<svg height="100%" preserveAspectRatio="none" viewBox="0 0 400 400" width="100%">
+<path d="M0 200 L 200 0 L 400 200 L 200 400 Z" fill="none" stroke="#FFC564" stroke-width="0.5"></path>
+<circle cx="200" cy="200" fill="none" opacity="0.3" r="150" stroke="#61CE70" stroke-width="0.5"></circle>
+</svg>
+</div>
+<img alt="Modern Courthouse Architecture" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:scale-110 transition-transform duration-1000" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWqAcm-cMuD7D2T-sQThgv2jTIb0h4yMcr3kwW1en3ojc9Z5j2xBBs5Bevs9LrbPmQcm_r-LNsOP319CEUyAsNRJJPOCP32mPb79r2PwkQCrRuUXj6XwrFe1rlaKahb61rWuGimv97R-5Qtg8aQrZXTiUQYSqkVK9XdlUwzjDU-i8laDktGItmUr-lesQieU1F7U0EgpXB4vF20IHEfARb0dpVvr1-BCpJGl1D9lNIh65y-fRsVY_LGuyXmaI1ODpqFDnR--SeBKgj"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#070311] via-[#070311]/60 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="h-2 w-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-secondary text-xs font-bold uppercase tracking-widest">Analysis</span>
+</div>
+<h3 class="text-4xl font-display font-bold text-white mb-6">Modern Litigation</h3>
+<a class="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all" href="#">
+                     READ ARTICLE <span class="material-icons-round text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-9xl text-white">gavel</span>
+</div>
+</div>
+<div class="col-span-1 lg:col-span-1 row-span-1 bg-primary rounded-2xl p-6 flex flex-col justify-center bento-card relative overflow-hidden">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 10px 10px;"></div>
+<div class="relative z-10">
+<h3 class="text-6xl font-black text-[#070311] mb-1">500<span class="text-3xl align-top">+</span></h3>
+<p class="text-[#070311] font-bold text-lg mb-6 border-b border-black/10 pb-4">Cases Consulted</p>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-3">
+<img alt="Legal Expert Portrait" class="w-10 h-10 rounded-full border-2 border-primary bg-gray-800 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjV73L5T9OaAclPo2-HZNjMcInwE499XDDGewDZ3CO5iGtCn6PWtLBNLarCpHJxJQOoD7jd04OGEpAso2b3ToutsuHCIWvBNjxYQOrsZX1B-g3oeryKegGMFlK551nWQhUdGmXU8dif7n6Lo5_Uu0dDQvQipY5m3VGEXAgCYnLa6k6W535c2wMy59Wkzw5B11ilGEjh9ylB-TQY4tNlknWdB_Ex9hkRZC23-WD4q2KcmzApLFoNqPZyrgYBtQjzfLo634fTVIe8ChB"/>
+<img alt="Legal Expert Portrait" class="w-10 h-10 rounded-full border-2 border-primary bg-gray-800 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiuFPTPVUKgcn99sCIczk7SwONCEjTBtaxIFgUCxTSHaPiR0hJWkRkvaR7pImu04XNxySxfVfwVKTdHjgnAT0BtxFAGC3QAzbUkTXl-CGbzmsdcz6rgAD9WX7hDdaLed637A-zjKhVrI_j8IMKomioGK9rJApjDk0AZ1xTJD4Yj2wnbJbrLnlavouSQ6Pxwhe52UMnJ3miqOSyLXMrgsZymH8_3a1MYFklC_CWA0bvMIJI4XuJYN1MJ369_ztmXW8CPk4Eg7mL4wQS"/>
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-[#070311] text-primary flex items-center justify-center text-xs font-bold">
+<span class="material-icons-round text-sm">add</span>
+</div>
+</div>
+<button class="bg-[#070311] text-white h-10 w-10 rounded-full flex items-center justify-center hover:bg-black transition-colors">
+<span class="material-icons-round">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="col-span-1 lg:col-span-1 row-span-1 bg-[#1a2436] rounded-2xl p-6 flex flex-col justify-between bento-card border border-white/5 relative overflow-hidden group">
+<div class="absolute right-0 top-0 w-32 h-32 bg-secondary/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-secondary text-2xl">public</span>
+</div>
+<h3 class="text-xl font-bold text-white leading-tight">Nationwide<br/>Network</h3>
+</div>
+<div class="relative z-10 mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
+<span class="text-blue-500 font-bold text-sm">20+ States</span>
+<span class="text-xs text-gray-500">Active Now</span>
+</div>
+<span class="material-symbols-outlined absolute bottom-0 right-0 text-7xl text-white opacity-[0.03] translate-x-4 translate-y-4">map</span>
+</div>
+</div>
+<div class="mt-6 bg-[#0F1623] border border-white/5 rounded-2xl p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full opacity-[0.03] pointer-events-none">
+<svg class="w-full h-full" viewBox="0 0 100 100">
+<path class="text-primary" d="M0 0 L100 0 L100 100 Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+<div class="max-w-md">
+<h3 class="text-2xl font-display font-bold text-white mb-2">Expert Guidance</h3>
+<p class="text-gray-400 text-sm">Direct mentorship from top attorneys and seasoned legal scholars ensuring every step is professional.</p>
+</div>
+<div class="flex items-center gap-6 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
+<div class="flex flex-col items-center gap-2 min-w-[80px]">
+<div class="w-16 h-16 rounded-xl bg-[#1a2436] border border-primary/30 flex items-center justify-center overflow-hidden">
+<img alt="Adv. Ray" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_Z3uW3LoR5tzqDcxTXjeXVIdM2zfml-C46y0zqteqdtscSBQRHBLfPS9FyUeKxX_XvvIN3FK0LEPoAKcLsp5z0p3zgLmQuL0z9kY0B8h3cATiMQgW1rv79hRXhspgh3Kx7ZlG_9zvP3wjUoHag6hAkvcyn7QOuj-_Y6I09SCcvQDq3Vv9hQH4t37DFgcC-dqjCIwLDWpDoTnIy-VyBAAsMrNZCzsVjgMEjw526HdD9BdSLRCQsztdUxRfg0sfSc2U3Vyo2H79yMAw"/>
+</div>
+<span class="text-xs text-gray-400 font-medium">Adv. Ray</span>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[80px]">
+<div class="w-16 h-16 rounded-xl bg-[#1a2436] border border-white/10 flex items-center justify-center overflow-hidden">
+<img alt="J. Smith" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoJ9aCxZ8QX4nmHwwqnkEUkSl_woUcotZTDCkh65pg6bqk2qqcMgTcXlWeC8FJxCakMbi4-3sNwsg_UqgObBQaCoq75101FtfFa9ABPGengbGvWrD82t2xWf-EtBLiM1c1_sdMkTf3nZPqB3XQjkVZFluZU5rhuBLG_sqASWDnZoccc9N4VuwI8BqYjZ3v_ExBttC9BWBgfXpg88JZ61daljoK2pTtIr5mqSz5MqQYFhRkw6ry8Atd__zjordtha63YN5cYCkIhb2Y"/>
+</div>
+<span class="text-xs text-gray-400 font-medium">J. Smith</span>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[80px]">
+<div class="w-16 h-16 rounded-xl bg-[#1a2436] border border-white/10 flex items-center justify-center overflow-hidden">
+<img alt="Dr. Lee" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRiIivTClj8XKvSoij5aJdCOQqXyge2ANuMam5rLZ-Vy_b2swyt2Q7LYwIepX2VAqIpqHtW139n7qWHscB38nBV0bBamRQ5gwpsXbf6VzEEgD9R4hNclT75pT3qgnPuLJxZxllOBLL4aDQFD3U2KRHWz9h-cLm1AjG17E9ijE2KydBMYn3ljCndhldCWiMEMsfSN7BhgIQd9BVLn6V_35bRnAECi-C1L_GKL1jloTbqFWUiESvuu9Vkn_k2b9Kco0jgEsuryrGql-t"/>
+</div>
+<span class="text-xs text-gray-400 font-medium">Dr. Lee</span>
+</div>
+<div class="flex flex-col items-center gap-2 min-w-[80px]">
+<div class="w-16 h-16 rounded-xl bg-[#1a2436] border border-white/10 flex items-center justify-center overflow-hidden">
+<img alt="K. Doe" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnwUPWGrxLXfU-d-XLgF2wT938yFUJPFMkzUqEU2ELZ0aU0zSuv_v7OvH3UNWpwoYucNW9tSP41TD9OcB4eHkCgurMzHCf-iWzB_jzjmkihkrQu-lc_WKcp3Jn4Wvlrzka2r37wenbCjEBTEiwEo_e8hbJN9eKh6ngA0AFUWKOwiyPUfyLPLsCn6QdbQJAxPK3GCjxqycOVe7utdtDyH7aC-kaAjYrR-UsckIOrYWsnB1BPBLYrewSUQKTePDY_gR_X6ZxV4HwmFLs"/>
+</div>
+<span class="text-xs text-gray-400 font-medium">K. Doe</span>
+</div>
+<button class="bg-white/5 hover:bg-white/10 text-white text-xs font-bold px-6 py-3 rounded-lg border border-white/10 transition-colors uppercase whitespace-nowrap">
+                    View All
+                </button>
+</div>
+</div>
+</div>
+<div class="mt-16 text-center border-t border-white/5 pt-8">
+<p class="text-gray-600 text-xs font-bold tracking-[0.2em] uppercase mb-8">Trusted by Students &amp; Professionals Alike</p>
+<div class="flex justify-center flex-wrap gap-12 items-center">
+<div class="flex items-center gap-2 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-default">
+<span class="material-symbols-outlined text-white text-xl">account_balance</span>
+<span class="text-white font-bold tracking-tighter text-lg">ABA</span>
+</div>
+<div class="flex items-center gap-2 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-default">
+<span class="material-symbols-outlined text-white text-xl">gavel</span>
+<span class="text-white font-bold tracking-tighter text-lg">IBA</span>
+</div>
+<div class="flex items-center gap-2 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-default">
+<span class="material-symbols-outlined text-white text-xl">history_edu</span>
+<span class="text-white font-bold tracking-tighter text-lg">LEGAL500</span>
+</div>
+<div class="hidden sm:flex items-center gap-2 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-default">
+<span class="material-symbols-outlined text-white text-xl">security</span>
+<span class="text-white font-bold tracking-tighter text-lg">JURIS</span>
+</div>
+<div class="hidden md:flex items-center gap-2 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300 cursor-default">
+<span class="material-symbols-outlined text-white text-xl">policy</span>
+<span class="text-white font-bold tracking-tighter text-lg">BAR COUNCIL</span>
+</div>
+</div>
+<div class="mt-12 text-gray-600 text-xs">
+            © 2023 Coat &amp; Courts. Legal Initiative. <a class="hover:text-primary ml-4" href="#">Privacy</a> <a class="hover:text-primary ml-4" href="#">Terms</a>
+</div>
+</div>
+<div class="mt-12 mx-auto max-w-lg bg-[#0F1623] border border-white/10 rounded-2xl p-2 flex items-center justify-between shadow-2xl">
+<button class="p-3 text-gray-400 hover:text-white transition-colors">
+<span class="material-icons-round">home</span>
+</button>
+<button class="flex-1 mx-4 bg-primary text-[#070311] font-bold py-3 rounded-xl hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 text-sm uppercase tracking-wide shadow-glow">
+<span class="material-icons-round text-base">calendar_month</span> Book Now
+        </button>
+<button class="p-3 text-gray-400 hover:text-white transition-colors">
+<span class="material-icons-round">person</span>
+</button>
+</div>
+</main>
+<script>
+    document.documentElement.classList.add('dark');
+</script>
+
+</body></html>
